@@ -46,62 +46,62 @@ export const navItems: NavGroup[] = [
     title: "La Loge CRM",
     items: [
       {
-        title: "Dashboard",
+        title: "Tableau de bord",
         href: "/dashboard",
         icon: LayoutDashboardIcon
       },
       {
         title: "Salons",
-        href: "/salons",
+        href: "/dashboard/salons",
         icon: ScissorsIcon,
-        badge: "1,707",
+        badge: "3,822",
         badgeTone: "gold"
       },
       {
         title: "Marques",
-        href: "/brands",
+        href: "/dashboard/brands",
         icon: Building2Icon
       },
       {
         title: "Contacts",
-        href: "/contacts",
+        href: "/dashboard/contacts",
         icon: UsersIcon
       },
       {
         title: "Pipeline",
-        href: "/pipeline",
+        href: "/dashboard/pipeline",
         icon: SquareKanbanIcon
       },
       {
         title: "Outreach",
-        href: "/outreach",
+        href: "/dashboard/outreach",
         icon: SendIcon
       },
       {
         title: "Actions",
-        href: "/actions",
+        href: "/dashboard/actions",
         icon: ZapIcon,
         badge: "3",
         badgeTone: "danger"
       },
       {
         title: "Agents IA",
-        href: "/agents",
+        href: "/dashboard/agents",
         icon: BotIcon
       },
       {
         title: "Dossiers",
-        href: "/dossiers",
+        href: "/dashboard/dossiers",
         icon: FileTextIcon
       },
       {
         title: "Rapports",
-        href: "/reports",
+        href: "/dashboard/reports",
         icon: BarChart3Icon
       },
       {
         title: "Réglages",
-        href: "/settings",
+        href: "/dashboard/settings",
         icon: SettingsIcon
       }
     ]
@@ -115,16 +115,30 @@ const badgeToneClasses: Record<NonNullable<NavItem["badgeTone"]>, string> = {
   neutral: "border-border bg-muted text-muted-foreground"
 };
 
+function normalizePath(path: string) {
+  return path !== "/" ? path.replace(/\/+$/, "") : path;
+}
+
 function isActivePath(pathname: string | null, href: string) {
   if (!pathname) {
     return false;
   }
 
-  if (href === "/dashboard") {
-    return pathname === href;
+  const normalizedPathname = normalizePath(pathname);
+  const normalizedHref = normalizePath(href);
+
+  if (normalizedHref === "/dashboard") {
+    return normalizedPathname === normalizedHref;
   }
 
-  return pathname === href || pathname.startsWith(`${href}/`);
+  if (!normalizedPathname.startsWith("/dashboard")) {
+    return false;
+  }
+
+  return (
+    normalizedPathname === normalizedHref ||
+    normalizedPathname.startsWith(`${normalizedHref}/`)
+  );
 }
 
 export function NavMain() {

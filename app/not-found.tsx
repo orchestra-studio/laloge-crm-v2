@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,17 +9,17 @@ export default function NotFound() {
       <div className="text-center">
         <p className="text-muted-foreground text-base font-semibold">404</p>
         <h1 className="mt-4 text-3xl font-bold tracking-tight md:text-5xl lg:text-7xl">
-          Page not found
+          Page introuvable
         </h1>
         <p className="text-muted-foreground mt-6 text-base leading-7">
-          Sorry, we couldn’t find the page you’re looking for.
+          Désolé, la page que vous cherchez n’existe pas.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-2">
           <Button size="lg" asChild>
-            <Link prefetch={false} href="/dashboard">Go back home</Link>
+            <Link prefetch={false} href="/dashboard">Retour à l’accueil</Link>
           </Button>
           <Button size="lg" variant="ghost">
-            Contact support <ArrowRight className="ms-2 h-4 w-4" />
+            Contacter le support <ArrowRight className="ms-2 h-4 w-4" />
           </Button>
         </div>
       </div>
@@ -30,7 +29,7 @@ export default function NotFound() {
           width={300}
           height={400}
           className="w-full object-contain lg:max-w-2xl"
-          alt="not found image"
+          alt="Illustration page introuvable"
         />
       </div>
     </div>

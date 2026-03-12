@@ -1,8 +1,6 @@
-import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { createBrowserClient } from "@supabase/ssr";
 import type { ActivityLogRow } from "./types";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const FALLBACK_DATE = "1970-01-01T00:00:00.000Z";
 const ACTIVITY_LOG_LIMIT = 25;
 
@@ -60,41 +58,15 @@ function formatActorName(actorType: unknown, actorName: unknown) {
   return humanizeToken(rawName);
 }
 
-async function getSupabaseClient() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+function getSupabase() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return null;
   }
 
-  if (typeof window !== "undefined") {
-    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, { isSingleton: true });
-  }
-
-  try {
-    const runtimeImport = new Function("modulePath", "return import(modulePath);") as (
-      modulePath: string
-    ) => Promise<{ cookies: () => Promise<any> }>;
-
-    const { cookies } = await runtimeImport("next/headers");
-    const cookieStore = await cookies();
-
-    return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet: Array<{ name: string; value: string; options: Record<string, unknown> }>) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }: any) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {}
-        }
-      }
-    });
-  } catch (error) {
-    console.error("[crm/data/activity-log] unable to create server supabase client:", error);
-    return null;
-  }
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 }
 
 async function loadSalonNamesById(supabase: any, salonIds: string[]) {
@@ -204,7 +176,7 @@ function mapActivityLog(
 
 async function loadActivityLog(): Promise<ActivityLogRow[]> {
   try {
-    const supabase = await getSupabaseClient();
+    const supabase = getSupabase();
 
     if (!supabase) {
       return [];

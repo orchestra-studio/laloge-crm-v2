@@ -69,7 +69,7 @@ export default function LoginPage() {
           </p>
           <div className="flex items-center gap-8 pt-8 text-sm text-gray-500">
             <div className="text-center">
-              <p className="text-2xl font-bold text-white">1,707</p>
+              <p className="text-2xl font-bold text-white">3,822</p>
               <p>Salons analysés</p>
             </div>
             <div className="text-center">

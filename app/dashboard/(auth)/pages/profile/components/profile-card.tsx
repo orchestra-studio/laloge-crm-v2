@@ -11,58 +11,47 @@ export function ProfileCard() {
         <div className="space-y-12">
           <div className="flex flex-col items-center space-y-4">
             <Avatar className="size-20">
-              <AvatarImage src={`/images/avatars/10.png`} alt="@shadcn" />
-              <AvatarFallback>AH</AvatarFallback>
+              <AvatarImage src={`/images/avatars/10.png`} alt="La Loge" />
+              <AvatarFallback>LL</AvatarFallback>
             </Avatar>
             <div className="text-center">
               <h5 className="flex items-center gap-2 text-xl font-semibold">
-                Anshan Haso <Badge variant="info">Pro</Badge>
+                Opérations La Loge <Badge variant="info">CRM</Badge>
               </h5>
-              <div className="text-muted-foreground text-sm">Project Manager</div>
+              <div className="text-muted-foreground text-sm">
+                Conciergerie beauté & mise en relation salons-marques
+              </div>
             </div>
           </div>
           <div className="bg-muted grid grid-cols-3 divide-x rounded-md border text-center *:py-3">
             <div>
-              <h5 className="text-lg font-semibold">184</h5>
-              <div className="text-muted-foreground text-sm">Post</div>
+              <h5 className="text-lg font-semibold">3 822</h5>
+              <div className="text-muted-foreground text-sm">Salons</div>
             </div>
             <div>
-              <h5 className="text-lg font-semibold">32</h5>
-              <div className="text-muted-foreground text-sm">Projects</div>
+              <h5 className="text-lg font-semibold">6</h5>
+              <div className="text-muted-foreground text-sm">Marques</div>
             </div>
             <div>
-              <h5 className="text-lg font-semibold">4.5K</h5>
-              <div className="text-muted-foreground text-sm">Members</div>
+              <h5 className="text-lg font-semibold">9</h5>
+              <div className="text-muted-foreground text-sm">Agents IA</div>
             </div>
           </div>
           <div className="flex flex-col gap-y-4">
             <div className="flex items-center gap-3 text-sm">
-              <Mail className="text-muted-foreground size-4" /> hello@tobybelhome.com
+              <Mail className="text-muted-foreground size-4" /> Bonnie · Marie-Pierre
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <PhoneCall className="text-muted-foreground size-4" /> (+1-876) 8654 239 581
+              <PhoneCall className="text-muted-foreground size-4" /> Suivi commercial premium
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <MapPin className="text-muted-foreground size-4" />
-              Canada
+              <MapPin className="text-muted-foreground size-4" /> France
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <Link2Icon className="text-muted-foreground size-4" />
-              <a
-                href="https://shadcnuikit.com"
-                className="hover:text-primary hover:underline"
-                target="_blank">
-                https://shadcnuikit.com
-              </a>
+              <Link2Icon className="text-muted-foreground size-4" /> 3 822 salons suivis
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <Link2Icon className="text-muted-foreground size-4" />
-              <a
-                href="https://bundui.io/"
-                className="hover:text-primary hover:underline"
-                target="_blank">
-                https://bundui.io/
-              </a>
+              <Link2Icon className="text-muted-foreground size-4" /> 6 marques actives · 3 validations en attente
             </div>
           </div>
         </div>

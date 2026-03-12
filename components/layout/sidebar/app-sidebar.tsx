@@ -69,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             La Loge Ops
           </div>
           <p className="mt-1 text-xs leading-5 text-foreground/80">
-            1,707 salons suivis · 6 marques actives · 3 validations en attente.
+            3,822 salons suivis · 6 marques actives · 3 validations en attente.
           </p>
         </div>
         <SidebarSeparator />

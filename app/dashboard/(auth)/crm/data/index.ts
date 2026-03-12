@@ -1,4 +1,4 @@
-import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { createBrowserClient } from "@supabase/ssr";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { mockProfiles as fallbackProfiles } from "./mock-profiles";
@@ -17,8 +17,6 @@ import type {
 export * from "./types";
 export { mockSalons, mockActivityLog, mockAgentActions, mockApprovals };
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const CRM_GOLD = "#C5A572";
 const FALLBACK_DATE = "1970-01-01T00:00:00.000Z";
 
@@ -65,41 +63,15 @@ function getNumber(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-async function getSupabaseClient() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+function getSupabase() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return null;
   }
 
-  if (typeof window !== "undefined") {
-    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, { isSingleton: true });
-  }
-
-  try {
-    const runtimeImport = new Function("modulePath", "return import(modulePath);") as (
-      modulePath: string
-    ) => Promise<{ cookies: () => Promise<any> }>;
-
-    const { cookies } = await runtimeImport("next/headers");
-    const cookieStore = await cookies();
-
-    return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet: Array<{ name: string; value: string; options: Record<string, unknown> }>) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }: any) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {}
-        }
-      }
-    });
-  } catch (error) {
-    console.error("[crm/data/index] unable to create server supabase client:", error);
-    return null;
-  }
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 }
 
 function normalizeProfile(row: Record<string, unknown>): ProfileRow {
@@ -158,7 +130,7 @@ async function getAverageSalonScore(supabase: any) {
 
 async function loadDashboardSnapshot() {
   try {
-    const supabase = await getSupabaseClient();
+    const supabase = getSupabase();
 
     if (!supabase) {
       return {
