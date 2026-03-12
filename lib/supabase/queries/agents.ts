@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const agentCatalog = [
   { id: "datascout", name: "DataScout", icon: "Search" },
@@ -341,7 +341,7 @@ function mapPriority(value: string | null | undefined): AgentQueueItem["priority
 }
 
 async function fetchAgentMonitoringData() {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   try {
     const [actionsResult, workItemsResult] = await Promise.all([

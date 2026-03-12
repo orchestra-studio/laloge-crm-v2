@@ -5,7 +5,7 @@ import {
   type Salon,
   type SalonStatus
 } from "@/app/dashboard/(auth)/salons/data/schema";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const DEFAULT_LIMIT = 2000;
 const DEFAULT_SORT_BY = "created_at";
@@ -730,7 +730,7 @@ function mapSalonRecord(record: JsonRecord, options: MapSalonOptions = {}): Salo
   });
 }
 
-async function fetchProfilesMap(supabase: Awaited<ReturnType<typeof createClient>>, ids: string[]) {
+async function fetchProfilesMap(supabase: ReturnType<typeof createAdminClient>, ids: string[]) {
   if (ids.length === 0) return new Map<string, ProfileRow>();
 
   const { data, error } = await supabase
@@ -743,15 +743,16 @@ async function fetchProfilesMap(supabase: Awaited<ReturnType<typeof createClient
     return new Map<string, ProfileRow>();
   }
 
+  const rows = data as unknown as ProfileRow[];
   return new Map(
-    data
-      .filter((profile): profile is ProfileRow => Boolean(profile?.id))
+    rows
+      .filter((profile) => Boolean(profile?.id))
       .map((profile) => [profile.id, profile])
   );
 }
 
 async function fetchBrandMap(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: ReturnType<typeof createAdminClient>,
   brandIds: string[]
 ): Promise<Map<string, string>> {
   if (brandIds.length === 0) return new Map<string, string>();
@@ -763,9 +764,10 @@ async function fetchBrandMap(
     return new Map<string, string>();
   }
 
+  const rows = data as unknown as Array<{ id: string; name: string | null }>;
   return new Map(
-    data
-      .filter((brand): brand is { id: string; name: string | null } => Boolean(brand?.id))
+    rows
+      .filter((brand) => Boolean(brand?.id))
       .map((brand) => [brand.id, brand.name?.trim() || "Marque"])
   );
 }
@@ -778,7 +780,7 @@ export async function getSalons(options?: {
   sortBy?: string;
   sortDir?: "asc" | "desc";
 }) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   let query = supabase.from("salons").select("*", { count: "exact" }).is("deleted_at", null);
 
@@ -809,13 +811,14 @@ export async function getSalons(options?: {
   }
 
   try {
+    const rows = data as unknown as JsonRecord[];
     const assignedIds = unique(
-      data
+      rows
         .map((record) => asString(record.assigned_to))
         .filter(Boolean)
     );
     const profileMap = await fetchProfilesMap(supabase, assignedIds);
-    const salons = data.map((record) => mapSalonRecord(record, { profileMap }));
+    const salons = rows.map((record) => mapSalonRecord(record, { profileMap }));
 
     return {
       salons,
@@ -828,7 +831,7 @@ export async function getSalons(options?: {
 }
 
 export async function getSalonById(id: string) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const { data: salonRecord, error } = await supabase
     .from("salons")
@@ -842,7 +845,8 @@ export async function getSalonById(id: string) {
     return null;
   }
 
-  const assignedId = asString(salonRecord.assigned_to);
+  const salonRow = salonRecord as unknown as JsonRecord;
+  const assignedId = asString(salonRow.assigned_to);
 
   const [
     contactsResponse,
@@ -874,21 +878,23 @@ export async function getSalonById(id: string) {
   if (dossiersResponse.error) console.error("Error fetching salon dossiers:", dossiersResponse.error);
 
   try {
+    const brandScoreRows = (brandScoresResponse.data ?? []) as unknown as JsonRecord[];
+    const dossierRows = (dossiersResponse.data ?? []) as unknown as JsonRecord[];
     const brandIds = unique([
-      ...((brandScoresResponse.data ?? []).map((record) => asString(record.brand_id)).filter(Boolean) as string[]),
-      ...((dossiersResponse.data ?? []).map((record) => asString(record.brand_id)).filter(Boolean) as string[])
+      ...brandScoreRows.map((record) => asString(record.brand_id)).filter(Boolean),
+      ...dossierRows.map((record) => asString(record.brand_id)).filter(Boolean)
     ]);
     const brandMap = await fetchBrandMap(supabase, brandIds);
 
-    return mapSalonRecord(salonRecord, {
+    return mapSalonRecord(salonRow, {
       profileMap,
-      contacts: (contactsResponse.data ?? []) as JsonRecord[],
-      brandScores: (brandScoresResponse.data ?? []) as JsonRecord[],
+      contacts: (contactsResponse.data ?? []) as unknown as JsonRecord[],
+      brandScores: brandScoreRows,
       brandMap,
-      outreach: (outreachResponse.data ?? []) as JsonRecord[],
-      activity: (activityResponse.data ?? []) as JsonRecord[],
-      pipelineHistory: (pipelineHistoryResponse.data ?? []) as JsonRecord[],
-      dossiers: (dossiersResponse.data ?? []) as JsonRecord[]
+      outreach: (outreachResponse.data ?? []) as unknown as JsonRecord[],
+      activity: (activityResponse.data ?? []) as unknown as JsonRecord[],
+      pipelineHistory: (pipelineHistoryResponse.data ?? []) as unknown as JsonRecord[],
+      dossiers: dossierRows
     });
   } catch (parseError) {
     console.error("Error parsing salon detail:", parseError);
@@ -897,7 +903,7 @@ export async function getSalonById(id: string) {
 }
 
 export async function getSalonStats() {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const [totalResponse, enrichedResponse, highScoreResponse, contactedResponse] = await Promise.all([
     supabase.from("salons").select("*", { count: "exact", head: true }).is("deleted_at", null),

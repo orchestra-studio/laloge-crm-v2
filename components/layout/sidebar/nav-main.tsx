@@ -3,16 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  BarChart3Icon,
-  BotIcon,
   Building2Icon,
-  FileTextIcon,
   LayoutDashboardIcon,
   ScissorsIcon,
-  SendIcon,
   SettingsIcon,
-  SquareKanbanIcon,
-  UsersIcon,
   ZapIcon,
   type LucideIcon
 } from "lucide-react";
@@ -54,7 +48,7 @@ export const navItems: NavGroup[] = [
         title: "Salons",
         href: "/dashboard/salons",
         icon: ScissorsIcon,
-        badge: "3,822",
+        badge: "3 822",
         badgeTone: "gold"
       },
       {
@@ -63,41 +57,11 @@ export const navItems: NavGroup[] = [
         icon: Building2Icon
       },
       {
-        title: "Contacts",
-        href: "/dashboard/contacts",
-        icon: UsersIcon
-      },
-      {
-        title: "Pipeline",
-        href: "/dashboard/pipeline",
-        icon: SquareKanbanIcon
-      },
-      {
-        title: "Outreach",
-        href: "/dashboard/outreach",
-        icon: SendIcon
-      },
-      {
-        title: "Actions",
+        title: "Actions agents",
         href: "/dashboard/actions",
         icon: ZapIcon,
         badge: "3",
         badgeTone: "danger"
-      },
-      {
-        title: "Agents IA",
-        href: "/dashboard/agents",
-        icon: BotIcon
-      },
-      {
-        title: "Dossiers",
-        href: "/dashboard/dossiers",
-        icon: FileTextIcon
-      },
-      {
-        title: "Rapports",
-        href: "/dashboard/reports",
-        icon: BarChart3Icon
       },
       {
         title: "Réglages",

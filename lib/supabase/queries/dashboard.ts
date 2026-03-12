@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const DASHBOARD_SALON_STATUSES = [
   "nouveau",
@@ -60,7 +60,7 @@ function getSafeCount(result: { count: number | null; error: { message: string }
 
 export async function getDashboardStats() {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const [
       salonsRes,
@@ -112,7 +112,7 @@ export async function getDashboardStats() {
 
 export async function getRecentActivity(limit = 10) {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("activity_log")
       .select("*")
@@ -133,7 +133,7 @@ export async function getRecentActivity(limit = 10) {
 
 export async function getRecentAgentActions(limit = 10) {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("agent_actions")
       .select("*")
@@ -154,7 +154,7 @@ export async function getRecentAgentActions(limit = 10) {
 
 export async function getPendingApprovals(limit = 20) {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("agent_actions")
       .select("*")
@@ -176,7 +176,7 @@ export async function getPendingApprovals(limit = 20) {
 
 export async function getSalonsByStatus() {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const results = await Promise.all(
       DASHBOARD_SALON_STATUSES.map((status) =>
@@ -200,7 +200,7 @@ export async function getSalonsByStatus() {
 
 export async function getTopSalons(limit = 5) {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("salons")
       .select("id, name, city, score, status, google_rating, team_size")
@@ -221,7 +221,7 @@ export async function getTopSalons(limit = 5) {
 
 export async function getDashboardSalons(limit = 12) {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("salons")
       .select(DASHBOARD_SALON_SELECT)
@@ -242,7 +242,7 @@ export async function getDashboardSalons(limit = 12) {
 
 export async function getProfiles(limit = 25) {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("profiles")
       .select("id, full_name, email, role, avatar_url, created_at, updated_at")
@@ -263,7 +263,7 @@ export async function getProfiles(limit = 25) {
 
 export async function getAverageSalonScore() {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const pageSize = 1000;
     let from = 0;
     let total = 0;
@@ -286,7 +286,7 @@ export async function getAverageSalonScore() {
         break;
       }
 
-      for (const row of data) {
+      for (const row of data as unknown as Array<{ score: unknown }>) {
         if (typeof row.score === "number") {
           total += row.score;
           count += 1;

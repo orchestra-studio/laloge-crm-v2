@@ -7,7 +7,7 @@ import type {
   SalonStatus,
   TopSalonPoint
 } from "@/app/dashboard/(auth)/brands/components/types";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -97,7 +97,7 @@ const SALON_STATUSES: SalonStatus[] = [
 ];
 
 export async function getBrands(): Promise<Brand[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const [brandsResponse, scoresResponse] = await Promise.all([
     supabase.from("brands").select("*").order("name"),
@@ -130,7 +130,7 @@ export async function getBrands(): Promise<Brand[]> {
 }
 
 export async function getBrandById(id: string): Promise<Brand | null> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const [brandResponse, matchesResponse] = await Promise.all([
     supabase.from("brands").select("*").eq("id", id).maybeSingle(),
@@ -162,7 +162,7 @@ export async function getBrandById(id: string): Promise<Brand | null> {
 }
 
 export async function getBrandSalonMatches(brandId: string, limit = 20): Promise<BrandSalon[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   let query = supabase
     .from("brand_salon_scores")

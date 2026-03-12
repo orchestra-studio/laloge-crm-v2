@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const statusOrder = [
   "nouveau",
@@ -279,7 +279,7 @@ function emptyReportData(): ReportData {
 }
 
 export async function getReportData(): Promise<ReportData> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   try {
     const [

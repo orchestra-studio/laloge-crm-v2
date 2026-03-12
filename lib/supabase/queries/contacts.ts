@@ -4,7 +4,7 @@ import type {
   ContactOutreachEntry,
   ContactStatus
 } from "@/app/dashboard/(auth)/contacts/components/types";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 type OutreachChannelLabel = ContactOutreachEntry["channel"];
 type OutreachStatusLabel = ContactOutreachEntry["status"];
@@ -54,7 +54,7 @@ export async function getContacts(options?: {
   offset?: number;
   search?: string;
 }): Promise<{ contacts: Contact[]; total: number }> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   let query = supabase
     .from("contacts")
@@ -132,7 +132,7 @@ export async function getContacts(options?: {
 }
 
 async function getOutreachByContactId(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: ReturnType<typeof createAdminClient>,
   contactIds: string[]
 ): Promise<Map<string, ContactOutreachEntry[]>> {
   const outreachByContactId = new Map<string, ContactOutreachEntry[]>();

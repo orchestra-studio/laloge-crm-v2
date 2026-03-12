@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const pipelineStatuses = [
   "nouveau",
@@ -199,7 +199,7 @@ function buildTimeline(historyRows: PipelineHistoryRow[], updatedAt: string | nu
 }
 
 export async function getPipelineData(): Promise<PipelineColumn[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   try {
     const { data: salonsData, error: salonsError } = await supabase
@@ -314,7 +314,7 @@ export async function getPipelineData(): Promise<PipelineColumn[]> {
 }
 
 export async function getPipelineHistory(salonId?: string, limit = 20) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   try {
     let query = supabase
