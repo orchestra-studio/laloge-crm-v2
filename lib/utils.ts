@@ -25,7 +25,7 @@ export function generateMeta({
   return {
     title: `${title} - Shadcnuikit.com`,
     description: description,
-    metadataBase: new URL(`https://shadcnuikit.com`),
+    metadataBase: new URL(`https://laloge-crm-v2.vercel.app`),
     alternates: {
       canonical: `/dashboard${canonical}`
     },
