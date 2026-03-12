@@ -1,129 +1,169 @@
-import Link from "next/link";
-import Image from "next/image";
-import { GithubIcon } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createBrowserClient } from "@supabase/ssr";
 import { generateMeta } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function generateMetadata() {
-  return generateMeta({
-    title: "Login Page",
-    description:
-      "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.",
-    canonical: "/login/v1"
-  });
-}
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
-export default function Page() {
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (authError) {
+        if (authError.message.includes("Invalid login")) {
+          setError("Email ou mot de passe incorrect.");
+        } else {
+          setError(authError.message);
+        }
+        setLoading(false);
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Une erreur est survenue. Veuillez réessayer.");
+      setLoading(false);
+    }
+  }
+
   return (
-    <div className="flex pb-8 lg:h-screen lg:pb-0">
-      <div className="hidden w-1/2 bg-gray-100 lg:block">
-        <Image
-          width={1000}
-          height={1000}
-          src={`/images/extra/image4.jpg`}
-          alt="shadcn/ui login page"
-          className="h-full w-full object-cover"
-          unoptimized
-        />
+    <div className="flex min-h-screen">
+      {/* Left panel — branding */}
+      <div className="hidden w-1/2 lg:flex lg:flex-col lg:items-center lg:justify-center"
+        style={{ background: "linear-gradient(135deg, #0A1628 0%, #1a2744 50%, #0A1628 100%)" }}>
+        <div className="text-center space-y-6 px-12">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl"
+            style={{ backgroundColor: "rgba(197, 165, 114, 0.15)", border: "1px solid rgba(197, 165, 114, 0.3)" }}>
+            <span className="text-3xl font-bold" style={{ color: "#C5A572" }}>L</span>
+          </div>
+          <h1 className="text-4xl font-bold text-white tracking-tight">
+            La Loge
+          </h1>
+          <p className="text-lg text-gray-400 max-w-sm">
+            Votre conciergerie digitale beauté.<br />
+            L&apos;intelligence au service de vos salons.
+          </p>
+          <div className="flex items-center gap-8 pt-8 text-sm text-gray-500">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-white">1,707</p>
+              <p>Salons analysés</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold" style={{ color: "#C5A572" }}>6</p>
+              <p>Marques partenaires</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-white">9</p>
+              <p>Agents IA actifs</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="flex w-full items-center justify-center lg:w-1/2">
-        <div className="w-full max-w-md space-y-8 px-4">
-          <div className="text-center">
-            <h2 className="mt-6 text-3xl font-bold">Welcome back</h2>
-            <p className="text-muted-foreground mt-2 text-sm">Please sign in to your account</p>
+      {/* Right panel — login form */}
+      <div className="flex w-full items-center justify-center lg:w-1/2 bg-background">
+        <div className="w-full max-w-md space-y-8 px-6">
+          {/* Mobile logo */}
+          <div className="text-center lg:hidden">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-4"
+              style={{ backgroundColor: "rgba(197, 165, 114, 0.1)", border: "1px solid rgba(197, 165, 114, 0.2)" }}>
+              <span className="text-xl font-bold" style={{ color: "#C5A572" }}>L</span>
+            </div>
           </div>
 
-          <form className="mt-8 space-y-6">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold tracking-tight">Connexion</h2>
+            <p className="text-muted-foreground mt-2 text-sm">
+              Accédez à votre espace La Loge
+            </p>
+          </div>
+
+          {error && (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="email" className="sr-only">
-                  Email address
-                </Label>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
-                  className="w-full"
-                  placeholder="Email address"
+                  className="w-full h-10"
+                  placeholder="votre@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
                 />
               </div>
-              <div>
-                <Label htmlFor="password" className="sr-only">
-                  Password
-                </Label>
+              <div className="space-y-2">
+                <Label htmlFor="password">Mot de passe</Label>
                 <Input
                   id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="w-full"
-                  placeholder="Password"
+                  className="w-full h-10"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
               </div>
-              <div className="text-end">
-                <Link prefetch={false}
-                  href="/dashboard/forgot-password"
-                  className="ml-auto inline-block text-sm underline">
-                  Forgot your password?
-                </Link>
-              </div>
             </div>
 
-            <div>
-              <Button type="submit" className="w-full">
-                Sign in
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              className="w-full h-10"
+              disabled={loading}
+              style={!loading ? { backgroundColor: "#C5A572", color: "white" } : undefined}
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Connexion...
+                </span>
+              ) : (
+                "Se connecter"
+              )}
+            </Button>
           </form>
 
-          <div className="mt-6">
-            <div className="flex items-center gap-3">
-              <div className="w-full border-t" />
-              <span className="text-muted-foreground shrink-0 text-sm">or continue with</span>
-              <div className="w-full border-t" />
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <Button variant="outline" className="w-full">
-                <svg viewBox="0 0 24 24">
-                  <path
-                    fill="currentColor"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  />
-                </svg>
-                Google
-              </Button>
-              <Button variant="outline" className="w-full">
-                <GithubIcon />
-                GitHub
-              </Button>
-            </div>
-
-            <div className="mt-6 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link prefetch={false} href="/dashboard/register/v1" className="underline">
-                Sign up
-              </Link>
-            </div>
+          <div className="text-center text-xs text-muted-foreground pt-4">
+            <p>Accès réservé aux équipes La Loge</p>
           </div>
         </div>
       </div>
