@@ -10,58 +10,21 @@ export type SalonStatus =
 
 export type EnrichmentStatus = "pending" | "enriched" | "failed" | "complete";
 
-export type ActivityAction =
-  | "enriched"
-  | "scored"
-  | "status_changed"
-  | "outreach_sent"
-  | "note_added"
-  | "contact_added"
-  | "approval.approved"
-  | "approval.requested"
-  | "approval.rejected"
-  | "agent_action.approved"
-  | "agent_action.rejected"
-  | "agent_action.auto_approved"
-  | "outreach.draft_generated"
-  | "salon.status_changed"
-  | "score.updated";
-
-export type EntityType = "salon" | "brand" | "contact" | "outreach" | "approval" | "agent_action";
-
-export type ActorType = "agent" | "user" | "system";
-
-export type AgentName =
-  | "DataScout"
-  | "EnrichBot"
-  | "ScoreMaster"
-  | "OutreachPilot"
-  | "QualityGuard"
-  | "BrandMatcher";
+export type ActivityAction = string;
+export type EntityType = string;
+export type ActorType = "agent" | "user" | "system" | string;
+export type AgentName = string;
 
 export type AgentActionStatus =
   | "pending"
   | "approved"
   | "rejected"
   | "executed"
-  | "auto_approved";
+  | "auto_approved"
+  | string;
 
-export type AgentActionType =
-  | "update_status"
-  | "launch_outreach"
-  | "create_contact"
-  | "assign_brand"
-  | "schedule_followup"
-  | "generate_dossier"
-  | "draft_email"
-  | "match_proposal"
-  | "update_score"
-  | "enrich_data"
-  | "discover_salon"
-  | "status_change"
-  | "contact_add";
-
-export type ApprovalStatus = "pending" | "approved" | "rejected" | "expired";
+export type AgentActionType = string;
+export type ApprovalStatus = "pending" | "approved" | "rejected" | "expired" | string;
 
 export interface ProfileRow {
   id: string;
@@ -119,7 +82,7 @@ export interface ActivityLogRow {
   action: ActivityAction;
   entity_id: string;
   entity_type: EntityType;
-  entity_name?: string;
+  entity_name?: string | null;
   old_value?: Record<string, unknown> | null;
   new_value?: Record<string, unknown> | null;
   metadata: Record<string, unknown> | null;
@@ -134,7 +97,7 @@ export interface AgentActionRow {
   action_type: AgentActionType;
   entity_id?: string;
   entity_type?: EntityType;
-  entity_name?: string;
+  entity_name?: string | null;
   target_id?: string;
   target_type?: EntityType;
   status: AgentActionStatus;
@@ -154,7 +117,7 @@ export interface ApprovalRow {
   type?: string;
   title?: string;
   description?: string;
-  requester_type?: "agent" | "user";
+  requester_type?: "agent" | "user" | string;
   requester_name?: string;
   requested_by?: AgentName;
   status: ApprovalStatus;

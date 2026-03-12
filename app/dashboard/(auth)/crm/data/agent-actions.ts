@@ -1,193 +1,196 @@
-import { mockAgentActionIds, mockSalonIds } from "./ids";
+import { createBrowserClient, createServerClient } from "@supabase/ssr";
 import type { AgentActionRow } from "./types";
 
-export const mockAgentActions: AgentActionRow[] = [
-  {
-    id: mockAgentActionIds.draftEmailAtelierColoriste,
-    agent_id: "outreachpilot",
-    agent_world_run_id: "run_outreach_20260312_0840",
-    action_type: "draft_email",
-    target_type: "salon",
-    target_id: mockSalonIds.atelierColoriste,
-    payload: {
-      salon_name: "Atelier Coloriste Montchat",
-      channel: "email",
-      subject: "Jeudi : 15 min pour parler Wella x Atelier Coloriste ?",
-      preview_text: "Une proposition simple, calibrée pour votre salon et votre équipe.",
-      body: "Bonjour Sarah, suite à notre échange, je vous partage une proposition courte et concrète pour structurer un partenariat Wella adapté à l’Atelier Coloriste.",
-      reasoning: "Le salon a confirmé un RDV, le draft vise à préparer la suite immédiate après la visio.",
-      next_step: "send_after_meeting"
-    },
-    status: "pending",
-    priority: 9,
-    approved_by: null,
-    approved_at: null,
-    rejected_reason: null,
-    created_at: "2026-03-12T08:41:00.000Z",
-    updated_at: "2026-03-12T08:41:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.brandMatchMaisonTressee,
-    agent_id: "brandmatcher",
-    agent_world_run_id: "run_match_20260312_0810",
-    action_type: "match_proposal",
-    target_type: "salon",
-    target_id: mockSalonIds.maisonTressee,
-    payload: {
-      salon_name: "Maison Tressée",
-      brand_name: "Schwarzkopf",
-      compatibility_score: 91,
-      rationale: [
-        "Equipe de 14 personnes",
-        "Positionnement premium cohérent",
-        "Excellente réputation Google",
-        "Présence Instagram forte"
-      ],
-      dossier_recommended: true
-    },
-    status: "pending",
-    priority: 8,
-    approved_by: null,
-    approved_at: null,
-    rejected_reason: null,
-    created_at: "2026-03-12T08:12:00.000Z",
-    updated_at: "2026-03-12T08:12:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.updateScoreMaisonNacree,
-    agent_id: "scoremaster",
-    agent_world_run_id: "run_score_20260312_0815",
-    action_type: "update_score",
-    target_type: "salon",
-    target_id: mockSalonIds.maisonNacree,
-    payload: {
-      salon_name: "Maison Nacrée",
-      previous_score: 44,
-      new_score: 63,
-      delta: 19,
-      drivers: ["site_web_identifie", "email_valide", "google_reviews_positifs"]
-    },
-    status: "approved",
-    priority: 6,
-    approved_by: "Marie-Pierre",
-    approved_at: "2026-03-12T08:18:00.000Z",
-    rejected_reason: null,
-    created_at: "2026-03-12T08:16:00.000Z",
-    updated_at: "2026-03-12T08:18:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.enrichAppartementCoiffure,
-    agent_id: "enrichbot",
-    agent_world_run_id: "run_enrich_20260311_1700",
-    action_type: "enrich_data",
-    target_type: "salon",
-    target_id: mockSalonIds.appartementCoiffure,
-    payload: {
-      salon_name: "L’Appartement Coiffure",
-      fields_updated: ["instagram_followers", "planity_url", "owner_name", "team_size"],
-      confidence: 0.96,
-      sources: ["website", "instagram", "planity"]
-    },
-    status: "auto_approved",
-    priority: 5,
-    approved_by: "system:auto-rules",
-    approved_at: "2026-03-11T17:06:00.000Z",
-    rejected_reason: null,
-    created_at: "2026-03-11T17:05:00.000Z",
-    updated_at: "2026-03-11T17:06:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.discoverDuplicateAtelierDuLac,
-    agent_id: "datascout-2026",
-    agent_world_run_id: "run_discover_20260312_0635",
-    action_type: "discover_salon",
-    target_type: "salon",
-    target_id: mockSalonIds.atelierDuLac,
-    payload: {
-      salon_name: "Atelier du Lac",
-      source: "google",
-      candidate_type: "duplicate",
-      similarity_score: 0.81,
-      city: "Annecy"
-    },
-    status: "rejected",
-    priority: 3,
-    approved_by: "Marie-Pierre",
-    approved_at: "2026-03-12T07:10:00.000Z",
-    rejected_reason: "Conserver en revue manuelle, score de similarité insuffisant pour fusion.",
-    created_at: "2026-03-12T06:36:00.000Z",
-    updated_at: "2026-03-12T07:10:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.statusChangeStudioBalmain,
-    agent_id: "outreachpilot",
-    agent_world_run_id: "run_outreach_20260312_0650",
-    action_type: "status_change",
-    target_type: "salon",
-    target_id: mockSalonIds.studioBalmain,
-    payload: {
-      salon_name: "Studio Balmain Marseille",
-      from_status: "contacte",
-      to_status: "interesse",
-      trigger: "positive_phone_response",
-      confidence: 0.74
-    },
-    status: "pending",
-    priority: 7,
-    approved_by: null,
-    approved_at: null,
-    rejected_reason: null,
-    created_at: "2026-03-12T06:51:00.000Z",
-    updated_at: "2026-03-12T06:51:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.contactAddAppartementCoiffure,
-    agent_id: "contactbuilder",
-    agent_world_run_id: "run_contact_20260311_1720",
-    action_type: "contact_add",
-    target_type: "salon",
-    target_id: mockSalonIds.appartementCoiffure,
-    payload: {
-      salon_name: "L’Appartement Coiffure",
-      contact: {
-        first_name: "Mélanie",
-        last_name: "Costa",
-        role: "gérante",
-        email: "melanie@appartementcoiffure.fr",
-        phone: "0611223344",
-        is_decision_maker: true
-      }
-    },
-    status: "pending",
-    priority: 6,
-    approved_by: null,
-    approved_at: null,
-    rejected_reason: null,
-    created_at: "2026-03-11T17:22:00.000Z",
-    updated_at: "2026-03-11T17:22:00.000Z"
-  },
-  {
-    id: mockAgentActionIds.draftEmailMaisonTressee,
-    agent_id: "outreachpilot",
-    agent_world_run_id: "run_outreach_20260312_0838",
-    action_type: "draft_email",
-    target_type: "salon",
-    target_id: mockSalonIds.maisonTressee,
-    payload: {
-      salon_name: "Maison Tressée",
-      channel: "email",
-      subject: "Maison Tressée × Schwarzkopf : proposition finale",
-      preview_text: "Une version resserrée de la proposition avant validation de votre côté.",
-      body: "Bonjour Camille, comme convenu, voici la version consolidée de la proposition Schwarzkopf, ajustée pour votre rythme d’équipe et votre volume couleur.",
-      reasoning: "Le salon est en négociation avancée. Le draft sert de support à la closing sequence.",
-      next_step: "send_today_if_approved"
-    },
-    status: "approved",
-    priority: 10,
-    approved_by: "Bonnie",
-    approved_at: "2026-03-12T08:49:00.000Z",
-    rejected_reason: null,
-    created_at: "2026-03-12T08:39:00.000Z",
-    updated_at: "2026-03-12T08:49:00.000Z"
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const FALLBACK_DATE = "1970-01-01T00:00:00.000Z";
+const AGENT_ACTION_LIMIT = 50;
+
+function getString(value: unknown, fallback = ""): string {
+  return typeof value === "string" ? value : fallback;
+}
+
+function getNullableString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function getNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function getRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function humanizeToken(value: string) {
+  return value
+    .split(/[-_\s]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function formatAgentName(agentId: string | null | undefined) {
+  switch (agentId) {
+    case "datascout":
+    case "datascout-2026":
+      return "DataScout";
+    case "enrichbot":
+      return "EnrichBot";
+    case "scoremaster":
+      return "ScoreMaster";
+    case "outreachpilot":
+      return "OutreachPilot";
+    case "qualityguard":
+      return "QualityGuard";
+    case "brandmatcher":
+      return "BrandMatcher";
+    case "contactbuilder":
+      return "ContactBuilder";
+    default:
+      return agentId ? humanizeToken(agentId) : "Agent IA";
   }
-] satisfies AgentActionRow[];
+}
+
+async function getSupabaseClient() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    return null;
+  }
+
+  if (typeof window !== "undefined") {
+    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, { isSingleton: true });
+  }
+
+  try {
+    const runtimeImport = new Function("modulePath", "return import(modulePath);") as (
+      modulePath: string
+    ) => Promise<{ cookies: () => Promise<any> }>;
+
+    const { cookies } = await runtimeImport("next/headers");
+    const cookieStore = await cookies();
+
+    return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet: Array<{ name: string; value: string; options: Record<string, unknown> }>) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }: any) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {}
+        }
+      }
+    });
+  } catch (error) {
+    console.error("[crm/data/agent-actions] unable to create server supabase client:", error);
+    return null;
+  }
+}
+
+async function loadSalonNamesById(supabase: any, salonIds: string[]) {
+  if (!salonIds.length) {
+    return {} as Record<string, string>;
+  }
+
+  const { data, error } = await supabase.from("salons").select("id, name").in("id", salonIds);
+
+  if (error) {
+    console.error("[crm/data/agent-actions] salon name lookup failed:", error.message);
+    return {} as Record<string, string>;
+  }
+
+  return Object.fromEntries(
+    (data ?? []).map((row: Record<string, unknown>) => [getString(row.id), getString(row.name, "Salon")])
+  ) as Record<string, string>;
+}
+
+function getEntityName(
+  row: Record<string, unknown>,
+  payload: Record<string, unknown> | null,
+  salonNamesById: Record<string, string>
+) {
+  const targetId = getString(row.target_id);
+
+  return (
+    getNullableString(payload?.salon_name) ??
+    getNullableString(payload?.brand_name) ??
+    salonNamesById[targetId] ??
+    (targetId ? `Salon ${targetId.slice(0, 8)}` : null)
+  );
+}
+
+function getApprovalReason(payload: Record<string, unknown> | null) {
+  return (
+    getNullableString(payload?.reasoning) ??
+    getNullableString(payload?.description) ??
+    getNullableString(payload?.next_step) ??
+    null
+  );
+}
+
+function mapAgentAction(
+  row: Record<string, unknown>,
+  salonNamesById: Record<string, string>
+): AgentActionRow {
+  const payload = getRecord(row.payload);
+
+  return {
+    id: getString(row.id, getString(row.target_id, "agent-action-inconnue")),
+    agent_name: formatAgentName(getNullableString(row.agent_id)),
+    agent_id: getNullableString(row.agent_id) ?? undefined,
+    agent_world_run_id: getNullableString(row.agent_world_run_id),
+    action_type: getString(row.action_type, "draft_email"),
+    entity_id: getNullableString(row.target_id) ?? undefined,
+    entity_type: getNullableString(row.target_type) ?? undefined,
+    entity_name: getEntityName(row, payload, salonNamesById),
+    target_id: getNullableString(row.target_id) ?? undefined,
+    target_type: getNullableString(row.target_type) ?? undefined,
+    status: getString(row.status, "pending"),
+    approval_reason: getApprovalReason(payload),
+    payload,
+    priority: getNumber(row.priority),
+    approved_by: getNullableString(row.approved_by),
+    approved_at: getNullableString(row.approved_at),
+    rejected_reason: getNullableString(row.rejected_reason),
+    created_at: getString(row.created_at, FALLBACK_DATE),
+    updated_at: getString(row.updated_at, FALLBACK_DATE)
+  };
+}
+
+async function loadAgentActions(): Promise<AgentActionRow[]> {
+  try {
+    const supabase = await getSupabaseClient();
+
+    if (!supabase) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from("agent_actions")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(AGENT_ACTION_LIMIT);
+
+    if (error) {
+      console.error("[crm/data/agent-actions] query failed:", error.message);
+      return [];
+    }
+
+    const rows = (data ?? []) as Array<Record<string, unknown>>;
+    const salonIds = Array.from(
+      new Set(rows.map((row) => getString(row.target_id)).filter(Boolean))
+    );
+    const salonNamesById = await loadSalonNamesById(supabase, salonIds);
+
+    return rows.map((row) => mapAgentAction(row, salonNamesById));
+  } catch (error) {
+    console.error("[crm/data/agent-actions] unexpected failure:", error);
+    return [];
+  }
+}
+
+export const mockAgentActions: AgentActionRow[] = await loadAgentActions();

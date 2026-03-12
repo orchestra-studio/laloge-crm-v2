@@ -12,7 +12,9 @@ import {
   MapPinIcon,
   NotebookPenIcon,
   PhoneIcon,
-  SparklesIcon
+  SparklesIcon,
+  StarIcon,
+  UsersIcon
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -36,43 +38,23 @@ import {
   SheetTitle
 } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
+import type {
+  PipelineColumn,
+  PipelineSalon,
+  PipelineStatus
+} from "@/lib/supabase/queries/pipeline";
 import { cn } from "@/lib/utils";
 
-type PipelineStatus =
-  | "nouveau"
-  | "contacte"
-  | "interesse"
-  | "rdv_planifie"
-  | "negociation"
-  | "gagne";
-
-type PipelineEvent = {
-  id: string;
-  type: string;
-  text: string;
-  at: string;
-};
-
-type PipelineSalon = {
-  id: string;
-  name: string;
-  city: string;
-  department: string;
-  status: PipelineStatus;
-  score: number;
-  assigned_to: string;
-  assigned_avatar: string;
-  assigned_initials: string;
-  last_contact_at: string;
-  kanban_order: number;
-  phone: string;
-  email: string;
-  website: string;
-  contact_name: string;
-  preferred_brands: string[];
-  tags: string[];
-  timeline: PipelineEvent[];
-};
+const pipelineStatuses: PipelineStatus[] = [
+  "nouveau",
+  "contacte",
+  "interesse",
+  "rdv_planifie",
+  "negociation",
+  "gagne",
+  "perdu",
+  "client_actif"
+];
 
 type StageConfig = {
   id: PipelineStatus;
@@ -159,15 +141,47 @@ const stageConfig: StageConfig[] = [
     progressClass: "bg-emerald-500",
     avgDays: 1.6,
     delta: "+12%"
+  },
+  {
+    id: "perdu",
+    label: "Perdu",
+    accent: "#ef4444",
+    surfaceClass: "from-rose-50 to-white",
+    ringClass: "ring-rose-100",
+    dotClass: "bg-rose-500",
+    badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+    progressClass: "bg-rose-500",
+    avgDays: 1.2,
+    delta: "-2%"
+  },
+  {
+    id: "client_actif",
+    label: "Client actif",
+    accent: "#14b8a6",
+    surfaceClass: "from-teal-50 to-white",
+    ringClass: "ring-teal-100",
+    dotClass: "bg-teal-500",
+    badgeClass: "border-teal-200 bg-teal-50 text-teal-700",
+    progressClass: "bg-teal-500",
+    avgDays: 0.9,
+    delta: "+6%"
   }
 ];
 
 const goldAccent = "#C5A572";
 
+function flattenColumns(columns: PipelineColumn[]) {
+  return columns.flatMap((column) => column.salons);
+}
+
 function getScoreBadgeClass(score: number) {
   if (score >= 85) return "border-emerald-200 bg-emerald-50 text-emerald-700";
   if (score >= 70) return "border-amber-200 bg-amber-50 text-amber-700";
   return "border-slate-200 bg-slate-100 text-slate-700";
+}
+
+function getStageMeta(status: PipelineStatus) {
+  return stageConfig.find((stage) => stage.id === status) ?? stageConfig[0];
 }
 
 function getEventLabel(type: string) {
@@ -181,7 +195,7 @@ function getEventLabel(type: string) {
     case "status_change":
       return "Changement de statut";
     case "brand_match":
-      return "Brand matching";
+      return "Matching marque";
     case "meeting":
       return "Rendez-vous";
     case "proposal":
@@ -193,37 +207,72 @@ function getEventLabel(type: string) {
   }
 }
 
-function formatRelative(value: string) {
-  return formatDistanceToNow(new Date(value), {
+function formatRelative(value: string | null | undefined) {
+  if (!value) return "—";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+
+  return formatDistanceToNow(date, {
     addSuffix: true,
     locale: fr
   });
 }
 
-function sortSalons(items: PipelineSalon[]) {
-  return [...items].sort((a, b) => a.kanban_order - b.kanban_order);
+function formatDateTime(value: string | null | undefined) {
+  if (!value) return "—";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+
+  return format(date, "dd MMM • HH:mm", { locale: fr });
 }
 
-export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[] }) {
-  const [salons, setSalons] = React.useState<PipelineSalon[]>(() => sortSalons(initialSalons));
+function normalizeWebsiteHref(website: string | null | undefined) {
+  if (!website) return null;
+  if (website.startsWith("http://") || website.startsWith("https://")) {
+    return website;
+  }
+  return `https://${website}`;
+}
+
+function sortSalons(items: PipelineSalon[]) {
+  return [...items].sort((a, b) => a.kanbanOrder - b.kanbanOrder);
+}
+
+export function PipelinePage({ initialColumns }: { initialColumns: PipelineColumn[] }) {
+  const [salons, setSalons] = React.useState<PipelineSalon[]>(() =>
+    sortSalons(flattenColumns(initialColumns))
+  );
   const [assignedTo, setAssignedTo] = React.useState<string>("all");
   const [city, setCity] = React.useState<string>("all");
   const [scoreRange, setScoreRange] = React.useState<[number, number]>([40, 100]);
   const [selectedSalonId, setSelectedSalonId] = React.useState<string | null>(null);
 
+  React.useEffect(() => {
+    setSalons(sortSalons(flattenColumns(initialColumns)));
+  }, [initialColumns]);
+
   const assignees = React.useMemo(
-    () => Array.from(new Set(salons.map((salon) => salon.assigned_to))).sort(),
+    () =>
+      Array.from(
+        new Set(
+          salons
+            .map((salon) => salon.assignedTo)
+            .filter((value) => value && value !== "Non assigné")
+        )
+      ).sort((a, b) => a.localeCompare(b, "fr")),
     [salons]
   );
 
   const cities = React.useMemo(
-    () => Array.from(new Set(salons.map((salon) => salon.city))).sort(),
+    () => Array.from(new Set(salons.map((salon) => salon.city))).sort((a, b) => a.localeCompare(b, "fr")),
     [salons]
   );
 
   const filteredSalons = React.useMemo(() => {
     return salons.filter((salon) => {
-      const assigneeMatch = assignedTo === "all" || salon.assigned_to === assignedTo;
+      const assigneeMatch = assignedTo === "all" || salon.assignedTo === assignedTo;
       const cityMatch = city === "all" || salon.city === city;
       const scoreMatch = salon.score >= scoreRange[0] && salon.score <= scoreRange[1];
 
@@ -231,18 +280,16 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
     });
   }, [assignedTo, city, scoreRange, salons]);
 
-  const columns = React.useMemo<Record<string, PipelineSalon[]>>(() => {
-    return stageConfig.reduce<Record<string, PipelineSalon[]>>((accumulator, stage) => {
-      accumulator[stage.id] = sortSalons(
-        filteredSalons.filter((salon) => salon.status === stage.id)
-      );
+  const columns = React.useMemo<Record<PipelineStatus, PipelineSalon[]>>(() => {
+    return pipelineStatuses.reduce((accumulator, status) => {
+      accumulator[status] = sortSalons(filteredSalons.filter((salon) => salon.status === status));
       return accumulator;
-    }, {});
+    }, {} as Record<PipelineStatus, PipelineSalon[]>);
   }, [filteredSalons]);
 
   const countsByStage = React.useMemo(() => {
-    return stageConfig.reduce<Record<PipelineStatus, number>>((accumulator, stage) => {
-      accumulator[stage.id] = columns[stage.id]?.length ?? 0;
+    return pipelineStatuses.reduce((accumulator, status) => {
+      accumulator[status] = columns[status]?.length ?? 0;
       return accumulator;
     }, {} as Record<PipelineStatus, number>);
   }, [columns]);
@@ -256,14 +303,14 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
   );
 
   const handleBoardChange = React.useCallback((nextColumns: Record<string, PipelineSalon[]>) => {
-    const nextPlacement = new Map<string, { status: PipelineStatus; kanban_order: number }>();
+    const nextPlacement = new Map<string, { status: PipelineStatus; kanbanOrder: number }>();
 
     stageConfig.forEach((stage) => {
       const items = nextColumns[stage.id] ?? [];
       items.forEach((item, index) => {
         nextPlacement.set(item.id, {
           status: stage.id,
-          kanban_order: index + 1
+          kanbanOrder: index + 1
         });
       });
     });
@@ -276,7 +323,7 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
         return {
           ...salon,
           status: placement.status,
-          kanban_order: placement.kanban_order
+          kanbanOrder: placement.kanbanOrder
         };
       })
     );
@@ -296,11 +343,11 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                 Suivez chaque salon jusqu’au closing
               </h1>
               <p className="max-w-2xl text-sm leading-6 text-slate-600 lg:text-[15px]">
-                Vue Kanban pensée pour Bonnie et Marie-Pierre: funnel lisible, glisser-déposer
-                fluide, filtres rapides et fiche latérale pour agir sans quitter la page.
+                Vue Kanban branchée sur Supabase pour piloter les statuts réels, filtrer les comptes
+                les plus chauds et ouvrir une fiche rapide sans quitter la page.
               </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-4">
               <div className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-sm backdrop-blur">
                 <div className="text-sm text-slate-500">Salons visibles</div>
                 <div className="mt-2 text-2xl font-semibold">{visibleTotal}</div>
@@ -317,6 +364,12 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                   {countsByStage.gagne}
                 </div>
               </div>
+              <div className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-sm backdrop-blur">
+                <div className="text-sm text-slate-500">Clients actifs</div>
+                <div className="mt-2 text-2xl font-semibold text-teal-700">
+                  {countsByStage.client_actif}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -324,10 +377,12 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-medium text-slate-900">Funnel de conversion</p>
-                <p className="text-xs text-slate-500">Basé sur les salons affichés et vos filtres actifs</p>
+                <p className="text-xs text-slate-500">
+                  Basé sur les salons affichés et les filtres actuellement appliqués
+                </p>
               </div>
               <Badge className="border-[#e6d7bf] bg-[#f7f1e7] text-[#8b6f3d]">
-                Semaine vs N-1
+                Données live
               </Badge>
             </div>
 
@@ -347,7 +402,7 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
               })}
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {stageConfig.map((stage) => {
                 const count = countsByStage[stage.id];
                 const rate = Math.round((count / Math.max(conversionBase, 1)) * 100);
@@ -470,7 +525,7 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
           <div>
             <h2 className="text-base font-semibold">Board pipeline</h2>
             <p className="text-sm text-slate-500">
-              Glissez un salon d’une colonne à l’autre pour simuler un changement de statut.
+              Glissez un salon d’une colonne à l’autre pour prévisualiser l’évolution du pipeline.
             </p>
           </div>
           <Badge className="border-slate-200 bg-slate-100 text-slate-700">
@@ -514,7 +569,8 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                             <CardContent className="p-4">
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0 space-y-1">
-                                  <Link prefetch={false}
+                                  <Link
+                                    prefetch={false}
                                     href={`/dashboard/salons/${salon.id}`}
                                     className="block truncate text-sm font-semibold text-slate-900 hover:underline"
                                     onClick={(event) => event.stopPropagation()}>
@@ -544,28 +600,34 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                                   Score {salon.score}
                                 </Badge>
                                 <Avatar className="size-8 border border-slate-200">
-                                  <AvatarImage src={salon.assigned_avatar} alt={salon.assigned_to} />
+                                  <AvatarImage src={salon.assignedAvatar ?? undefined} alt={salon.assignedTo} />
                                   <AvatarFallback className="bg-slate-100 text-[11px] text-slate-700">
-                                    {salon.assigned_initials}
+                                    {salon.assignedInitials}
                                   </AvatarFallback>
                                 </Avatar>
                               </div>
 
                               <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                                <span>Dernier contact</span>
+                                <span>Dernière activité</span>
                                 <span className="font-medium text-slate-700">
-                                  {formatRelative(salon.last_contact_at)}
+                                  {formatRelative(salon.lastActivityAt)}
                                 </span>
                               </div>
 
                               <div className="mt-3 flex flex-wrap gap-1.5">
-                                {salon.tags.slice(0, 2).map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600">
-                                    {tag}
+                                {salon.tags.length > 0 ? (
+                                  salon.tags.slice(0, 2).map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600">
+                                      {tag}
+                                    </span>
+                                  ))
+                                ) : (
+                                  <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600">
+                                    Profil à enrichir
                                   </span>
-                                ))}
+                                )}
                               </div>
                             </CardContent>
                           </Card>
@@ -613,12 +675,14 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
                     <div className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
-                      Contact principal
+                      Contact disponible
                     </div>
                     <div className="mt-2 text-sm font-semibold text-slate-900">
-                      {selectedSalon.contact_name}
+                      {selectedSalon.email || "Aucun email renseigné"}
                     </div>
-                    <div className="mt-1 text-sm text-slate-600">{selectedSalon.email}</div>
+                    <div className="mt-1 text-sm text-slate-600">
+                      {selectedSalon.phone || "Aucun téléphone renseigné"}
+                    </div>
                   </div>
                   <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
                     <div className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
@@ -626,16 +690,18 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                     </div>
                     <div className="mt-2 flex items-center gap-3">
                       <Avatar className="size-9 border border-slate-200">
-                        <AvatarImage src={selectedSalon.assigned_avatar} alt={selectedSalon.assigned_to} />
+                        <AvatarImage src={selectedSalon.assignedAvatar ?? undefined} alt={selectedSalon.assignedTo} />
                         <AvatarFallback className="bg-slate-100 text-[11px] text-slate-700">
-                          {selectedSalon.assigned_initials}
+                          {selectedSalon.assignedInitials}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="text-sm font-semibold text-slate-900">
-                          {selectedSalon.assigned_to}
+                          {selectedSalon.assignedTo}
                         </div>
-                        <div className="text-sm text-slate-500">Dernier contact {formatRelative(selectedSalon.last_contact_at)}</div>
+                        <div className="text-sm text-slate-500">
+                          Dernière activité {formatRelative(selectedSalon.lastActivityAt)}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -647,21 +713,62 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                     <h3 className="text-sm font-semibold text-slate-900">Quick actions</h3>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <Button variant="outline" className="border-slate-200 text-slate-700">
-                      <PhoneIcon className="size-4" />
-                      Appeler
-                    </Button>
-                    <Button variant="outline" className="border-slate-200 text-slate-700">
-                      <MailIcon className="size-4" />
-                      Envoyer un email
-                    </Button>
+                    {selectedSalon.phone ? (
+                      <Button asChild variant="outline" className="border-slate-200 text-slate-700">
+                        <a href={`tel:${selectedSalon.phone.replace(/\s+/g, "")}`}>
+                          <PhoneIcon className="size-4" />
+                          Appeler
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button variant="outline" className="border-slate-200 text-slate-400" disabled>
+                        <PhoneIcon className="size-4" />
+                        Appeler
+                      </Button>
+                    )}
+                    {selectedSalon.email ? (
+                      <Button asChild variant="outline" className="border-slate-200 text-slate-700">
+                        <a href={`mailto:${selectedSalon.email}`}>
+                          <MailIcon className="size-4" />
+                          Envoyer un email
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button variant="outline" className="border-slate-200 text-slate-400" disabled>
+                        <MailIcon className="size-4" />
+                        Envoyer un email
+                      </Button>
+                    )}
                     <Button variant="outline" className="border-slate-200 text-slate-700">
                       <NotebookPenIcon className="size-4" />
                       Ajouter une note
                     </Button>
                     <Button asChild className="bg-slate-900 text-white hover:bg-slate-800">
-                      <Link prefetch={false} href={`/dashboard/salons/${selectedSalon.id}`}>Voir fiche complète</Link>
+                      <Link prefetch={false} href={`/dashboard/salons/${selectedSalon.id}`}>
+                        Voir fiche complète
+                      </Link>
                     </Button>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                      <StarIcon className="size-4 text-slate-500" />
+                      Rating Google
+                    </div>
+                    <div className="mt-2 text-sm text-slate-700">
+                      {selectedSalon.googleRating ? `${selectedSalon.googleRating.toFixed(1)} / 5` : "Non renseigné"}
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                      <UsersIcon className="size-4 text-slate-500" />
+                      Taille équipe
+                    </div>
+                    <div className="mt-2 text-sm text-slate-700">
+                      {selectedSalon.teamSize ? `${selectedSalon.teamSize} personnes` : "Non renseigné"}
+                    </div>
                   </div>
                 </div>
 
@@ -671,19 +778,26 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                       <PhoneIcon className="size-4 text-slate-500" />
                       Téléphone
                     </div>
-                    <div className="mt-2 text-sm text-slate-700">{selectedSalon.phone}</div>
+                    <div className="mt-2 text-sm text-slate-700">
+                      {selectedSalon.phone || "Aucun numéro renseigné"}
+                    </div>
                   </div>
                   <div className="rounded-2xl border border-slate-200 bg-white p-4">
                     <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
                       <GlobeIcon className="size-4 text-slate-500" />
-                      Website
+                      Site web
                     </div>
-                    <Link prefetch={false}
-                      href={selectedSalon.website}
-                      target="_blank"
-                      className="mt-2 block truncate text-sm text-slate-700 hover:underline">
-                      {selectedSalon.website}
-                    </Link>
+                    {normalizeWebsiteHref(selectedSalon.website) ? (
+                      <Link
+                        prefetch={false}
+                        href={normalizeWebsiteHref(selectedSalon.website) ?? "#"}
+                        target="_blank"
+                        className="mt-2 block truncate text-sm text-slate-700 hover:underline">
+                        {selectedSalon.website}
+                      </Link>
+                    ) : (
+                      <div className="mt-2 text-sm text-slate-700">Aucun site web renseigné</div>
+                    )}
                   </div>
                 </div>
 
@@ -693,26 +807,33 @@ export function PipelinePage({ salons: initialSalons }: { salons: PipelineSalon[
                     Résumé commercial
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {selectedSalon.preferred_brands.map((brand) => (
-                      <span
-                        key={brand}
-                        className="rounded-full border border-[#e6d7bf] bg-[#fbf6ed] px-2.5 py-1 text-xs font-medium text-[#8b6f3d]">
-                        {brand}
-                      </span>
-                    ))}
+                    <Badge className={cn("border", getStageMeta(selectedSalon.status).badgeClass)}>
+                      {getStageMeta(selectedSalon.status).label}
+                    </Badge>
+                    {selectedSalon.tags.length > 0 ? (
+                      selectedSalon.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-[#e6d7bf] bg-[#fbf6ed] px-2.5 py-1 text-xs font-medium text-[#8b6f3d]">
+                          {tag}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-sm text-slate-500">Aucun signal enrichi pour le moment.</span>
+                    )}
                   </div>
                   <div className="mt-4 space-y-3">
-                    {selectedSalon.timeline.slice(0, 5).map((event) => (
-                      <div key={event.id} className="flex gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3">
+                    {selectedSalon.timeline.map((event) => (
+                      <div
+                        key={event.id}
+                        className="flex gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3">
                         <div className="mt-1 size-2 rounded-full bg-slate-400" />
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-3">
                             <div className="text-sm font-medium text-slate-900">
                               {getEventLabel(event.type)}
                             </div>
-                            <div className="text-xs text-slate-500">
-                              {format(new Date(event.at), "dd MMM • HH:mm", { locale: fr })}
-                            </div>
+                            <div className="text-xs text-slate-500">{formatDateTime(event.at)}</div>
                           </div>
                           <p className="mt-1 text-sm leading-6 text-slate-600">{event.text}</p>
                         </div>

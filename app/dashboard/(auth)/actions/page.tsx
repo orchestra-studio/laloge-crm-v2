@@ -1,1 +1,5 @@
-export { default } from "@/app/(auth)/actions/page";
+import { ActionsPage } from "./components/actions-page";
+
+export default function Page() {
+  return <ActionsPage />;
+}

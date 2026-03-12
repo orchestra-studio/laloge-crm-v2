@@ -40,8 +40,7 @@ export default async function RootLayout({
         {...bodyAttributes}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          forcedTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange>
           <ActiveThemeProvider initialTheme={themeSettings}>

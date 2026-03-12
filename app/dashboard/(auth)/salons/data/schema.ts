@@ -13,6 +13,8 @@ export const salonStatusValues = [
 
 export const enrichmentStatusValues = ["pending", "enriched", "failed"] as const;
 
+const jsonRecordSchema = z.record(z.string(), z.unknown());
+
 const assignedProfileSchema = z.object({
   id: z.string(),
   full_name: z.string(),
@@ -102,48 +104,57 @@ const auditDimensionSchema = z.object({
   note: z.string()
 });
 
-export const salonSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  city: z.string(),
-  department: z.string(),
-  region: z.string(),
-  address: z.string(),
-  postal_code: z.string(),
-  status: z.enum(salonStatusValues),
-  score: z.number().min(0).max(100),
-  phone: z.string().nullable(),
-  email: z.string().nullable(),
-  website: z.string().nullable(),
-  siret: z.string(),
-  naf_code: z.string(),
-  legal_form: z.string(),
-  owner_name: z.string(),
-  team_size: z.number(),
-  source: z.string(),
-  enrichment_status: z.enum(enrichmentStatusValues),
-  google_rating: z.number().min(0).max(5),
-  google_reviews_count: z.number(),
-  google_place_id: z.string(),
-  google_maps_url: z.string(),
-  instagram: z.string().nullable(),
-  instagram_followers: z.number().nullable(),
-  facebook: z.string().nullable(),
-  planity_url: z.string().nullable(),
-  assigned_to: assignedProfileSchema.nullable(),
-  tags: z.array(z.string()),
-  created_at: z.string(),
-  updated_at: z.string(),
-  last_enriched_at: z.string().nullable(),
-  score_breakdown: z.array(scoreBreakdownSchema),
-  timeline: z.array(timelineEntrySchema),
-  contacts: z.array(contactSchema),
-  brand_scores: z.array(brandScoreSchema),
-  outreach: z.array(outreachSchema),
-  dossiers: z.array(dossierSchema),
-  auctions: z.array(auctionSchema),
-  audit: z.array(auditDimensionSchema)
-});
+export const salonSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    city: z.string(),
+    department: z.string(),
+    region: z.string(),
+    address: z.string(),
+    postal_code: z.string(),
+    status: z.enum(salonStatusValues),
+    score: z.number().min(0).max(100),
+    phone: z.string().nullable(),
+    email: z.string().nullable(),
+    website: z.string().nullable(),
+    siret: z.string(),
+    naf_code: z.string(),
+    legal_form: z.string(),
+    owner_name: z.string(),
+    team_size: z.number().int().nonnegative(),
+    source: z.string(),
+    enrichment_status: z.enum(enrichmentStatusValues),
+    google_rating: z.number().min(0).max(5),
+    google_reviews_count: z.number().int().nonnegative(),
+    google_place_id: z.string(),
+    google_maps_url: z.string(),
+    instagram: z.string().nullable(),
+    instagram_followers: z.number().int().nonnegative().nullable(),
+    facebook: z.string().nullable(),
+    planity_url: z.string().nullable(),
+    assigned_to: assignedProfileSchema.nullable(),
+    tags: z.array(z.string()),
+    metadata: jsonRecordSchema,
+    notes: z.string().nullable(),
+    created_at: z.string(),
+    updated_at: z.string(),
+    last_enriched_at: z.string().nullable(),
+    converted_at: z.string().nullable(),
+    latitude: z.number().nullable(),
+    longitude: z.number().nullable(),
+    franchise: z.boolean().nullable(),
+    franchise_name: z.string().nullable(),
+    score_breakdown: z.array(scoreBreakdownSchema),
+    timeline: z.array(timelineEntrySchema),
+    contacts: z.array(contactSchema),
+    brand_scores: z.array(brandScoreSchema),
+    outreach: z.array(outreachSchema),
+    dossiers: z.array(dossierSchema),
+    auctions: z.array(auctionSchema),
+    audit: z.array(auditDimensionSchema)
+  })
+  .passthrough();
 
 export type Salon = z.infer<typeof salonSchema>;
 export type SalonStatus = (typeof salonStatusValues)[number];

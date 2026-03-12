@@ -1,155 +1,254 @@
-import { mockAgentActionIds, mockApprovalIds, mockSalonIds } from "./ids";
+import { createBrowserClient, createServerClient } from "@supabase/ssr";
 import type { ActivityLogRow } from "./types";
 
-export const mockActivityLog: ActivityLogRow[] = [
-  {
-    id: "dddd0001-0000-4000-8000-000000000001",
-    actor_type: "user",
-    actor_name: "Bonnie",
-    action: "approval.approved",
-    entity_type: "approval",
-    entity_id: mockApprovalIds.brandProposalMaisonTressee,
-    old_value: { status: "pending" },
-    new_value: { status: "approved", reviewer_name: "Bonnie" },
-    metadata: {
-      approval_type: "brand_proposal",
-      salon_id: mockSalonIds.maisonTressee,
-      brand_name: "Schwarzkopf"
-    },
-    created_at: "2026-03-12T08:56:00.000Z"
-  },
-  {
-    id: "dddd0002-0000-4000-8000-000000000002",
-    actor_type: "user",
-    actor_name: "Bonnie",
-    action: "agent_action.approved",
-    entity_type: "agent_action",
-    entity_id: mockAgentActionIds.draftEmailMaisonTressee,
-    old_value: { status: "pending" },
-    new_value: { status: "approved", approved_by: "Bonnie" },
-    metadata: {
-      action_type: "draft_email",
-      salon_id: mockSalonIds.maisonTressee
-    },
-    created_at: "2026-03-12T08:49:00.000Z"
-  },
-  {
-    id: "dddd0003-0000-4000-8000-000000000003",
-    actor_type: "agent",
-    actor_name: "outreachpilot",
-    action: "approval.requested",
-    entity_type: "approval",
-    entity_id: mockApprovalIds.bulkOutreachMarch12,
-    old_value: null,
-    new_value: { status: "pending", estimated_send_count: 18 },
-    metadata: {
-      approval_type: "bulk_outreach",
-      channel: "email"
-    },
-    created_at: "2026-03-12T08:44:00.000Z"
-  },
-  {
-    id: "dddd0004-0000-4000-8000-000000000004",
-    actor_type: "agent",
-    actor_name: "outreachpilot",
-    action: "outreach.draft_generated",
-    entity_type: "agent_action",
-    entity_id: mockAgentActionIds.draftEmailAtelierColoriste,
-    old_value: null,
-    new_value: { status: "pending", subject: "Jeudi : 15 min pour parler Wella x Atelier Coloriste ?" },
-    metadata: {
-      salon_id: mockSalonIds.atelierColoriste,
-      channel: "email"
-    },
-    created_at: "2026-03-12T08:41:00.000Z"
-  },
-  {
-    id: "dddd0005-0000-4000-8000-000000000005",
-    actor_type: "user",
-    actor_name: "Marie-Pierre",
-    action: "salon.status_changed",
-    entity_type: "salon",
-    entity_id: mockSalonIds.maisonTressee,
-    old_value: { status: "interesse" },
-    new_value: { status: "negociation" },
-    metadata: {
-      reason: "Le salon a validé la grille de conditions à discuter",
-      source: "manual_review"
-    },
-    created_at: "2026-03-12T08:30:00.000Z"
-  },
-  {
-    id: "dddd0006-0000-4000-8000-000000000006",
-    actor_type: "user",
-    actor_name: "Marie-Pierre",
-    action: "agent_action.approved",
-    entity_type: "agent_action",
-    entity_id: mockAgentActionIds.updateScoreMaisonNacree,
-    old_value: { status: "pending" },
-    new_value: { status: "approved", approved_by: "Marie-Pierre" },
-    metadata: {
-      salon_id: mockSalonIds.maisonNacree,
-      score_delta: 19
-    },
-    created_at: "2026-03-12T08:18:00.000Z"
-  },
-  {
-    id: "dddd0007-0000-4000-8000-000000000007",
-    actor_type: "agent",
-    actor_name: "scoremaster",
-    action: "score.updated",
-    entity_type: "salon",
-    entity_id: mockSalonIds.maisonNacree,
-    old_value: { score: 44 },
-    new_value: { score: 63 },
-    metadata: {
-      drivers: ["site_web_identifie", "email_valide", "google_reviews_positifs"]
-    },
-    created_at: "2026-03-12T08:16:00.000Z"
-  },
-  {
-    id: "dddd0008-0000-4000-8000-000000000008",
-    actor_type: "user",
-    actor_name: "Marie-Pierre",
-    action: "approval.rejected",
-    entity_type: "approval",
-    entity_id: mockApprovalIds.leadMergeMaisonNacree,
-    old_value: { status: "pending" },
-    new_value: { status: "rejected" },
-    metadata: {
-      approval_type: "lead_merge",
-      reason: "revue manuelle demandée"
-    },
-    created_at: "2026-03-12T07:10:00.000Z"
-  },
-  {
-    id: "dddd0009-0000-4000-8000-000000000009",
-    actor_type: "user",
-    actor_name: "Marie-Pierre",
-    action: "agent_action.rejected",
-    entity_type: "agent_action",
-    entity_id: mockAgentActionIds.discoverDuplicateAtelierDuLac,
-    old_value: { status: "pending" },
-    new_value: { status: "rejected" },
-    metadata: {
-      salon_id: mockSalonIds.atelierDuLac,
-      reason: "similarité insuffisante pour fusion"
-    },
-    created_at: "2026-03-12T07:10:00.000Z"
-  },
-  {
-    id: "dddd0010-0000-4000-8000-000000000010",
-    actor_type: "system",
-    actor_name: "auto-rules",
-    action: "agent_action.auto_approved",
-    entity_type: "agent_action",
-    entity_id: mockAgentActionIds.enrichAppartementCoiffure,
-    old_value: { status: "pending" },
-    new_value: { status: "auto_approved" },
-    metadata: {
-      salon_id: mockSalonIds.appartementCoiffure,
-      rule: "safe_enrichment_fields_only"
-    },
-    created_at: "2026-03-11T17:06:00.000Z"
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const FALLBACK_DATE = "1970-01-01T00:00:00.000Z";
+const ACTIVITY_LOG_LIMIT = 25;
+
+function getString(value: unknown, fallback = ""): string {
+  return typeof value === "string" ? value : fallback;
+}
+
+function getNullableString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function getRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function humanizeToken(value: string) {
+  return value
+    .split(/[-_\.\s]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function formatAgentName(actorName: string) {
+  switch (actorName) {
+    case "datascout":
+    case "datascout-2026":
+      return "DataScout";
+    case "enrichbot":
+      return "EnrichBot";
+    case "scoremaster":
+      return "ScoreMaster";
+    case "outreachpilot":
+      return "OutreachPilot";
+    case "qualityguard":
+      return "QualityGuard";
+    case "brandmatcher":
+      return "BrandMatcher";
+    case "contactbuilder":
+      return "ContactBuilder";
+    default:
+      return humanizeToken(actorName);
   }
-] satisfies ActivityLogRow[];
+}
+
+function formatActorName(actorType: unknown, actorName: unknown) {
+  const rawName = getString(actorName, "Système");
+
+  if (actorType === "agent") {
+    return formatAgentName(rawName);
+  }
+
+  return humanizeToken(rawName);
+}
+
+async function getSupabaseClient() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    return null;
+  }
+
+  if (typeof window !== "undefined") {
+    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, { isSingleton: true });
+  }
+
+  try {
+    const runtimeImport = new Function("modulePath", "return import(modulePath);") as (
+      modulePath: string
+    ) => Promise<{ cookies: () => Promise<any> }>;
+
+    const { cookies } = await runtimeImport("next/headers");
+    const cookieStore = await cookies();
+
+    return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet: Array<{ name: string; value: string; options: Record<string, unknown> }>) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }: any) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {}
+        }
+      }
+    });
+  } catch (error) {
+    console.error("[crm/data/activity-log] unable to create server supabase client:", error);
+    return null;
+  }
+}
+
+async function loadSalonNamesById(supabase: any, salonIds: string[]) {
+  if (!salonIds.length) {
+    return {} as Record<string, string>;
+  }
+
+  const { data, error } = await supabase.from("salons").select("id, name").in("id", salonIds);
+
+  if (error) {
+    console.error("[crm/data/activity-log] salon name lookup failed:", error.message);
+    return {} as Record<string, string>;
+  }
+
+  return Object.fromEntries(
+    (data ?? []).map((row: Record<string, unknown>) => [getString(row.id), getString(row.name, "Salon")])
+  ) as Record<string, string>;
+}
+
+async function loadAgentActionNamesById(supabase: any, agentActionIds: string[]) {
+  if (!agentActionIds.length) {
+    return {} as Record<string, string>;
+  }
+
+  const { data, error } = await supabase
+    .from("agent_actions")
+    .select("id, payload, action_type")
+    .in("id", agentActionIds);
+
+  if (error) {
+    console.error("[crm/data/activity-log] agent action lookup failed:", error.message);
+    return {} as Record<string, string>;
+  }
+
+  return Object.fromEntries(
+    (data ?? []).map((row: Record<string, unknown>) => {
+      const payload = getRecord(row.payload);
+      const entityName =
+        getNullableString(payload?.salon_name) ??
+        getNullableString(payload?.brand_name) ??
+        humanizeToken(getString(row.action_type, "action"));
+
+      return [getString(row.id), entityName];
+    })
+  ) as Record<string, string>;
+}
+
+function extractEntityName(
+  row: Record<string, unknown>,
+  salonNamesById: Record<string, string>,
+  agentActionNamesById: Record<string, string>
+) {
+  const entityType = getString(row.entity_type);
+  const entityId = getString(row.entity_id);
+  const metadata = getRecord(row.metadata);
+  const newValue = getRecord(row.new_value);
+
+  if (entityType === "salon") {
+    return (
+      salonNamesById[entityId] ??
+      getNullableString(newValue?.name) ??
+      getNullableString(newValue?.salon_name) ??
+      getNullableString(metadata?.salon_name) ??
+      null
+    );
+  }
+
+  if (entityType === "agent_action") {
+    return (
+      agentActionNamesById[entityId] ??
+      getNullableString(newValue?.subject) ??
+      getNullableString(metadata?.subject) ??
+      humanizeToken(getString(row.action, "action"))
+    );
+  }
+
+  if (entityType === "approval") {
+    return getNullableString(metadata?.approval_type) ?? getNullableString(newValue?.status) ?? "Approval";
+  }
+
+  if (entityType === "outreach") {
+    return getNullableString(metadata?.subject) ?? getNullableString(newValue?.subject) ?? "Outreach";
+  }
+
+  return getNullableString(newValue?.name) ?? null;
+}
+
+function mapActivityLog(
+  row: Record<string, unknown>,
+  salonNamesById: Record<string, string>,
+  agentActionNamesById: Record<string, string>
+): ActivityLogRow {
+  return {
+    id: getString(row.id, `${getString(row.entity_id, "activity")}:${getString(row.action, "unknown")}`),
+    actor_name: formatActorName(row.actor_type, row.actor_name),
+    actor_type: getString(row.actor_type, "system"),
+    action: getString(row.action, "activity.unknown"),
+    entity_id: getString(row.entity_id),
+    entity_type: getString(row.entity_type, "salon"),
+    entity_name: extractEntityName(row, salonNamesById, agentActionNamesById),
+    old_value: getRecord(row.old_value),
+    new_value: getRecord(row.new_value),
+    metadata: getRecord(row.metadata),
+    created_at: getString(row.created_at, FALLBACK_DATE)
+  };
+}
+
+async function loadActivityLog(): Promise<ActivityLogRow[]> {
+  try {
+    const supabase = await getSupabaseClient();
+
+    if (!supabase) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from("activity_log")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(ACTIVITY_LOG_LIMIT);
+
+    if (error) {
+      console.error("[crm/data/activity-log] query failed:", error.message);
+      return [];
+    }
+
+    const rows = (data ?? []) as Array<Record<string, unknown>>;
+    const salonIds = Array.from(
+      new Set(
+        rows
+          .filter((row) => getString(row.entity_type) === "salon")
+          .map((row) => getString(row.entity_id))
+          .filter(Boolean)
+      )
+    );
+    const agentActionIds = Array.from(
+      new Set(
+        rows
+          .filter((row) => getString(row.entity_type) === "agent_action")
+          .map((row) => getString(row.entity_id))
+          .filter(Boolean)
+      )
+    );
+
+    const [salonNamesById, agentActionNamesById] = await Promise.all([
+      loadSalonNamesById(supabase, salonIds),
+      loadAgentActionNamesById(supabase, agentActionIds)
+    ]);
+
+    return rows.map((row) => mapActivityLog(row, salonNamesById, agentActionNamesById));
+  } catch (error) {
+    console.error("[crm/data/activity-log] unexpected failure:", error);
+    return [];
+  }
+}
+
+export const mockActivityLog: ActivityLogRow[] = await loadActivityLog();

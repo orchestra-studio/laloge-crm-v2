@@ -1,3 +1,4 @@
+import { getReportData } from "@/lib/supabase/queries/reports";
 import { generateMeta } from "@/lib/utils";
 
 import { ReportsDashboard } from "./components/reports-dashboard";
@@ -10,6 +11,8 @@ export async function generateMetadata() {
   });
 }
 
-export default function ReportsPage() {
-  return <ReportsDashboard />;
+export default async function ReportsPage() {
+  const data = await getReportData();
+
+  return <ReportsDashboard data={data} />;
 }

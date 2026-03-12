@@ -1,149 +1,123 @@
-import { mockApprovalIds, mockAgentActionIds, mockProfileIds, mockSalonIds } from "./ids";
+import { createBrowserClient, createServerClient } from "@supabase/ssr";
 import type { ApprovalRow } from "./types";
 
-export const mockApprovals: ApprovalRow[] = [
-  {
-    id: mockApprovalIds.bulkOutreachMarch12,
-    type: "bulk_outreach",
-    title: "Valider l’envoi de 18 emails — relance salons premium",
-    description:
-      "OutreachPilot propose d’envoyer une relance personnalisée aux salons scorés > 70 avec téléphone validé.",
-    requester_type: "agent",
-    requester_name: "outreachpilot",
-    status: "pending",
-    payload: {
-      channel: "email",
-      sequence_name: "Relance premium J+3",
-      salon_ids: [mockSalonIds.maisonTressee, mockSalonIds.atelierColoriste, mockSalonIds.appartementCoiffure],
-      agent_action_ids: [mockAgentActionIds.draftEmailMaisonTressee, mockAgentActionIds.draftEmailAtelierColoriste],
-      estimated_send_count: 18,
-      guardrails: {
-        unsubscribe_link: true,
-        max_daily_volume: 25,
-        human_reviewed: false
-      }
-    },
-    reviewer_id: null,
-    reviewer_name: null,
-    review_comment: null,
-    reviewed_at: null,
-    expires_at: "2026-03-14T08:44:00.000Z",
-    executed: false,
-    executed_at: null,
-    execution_result: null,
-    created_at: "2026-03-12T08:44:00.000Z",
-    updated_at: "2026-03-12T08:44:00.000Z"
-  },
-  {
-    id: mockApprovalIds.brandProposalMaisonTressee,
-    type: "brand_proposal",
-    title: "Partager le dossier Maison Tressée à Schwarzkopf",
-    description:
-      "BrandMatcher recommande un partage immédiat du dossier avec mise en avant expertise coloration et panier premium.",
-    requester_type: "agent",
-    requester_name: "brandmatcher",
-    status: "approved",
-    payload: {
-      salon_id: mockSalonIds.maisonTressee,
-      brand_name: "Schwarzkopf",
-      dossier_status: "ready",
-      expected_value_eur: 14500,
-      rationale: "Fit très fort sur image premium, taille d’équipe et présence digitale."
-    },
-    reviewer_id: mockProfileIds.bonnie,
-    reviewer_name: "Bonnie",
-    review_comment: "OK pour envoi aujourd’hui, mais garder Wella en plan B.",
-    reviewed_at: "2026-03-12T08:56:00.000Z",
-    expires_at: "2026-03-14T08:15:00.000Z",
-    executed: true,
-    executed_at: "2026-03-12T09:02:00.000Z",
-    execution_result: {
-      proposal_status: "sent",
-      notification_sent: true
-    },
-    created_at: "2026-03-12T08:15:00.000Z",
-    updated_at: "2026-03-12T09:02:00.000Z"
-  },
-  {
-    id: mockApprovalIds.leadMergeMaisonNacree,
-    type: "lead_merge",
-    title: "Fusionner un doublon détecté pour Maison Nacrée",
-    description:
-      "DataScout 2026 a repéré une fiche potentiellement dupliquée après import datagouv + Google.",
-    requester_type: "agent",
-    requester_name: "datascout-2026",
-    status: "rejected",
-    payload: {
-      primary_salon_id: mockSalonIds.maisonNacree,
-      duplicate_candidate: {
-        external_name: "Maison Nacree Lille",
-        city: "Lille",
-        source: "google"
-      },
-      confidence: 0.81
-    },
-    reviewer_id: mockProfileIds.mariePierre,
-    reviewer_name: "Marie-Pierre",
-    review_comment: "Conserver les deux entrées pour contrôle manuel demain.",
-    reviewed_at: "2026-03-12T07:10:00.000Z",
-    expires_at: "2026-03-14T06:40:00.000Z",
-    executed: false,
-    executed_at: null,
-    execution_result: null,
-    created_at: "2026-03-12T06:40:00.000Z",
-    updated_at: "2026-03-12T07:10:00.000Z"
-  },
-  {
-    id: mockApprovalIds.campaignSendAudit,
-    type: "campaign_send",
-    title: "Déclencher la campagne “Audit digital offert”",
-    description:
-      "Séquence de réactivation destinée aux salons enrichis sans réponse depuis 14 jours.",
-    requester_type: "user",
-    requester_name: "Bonnie",
-    status: "expired",
-    payload: {
-      audience_size: 42,
-      channel: "email",
-      campaign_name: "Audit digital offert",
-      segment: "enriched_no_reply_14d"
-    },
-    reviewer_id: null,
-    reviewer_name: null,
-    review_comment: null,
-    reviewed_at: null,
-    expires_at: "2026-03-11T18:00:00.000Z",
-    executed: false,
-    executed_at: null,
-    execution_result: null,
-    created_at: "2026-03-09T18:00:00.000Z",
-    updated_at: "2026-03-11T18:01:00.000Z"
-  },
-  {
-    id: mockApprovalIds.pricingChangeSignature,
-    type: "pricing_change",
-    title: "Ajuster la commission de lancement — Salon Signature Nice",
-    description:
-      "Proposition d’ajustement temporaire pour faciliter la signature finale du package onboarding.",
-    requester_type: "user",
-    requester_name: "Marie-Pierre",
-    status: "pending",
-    payload: {
-      salon_id: mockSalonIds.salonSignature,
-      current_commission_percent: 18,
-      proposed_commission_percent: 15,
-      valid_until: "2026-03-15T23:59:00.000Z",
-      reason: "Accélérer la mise en route du partenariat et capter la première commande trimestrielle."
-    },
-    reviewer_id: null,
-    reviewer_name: null,
-    review_comment: null,
-    reviewed_at: null,
-    expires_at: "2026-03-14T11:30:00.000Z",
-    executed: false,
-    executed_at: null,
-    execution_result: null,
-    created_at: "2026-03-12T11:30:00.000Z",
-    updated_at: "2026-03-12T11:30:00.000Z"
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const FALLBACK_DATE = "1970-01-01T00:00:00.000Z";
+const APPROVAL_LIMIT = 20;
+
+function getString(value: unknown, fallback = ""): string {
+  return typeof value === "string" ? value : fallback;
+}
+
+function getNullableString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function getBoolean(value: unknown, fallback = false) {
+  return typeof value === "boolean" ? value : fallback;
+}
+
+function getRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+async function getSupabaseClient() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    return null;
   }
-] satisfies ApprovalRow[];
+
+  if (typeof window !== "undefined") {
+    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, { isSingleton: true });
+  }
+
+  try {
+    const runtimeImport = new Function("modulePath", "return import(modulePath);") as (
+      modulePath: string
+    ) => Promise<{ cookies: () => Promise<any> }>;
+
+    const { cookies } = await runtimeImport("next/headers");
+    const cookieStore = await cookies();
+
+    return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet: Array<{ name: string; value: string; options: Record<string, unknown> }>) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }: any) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {}
+        }
+      }
+    });
+  } catch (error) {
+    console.error("[crm/data/approvals] unable to create server supabase client:", error);
+    return null;
+  }
+}
+
+function mapApproval(row: Record<string, unknown>): ApprovalRow {
+  const payload = getRecord(row.payload) ?? getRecord(row.metadata);
+
+  return {
+    id: getString(row.id, getString(row.agent_action_id, "approval-inconnue")),
+    agent_action_id: getNullableString(row.agent_action_id) ?? undefined,
+    type: getNullableString(row.type) ?? undefined,
+    title:
+      getNullableString(row.title) ??
+      (getNullableString(row.agent_action_id)
+        ? `Validation ${getString(row.agent_action_id).slice(0, 8)}`
+        : "Validation"),
+    description: getNullableString(row.description) ?? getNullableString(row.comment) ?? undefined,
+    requester_type: getNullableString(row.requester_type) ?? undefined,
+    requester_name: getNullableString(row.requester_name) ?? undefined,
+    requested_by: getNullableString(row.requested_by) ?? undefined,
+    status: getString(row.status, "pending"),
+    payload,
+    reviewed_by: getNullableString(row.reviewed_by),
+    reviewed_at: getNullableString(row.reviewed_at),
+    reviewed_by_name: getNullableString(row.reviewed_by_name),
+    reviewer_id: getNullableString(row.reviewer_id),
+    reviewer_name: getNullableString(row.reviewer_name),
+    review_comment: getNullableString(row.review_comment) ?? getNullableString(row.comment),
+    expires_at: getNullableString(row.expires_at),
+    executed: getBoolean(row.executed, false),
+    executed_at: getNullableString(row.executed_at),
+    execution_result: getRecord(row.execution_result),
+    created_at: getString(row.created_at, FALLBACK_DATE),
+    updated_at: getString(row.updated_at ?? row.created_at, FALLBACK_DATE)
+  };
+}
+
+async function loadApprovals(): Promise<ApprovalRow[]> {
+  try {
+    const supabase = await getSupabaseClient();
+
+    if (!supabase) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from("approvals")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(APPROVAL_LIMIT);
+
+    if (error) {
+      console.error("[crm/data/approvals] query failed:", error.message);
+      return [];
+    }
+
+    return ((data ?? []) as Array<Record<string, unknown>>).map((row) => mapApproval(row));
+  } catch (error) {
+    console.error("[crm/data/approvals] unexpected failure:", error);
+    return [];
+  }
+}
+
+export const mockApprovals: ApprovalRow[] = await loadApprovals();

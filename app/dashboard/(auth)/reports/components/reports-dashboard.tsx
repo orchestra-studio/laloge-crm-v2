@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { formatDistanceToNow } from "date-fns";
+import { fr } from "date-fns/locale";
 import { DownloadIcon, FileSpreadsheetIcon } from "lucide-react";
 import {
   Area,
@@ -8,23 +10,13 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Funnel,
-  FunnelChart,
   Line,
   LineChart,
   XAxis,
   YAxis
 } from "recharts";
 
-import {
-  agentPerformance,
-  brandMatching,
-  enrichmentProgress,
-  outreachPerformance,
-  pipelineOverview,
-  reportRanges,
-  scoringDistribution
-} from "./mock-reports";
+import type { ReportAction, ReportData } from "@/lib/supabase/queries/reports";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,91 +34,219 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from "@/components/ui/chart";
+import { reportRanges } from "./mock-reports";
+import { cn } from "@/lib/utils";
 
-const pipelineChartConfig = {
-  value: { label: "Volume", color: "var(--chart-1)" },
-  days: { label: "Jours", color: "var(--chart-2)" }
+const statusChartConfig = {
+  count: { label: "Salons", color: "var(--chart-1)" }
 } satisfies ChartConfig;
 
-const enrichmentChartConfig = {
-  enriched: { label: "Enrichis", color: "var(--chart-1)" }
+const scoreChartConfig = {
+  value: { label: "Salons", color: "var(--chart-3)" }
 } satisfies ChartConfig;
 
-const scoringChartConfig = {
-  value: { label: "Salons", color: "var(--chart-3)" },
-  score: { label: "Score moyen", color: "var(--chart-1)" }
+const activityChartConfig = {
+  value: { label: "Actions", color: "var(--chart-1)" },
+  count: { label: "Volume", color: "var(--chart-2)" }
 } satisfies ChartConfig;
 
 const outreachChartConfig = {
-  openRate: { label: "Taux d’ouverture", color: "var(--chart-1)" },
-  replyRate: { label: "Taux de réponse", color: "var(--chart-3)" },
-  replies: { label: "Réponses", color: "var(--chart-2)" },
-  rate: { label: "Taux", color: "var(--chart-4)" }
+  count: { label: "Outreach", color: "var(--chart-4)" }
 } satisfies ChartConfig;
 
-const brandChartConfig = {
-  score: { label: "Compatibilité", color: "var(--chart-1)" }
-} satisfies ChartConfig;
+function formatCount(value: number) {
+  return new Intl.NumberFormat("fr-FR").format(value);
+}
 
-const agentChartConfig = {
-  DataScout: { label: "DataScout", color: "var(--chart-1)" },
-  EnrichBot: { label: "EnrichBot", color: "var(--chart-2)" },
-  ScoreMaster: { label: "ScoreMaster", color: "var(--chart-3)" },
-  OutreachPilot: { label: "OutreachPilot", color: "var(--chart-4)" },
-  BrandMatcher: { label: "BrandMatcher", color: "var(--chart-5)" }
-} satisfies ChartConfig;
+function normalizeValue(value: string | null | undefined) {
+  return (value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
-function ReportHeader({
-  title,
-  description,
-  value,
-  onChange
-}: {
-  title: string;
-  description: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
+function translateActionType(value: string) {
+  switch (normalizeValue(value)) {
+    case "enrichment":
+      return "Enrichissement";
+    case "outreach":
+      return "Outreach";
+    case "brand-match":
+    case "brand_match":
+      return "Matching marque";
+    case "score-refresh":
+    case "score_refresh":
+    case "score":
+      return "Scoring";
+    case "quality-review":
+    case "quality_review":
+      return "Contrôle qualité";
+    case "prospecting":
+      return "Prospection";
+    case "dossier-generation":
+    case "dossier_generation":
+      return "Dossier";
+    case "contact-sync":
+    case "contact_sync":
+      return "Sync contact";
+    case "travaux-signal":
+    case "travaux_signal":
+      return "Signal travaux";
+    default:
+      return value
+        .replace(/[_-]+/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+}
+
+function translateStatus(value: string) {
+  switch (normalizeValue(value)) {
+    case "approved":
+    case "auto-approved":
+    case "auto_approved":
+      return "Approuvée";
+    case "completed":
+    case "done":
+    case "success":
+      return "Terminée";
+    case "pending":
+      return "En attente";
+    case "queued":
+      return "En file";
+    case "requested":
+      return "Demandée";
+    case "error":
+      return "Erreur";
+    case "failed":
+      return "Échouée";
+    case "rejected":
+      return "Rejetée";
+    default:
+      return value
+        .replace(/[_-]+/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+}
+
+function getStatusBadgeClass(status: string) {
+  switch (normalizeValue(status)) {
+    case "approved":
+    case "auto-approved":
+    case "auto_approved":
+    case "completed":
+    case "done":
+    case "success":
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
+    case "pending":
+    case "queued":
+    case "requested":
+      return "border-amber-200 bg-amber-50 text-amber-700";
+    case "error":
+    case "failed":
+    case "rejected":
+      return "border-rose-200 bg-rose-50 text-rose-700";
+    default:
+      return "border-slate-200 bg-slate-100 text-slate-700";
+  }
+}
+
+function getActionBadgeClass(type: string) {
+  switch (normalizeValue(type)) {
+    case "enrichment":
+      return "border-amber-200 bg-amber-50 text-amber-700";
+    case "outreach":
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
+    case "brand-match":
+    case "brand_match":
+      return "border-violet-200 bg-violet-50 text-violet-700";
+    case "score-refresh":
+    case "score_refresh":
+    case "score":
+      return "border-sky-200 bg-sky-50 text-sky-700";
+    case "quality-review":
+    case "quality_review":
+      return "border-rose-200 bg-rose-50 text-rose-700";
+    default:
+      return "border-slate-200 bg-slate-100 text-slate-700";
+  }
+}
+
+function relativeDate(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date inconnue";
+
+  return formatDistanceToNow(date, {
+    addSuffix: true,
+    locale: fr
+  });
+}
+
+function getRangeDays(value: (typeof reportRanges)[number]) {
+  switch (value) {
+    case "Aujourd’hui":
+      return 1;
+    case "7 jours":
+      return 7;
+    case "30 jours":
+      return 30;
+    case "90 jours":
+      return 90;
+    default:
+      return null;
+  }
+}
+
+function filterActionsByRange(actions: ReportAction[], range: (typeof reportRanges)[number]) {
+  const days = getRangeDays(range);
+  if (!days) return actions;
+
+  const boundary = new Date();
+  boundary.setHours(0, 0, 0, 0);
+  boundary.setDate(boundary.getDate() - (days - 1));
+
+  return actions.filter((action) => {
+    const createdAt = new Date(action.createdAt);
+    return !Number.isNaN(createdAt.getTime()) && createdAt >= boundary;
+  });
+}
+
+function filterDailyActionsByRange(
+  points: ReportData["dailyActions"],
+  range: (typeof reportRanges)[number]
+) {
+  const days = getRangeDays(range);
+  if (!days) return points;
+  return points.slice(-days);
+}
+
+function EmptyState({ message }: { message: string }) {
   return (
-    <div className="flex items-start justify-between gap-3">
-      <div>
-        <h3 className="text-base font-semibold">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-[140px]">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {reportRanges.map((range) => (
-            <SelectItem key={range} value={range}>
-              {range}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex min-h-[220px] items-center justify-center rounded-2xl border border-dashed text-center text-sm text-muted-foreground">
+      <p className="max-w-sm">{message}</p>
     </div>
   );
 }
 
-export function ReportsDashboard() {
+export function ReportsDashboard({ data }: { data: ReportData }) {
   const [globalRange, setGlobalRange] = React.useState<(typeof reportRanges)[number]>("30 jours");
-  const [ranges, setRanges] = React.useState<Record<string, string>>({
-    pipeline: "30 jours",
-    enrichment: "30 jours",
-    scoring: "30 jours",
-    outreach: "30 jours",
-    brand: "30 jours",
-    agent: "30 jours"
-  });
 
-  const setRange = (key: string, value: string) => {
-    setRanges((current) => ({ ...current, [key]: value }));
-  };
-
-  const enrichPercent = Math.round(
-    (enrichmentProgress.enrichedSalons / enrichmentProgress.totalSalons) * 100
+  const visibleActions = React.useMemo(
+    () => filterActionsByRange(data.recentActions, globalRange),
+    [data.recentActions, globalRange]
   );
+
+  const visibleDailyActions = React.useMemo(
+    () => filterDailyActionsByRange(data.dailyActions, globalRange),
+    [data.dailyActions, globalRange]
+  );
+
+  const enrichPercent = Math.round((data.enriched / Math.max(data.totalSalons, 1)) * 100);
+  const contactedPercent = Math.round((data.contacted / Math.max(data.totalSalons, 1)) * 100);
+  const outreachRate = Math.round((data.outreachSent / Math.max(data.contacted, 1)) * 100);
+  const topStatus =
+    [...data.statusDistribution].sort((a, b) => b.count - a.count)[0] ?? null;
 
   return (
     <div className="space-y-4">
@@ -135,12 +255,14 @@ export function ReportsDashboard() {
           <p className="text-sm text-muted-foreground">Analytics management pour La Loge CRM</p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight">Rapports</h1>
           <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-            Six rapports prêts à l’emploi pour piloter le pipeline, l’enrichissement, le scoring,
-            l’outreach, le matching marques et la performance agentique.
+            Rapports branchés sur Supabase pour piloter le pipeline, la qualité des données,
+            l’activité agentique et l’outreach depuis une seule vue.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Select value={globalRange} onValueChange={(value) => setGlobalRange(value as (typeof reportRanges)[number])}>
+          <Select
+            value={globalRange}
+            onValueChange={(value) => setGlobalRange(value as (typeof reportRanges)[number])}>
             <SelectTrigger className="w-[160px]">
               <SelectValue />
             </SelectTrigger>
@@ -163,83 +285,128 @@ export function ReportsDashboard() {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         <Card>
-          <CardHeader className="space-y-4">
-            <ReportHeader
-              title="Pipeline Overview"
-              description="Funnel de conversion par étape et temps moyen par transition."
-              value={ranges.pipeline}
-              onChange={(value) => setRange("pipeline", value)}
-            />
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div>
-                <p className="text-sm text-muted-foreground">Conversion globale</p>
-                <p className="mt-1 text-2xl font-semibold">{pipelineOverview.kpis.conversionGlobal}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Cycle moyen</p>
-                <p className="mt-1 text-2xl font-semibold">{pipelineOverview.kpis.cycleMoyen}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Comparaison</p>
-                <p className="mt-1 text-sm font-medium">{pipelineOverview.kpis.variation}</p>
-              </div>
-            </div>
+          <CardHeader className="pb-2">
+            <CardDescription>Salons total</CardDescription>
+            <CardTitle className="text-3xl">{formatCount(data.totalSalons)}</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <ChartContainer className="h-[220px] w-full" config={pipelineChartConfig}>
-              <FunnelChart>
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Funnel data={pipelineOverview.funnel} dataKey="value" nameKey="stage" isAnimationActive />
-              </FunnelChart>
-            </ChartContainer>
-            <div className="rounded-2xl border p-4">
-              <p className="mb-3 text-sm font-medium">Temps moyen par étape</p>
-              <ChartContainer className="h-[180px] w-full" config={pipelineChartConfig}>
-                <BarChart data={pipelineOverview.stageTimes} accessibilityLayer>
-                  <CartesianGrid vertical={false} />
-                  <XAxis dataKey="stage" tickLine={false} axisLine={false} hide />
-                  <YAxis tickLine={false} axisLine={false} width={30} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="days" fill="var(--color-days)" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ChartContainer>
-            </div>
+          <CardContent className="text-sm text-muted-foreground">
+            Base CRM globale synchronisée avec Supabase.
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="space-y-4">
-            <ReportHeader
-              title="Enrichment Progress"
-              description="Suivi du volume enrichi, du rythme quotidien et de la qualité de données."
-              value={ranges.enrichment}
-              onChange={(value) => setRange("enrichment", value)}
-            />
-            <div className="space-y-3 rounded-2xl border p-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Progression globale</span>
-                <span className="font-medium">
-                  {enrichmentProgress.enrichedSalons} / {enrichmentProgress.totalSalons}
-                </span>
+          <CardHeader className="pb-2">
+            <CardDescription>Enrichis</CardDescription>
+            <CardTitle className="text-3xl">{formatCount(data.enriched)}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Progress value={enrichPercent} className="h-2" />
+            <p className="text-sm text-muted-foreground">{enrichPercent}% de la base est enrichie.</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Score &gt; 40</CardDescription>
+            <CardTitle className="text-3xl">{formatCount(data.highScore)}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">
+            Volume de salons considérés comme exploitables commercialement.
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Contactés</CardDescription>
+            <CardTitle className="text-3xl">{formatCount(data.contacted)}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">
+            {contactedPercent}% de la base a quitté le statut Nouveau.
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Outreach envoyés</CardDescription>
+            <CardTitle className="text-3xl">{formatCount(data.outreachSent)}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">
+            {outreachRate}% vs salons déjà contactés.
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <CardTitle>Distribution pipeline</CardTitle>
+                <CardDescription>
+                  Répartition des salons par statut dans le CRM.
+                </CardDescription>
               </div>
-              <Progress value={enrichPercent} className="h-2" />
-              <p className="text-sm text-muted-foreground">{enrichPercent}% des salons ont été enrichis.</p>
+              {topStatus ? <Badge variant="outline">Statut majoritaire · {topStatus.label}</Badge> : null}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            <ChartContainer className="h-[220px] w-full" config={enrichmentChartConfig}>
-              <BarChart data={enrichmentProgress.daily} accessibilityLayer>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="day" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} width={34} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="enriched" fill="var(--color-enriched)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ChartContainer>
+            {data.statusDistribution.some((item) => item.count > 0) ? (
+              <>
+                <ChartContainer className="h-[260px] w-full" config={statusChartConfig}>
+                  <BarChart data={data.statusDistribution} accessibilityLayer>
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="label" tickLine={false} axisLine={false} hide />
+                    <YAxis tickLine={false} axisLine={false} width={34} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="count" fill="var(--color-count)" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ChartContainer>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {data.statusDistribution.map((item) => (
+                    <div key={item.status} className="rounded-2xl border p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-muted-foreground">{item.label}</span>
+                        <span className="text-sm font-semibold">{formatCount(item.count)}</span>
+                      </div>
+                      <Progress
+                        value={Math.round((item.count / Math.max(data.totalSalons, 1)) * 100)}
+                        className="mt-3 h-2"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <EmptyState message="Aucune donnée pipeline disponible pour le moment." />
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Qualité de la donnée</CardTitle>
+            <CardDescription>
+              Couverture actuelle des champs clés pour l’équipe commerciale.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="rounded-2xl border p-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Progression enrichissement</span>
+                <span className="font-medium">
+                  {formatCount(data.enriched)} / {formatCount(data.totalSalons)}
+                </span>
+              </div>
+              <Progress value={enrichPercent} className="mt-3 h-2" />
+              <p className="mt-3 text-sm text-muted-foreground">
+                {enrichPercent}% des salons disposent d’un niveau d’enrichissement validé.
+              </p>
+            </div>
+
             <div className="grid gap-3 sm:grid-cols-2">
-              {enrichmentProgress.quality.map((item) => (
+              {data.enrichmentQuality.map((item) => (
                 <div key={item.label} className="rounded-2xl border p-4">
                   <div className="flex items-center justify-between text-sm">
                     <span>{item.label}</span>
@@ -251,181 +418,170 @@ export function ReportsDashboard() {
             </div>
           </CardContent>
         </Card>
+      </div>
 
+      <div className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <CardHeader className="space-y-4">
-            <ReportHeader
-              title="Scoring Distribution"
-              description="Histogramme des scores, évolution moyenne et salons les plus prometteurs."
-              value={ranges.scoring}
-              onChange={(value) => setRange("scoring", value)}
-            />
-            <div className="flex flex-wrap gap-2">
-              {scoringDistribution.topSalons.map((item) => (
-                <Badge key={item.salon} variant="outline">
-                  {item.salon} · {item.score}
-                </Badge>
-              ))}
-            </div>
+          <CardHeader>
+            <CardTitle>Distribution des scores</CardTitle>
+            <CardDescription>
+              Répartition des scores des salons sur l’ensemble de la base.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <ChartContainer className="h-[220px] w-full" config={scoringChartConfig}>
-              <BarChart data={scoringDistribution.histogram} accessibilityLayer>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="range" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} width={34} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="value" fill="var(--color-value)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ChartContainer>
-            <div className="rounded-2xl border p-4">
-              <p className="mb-3 text-sm font-medium">Évolution du score moyen</p>
-              <ChartContainer className="h-[180px] w-full" config={scoringChartConfig}>
-                <LineChart data={scoringDistribution.averageTrend} accessibilityLayer>
+          <CardContent>
+            {data.scoreBuckets.some((item) => item.value > 0) ? (
+              <ChartContainer className="h-[300px] w-full" config={scoreChartConfig}>
+                <BarChart data={data.scoreBuckets} accessibilityLayer>
                   <CartesianGrid vertical={false} />
-                  <XAxis dataKey="period" tickLine={false} axisLine={false} />
+                  <XAxis dataKey="range" tickLine={false} axisLine={false} />
                   <YAxis tickLine={false} axisLine={false} width={34} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Line dataKey="score" type="monotone" stroke="var(--color-score)" strokeWidth={2} />
-                </LineChart>
-              </ChartContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="space-y-4">
-            <ReportHeader
-              title="Outreach Performance"
-              description="Sent → opened → replied, séquences fortes et meilleurs templates."
-              value={ranges.outreach}
-              onChange={(value) => setRange("outreach", value)}
-            />
-            <div className="grid gap-3 sm:grid-cols-3">
-              {outreachPerformance.bestTemplates.map((item) => (
-                <div key={item.template} className="rounded-2xl border p-4">
-                  <p className="text-sm text-muted-foreground">Template</p>
-                  <p className="mt-1 font-medium">{item.template}</p>
-                  <p className="mt-2 text-2xl font-semibold">{item.replies}</p>
-                </div>
-              ))}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <ChartContainer className="h-[220px] w-full" config={outreachChartConfig}>
-              <FunnelChart>
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Funnel data={outreachPerformance.funnel} dataKey="value" nameKey="stage" isAnimationActive />
-              </FunnelChart>
-            </ChartContainer>
-            <div className="rounded-2xl border p-4">
-              <p className="mb-3 text-sm font-medium">Taux par séquence</p>
-              <ChartContainer className="h-[190px] w-full" config={outreachChartConfig}>
-                <BarChart data={outreachPerformance.sequenceRates} accessibilityLayer>
-                  <CartesianGrid vertical={false} />
-                  <XAxis dataKey="name" tickLine={false} axisLine={false} hide />
-                  <YAxis tickLine={false} axisLine={false} width={34} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="openRate" fill="var(--color-openRate)" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="replyRate" fill="var(--color-replyRate)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="value" fill="var(--color-value)" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ChartContainer>
-            </div>
+            ) : (
+              <EmptyState message="Aucune donnée de scoring disponible." />
+            )}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="space-y-4">
-            <ReportHeader
-              title="Brand Matching"
-              description="Compatibilité moyenne par marque et état des propositions."
-              value={ranges.brand}
-              onChange={(value) => setRange("brand", value)}
-            />
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div>
-                <p className="text-sm text-muted-foreground">Propositions envoyées</p>
-                <p className="mt-1 text-2xl font-semibold">{brandMatching.proposals.sent}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Acceptées</p>
-                <p className="mt-1 text-2xl font-semibold">{brandMatching.proposals.accepted}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Montant moyen enchère</p>
-                <p className="mt-1 text-2xl font-semibold">{brandMatching.proposals.averageBid}</p>
-              </div>
-            </div>
+          <CardHeader>
+            <CardTitle>Activité agentique</CardTitle>
+            <CardDescription>
+              Volume d’actions récentes filtré sur la période sélectionnée.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <ChartContainer className="h-[240px] w-full" config={brandChartConfig}>
-              <BarChart data={brandMatching.brands} accessibilityLayer>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="brand" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} width={34} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="score" fill="var(--color-score)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ChartContainer>
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border p-4">
-                <p className="text-sm text-muted-foreground">Pending</p>
-                <p className="mt-1 text-2xl font-semibold">{brandMatching.proposals.pending}</p>
-              </div>
-              <div className="rounded-2xl border p-4">
-                <p className="text-sm text-muted-foreground">Enchères ouvertes</p>
-                <p className="mt-1 text-2xl font-semibold">{brandMatching.proposals.auctionOpen}</p>
-              </div>
-              <div className="rounded-2xl border p-4">
-                <p className="text-sm text-muted-foreground">Enchères clôturées</p>
-                <p className="mt-1 text-2xl font-semibold">{brandMatching.proposals.auctionClosed}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="space-y-4">
-            <ReportHeader
-              title="Agent Performance"
-              description="Actions par agent / jour, taux d’approbation et erreurs."
-              value={ranges.agent}
-              onChange={(value) => setRange("agent", value)}
-            />
-            <div className="flex flex-wrap gap-2">
-              {agentPerformance.approvals.map((entry) => (
-                <Badge key={entry.agent} variant="outline">
-                  {entry.agent} · {entry.approvalRate}% approbation
-                </Badge>
-              ))}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <ChartContainer className="h-[240px] w-full" config={agentChartConfig}>
-              <BarChart data={agentPerformance.stacked} accessibilityLayer>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="day" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} width={34} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="DataScout" stackId="agents" fill="var(--color-DataScout)" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="EnrichBot" stackId="agents" fill="var(--color-EnrichBot)" />
-                <Bar dataKey="ScoreMaster" stackId="agents" fill="var(--color-ScoreMaster)" />
-                <Bar dataKey="OutreachPilot" stackId="agents" fill="var(--color-OutreachPilot)" />
-                <Bar dataKey="BrandMatcher" stackId="agents" fill="var(--color-BrandMatcher)" />
-              </BarChart>
-            </ChartContainer>
-            <div className="rounded-2xl border p-4">
-              <p className="mb-3 text-sm font-medium">Temps moyen de traitement</p>
-              <ChartContainer className="h-[180px] w-full" config={agentChartConfig}>
-                <AreaChart data={agentPerformance.approvals} accessibilityLayer>
+            {visibleDailyActions.some((item) => item.value > 0) ? (
+              <ChartContainer className="h-[220px] w-full" config={activityChartConfig}>
+                <AreaChart data={visibleDailyActions} accessibilityLayer>
                   <CartesianGrid vertical={false} />
-                  <XAxis dataKey="agent" tickLine={false} axisLine={false} hide />
+                  <XAxis dataKey="day" tickLine={false} axisLine={false} hide />
                   <YAxis tickLine={false} axisLine={false} width={34} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Area dataKey="avgProcessingHours" fill="var(--color-DataScout)" stroke="var(--color-DataScout)" />
+                  <Area
+                    dataKey="value"
+                    type="monotone"
+                    fill="var(--color-value)"
+                    fillOpacity={0.18}
+                    stroke="var(--color-value)"
+                    strokeWidth={2}
+                  />
                 </AreaChart>
               </ChartContainer>
+            ) : (
+              <EmptyState message="Aucune action agentique visible sur cette période." />
+            )}
+
+            <div className="rounded-2xl border p-4">
+              <p className="mb-3 text-sm font-medium">Répartition par agent</p>
+              {data.agentBreakdown.length > 0 ? (
+                <>
+                  <ChartContainer className="h-[180px] w-full" config={activityChartConfig}>
+                    <LineChart data={data.agentBreakdown} accessibilityLayer>
+                      <CartesianGrid vertical={false} />
+                      <XAxis dataKey="agent" tickLine={false} axisLine={false} hide />
+                      <YAxis tickLine={false} axisLine={false} width={34} />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line dataKey="count" type="monotone" stroke="var(--color-count)" strokeWidth={2} />
+                    </LineChart>
+                  </ChartContainer>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {data.agentBreakdown.map((item) => (
+                      <Badge key={item.agent} variant="outline">
+                        {item.agent} · {item.count}
+                      </Badge>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Aucun breakdown agent disponible pour le moment.
+                </p>
+              )}
             </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Statuts outreach</CardTitle>
+            <CardDescription>
+              Vue synthétique des statuts remontés depuis la table outreach.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {data.outreachByStatus.length > 0 ? (
+              <>
+                <ChartContainer className="h-[260px] w-full" config={outreachChartConfig}>
+                  <BarChart data={data.outreachByStatus} accessibilityLayer>
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="label" tickLine={false} axisLine={false} hide />
+                    <YAxis tickLine={false} axisLine={false} width={34} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="count" fill="var(--color-count)" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ChartContainer>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {data.outreachByStatus.map((item) => (
+                    <div key={item.label} className="rounded-2xl border p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-muted-foreground">{item.label}</span>
+                        <span className="text-sm font-semibold">{formatCount(item.count)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <EmptyState message="Aucun outreach historisé pour le moment." />
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <CardTitle>Actions récentes</CardTitle>
+                <CardDescription>
+                  Dernières actions agents visibles sur la période sélectionnée.
+                </CardDescription>
+              </div>
+              <Badge variant="outline">{visibleActions.length} visibles</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {visibleActions.length > 0 ? (
+              <div className="space-y-3">
+                {visibleActions.slice(0, 10).map((action) => (
+                  <div key={action.id} className="rounded-2xl border p-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className={cn("border", getActionBadgeClass(action.actionType))}>
+                        {translateActionType(action.actionType)}
+                      </Badge>
+                      <Badge className={cn("border", getStatusBadgeClass(action.status))}>
+                        {translateStatus(action.status)}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">{relativeDate(action.createdAt)}</span>
+                    </div>
+                    <div className="mt-3 flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-semibold text-foreground">{action.agentName}</div>
+                        <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                          {action.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <EmptyState message="Aucune action récente sur cette période." />
+            )}
           </CardContent>
         </Card>
       </div>

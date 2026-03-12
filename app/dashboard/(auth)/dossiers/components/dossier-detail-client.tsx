@@ -1,374 +1,340 @@
-"use client";
-
-import * as React from "react";
 import Link from "next/link";
 import {
-  ArrowDownIcon,
   ArrowLeftIcon,
-  ArrowUpIcon,
-  FileTextIcon,
-  PlusIcon,
-  SaveIcon,
-  Share2Icon,
-  Trash2Icon
+  BadgeCheckIcon,
+  CalendarClockIcon,
+  DownloadIcon,
+  GlobeIcon,
+  MapPinIcon,
+  SparklesIcon,
+  StarIcon,
+  TriangleAlertIcon,
+  Users2Icon
 } from "lucide-react";
 
-import { getDossierById, type ClientDossier, type DossierSection } from "./mock-dossiers";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { RichTextEditorDemo } from "@/components/ui/custom/tiptap/rich-text-editor";
+
+import { DossierScoreBreakdown } from "./dossier-score-breakdown";
+import { DossierStatusBadge } from "./dossier-status-badge";
+import { DossierTimeline } from "./dossier-timeline";
+import type {
+  ClientDossierRecord,
+  DossierActionPriority,
+  DossierRecommendedAction,
+  DossierRecommendedTerm
+} from "./mock-dossiers";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "medium",
-  timeStyle: "short"
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+  timeZone: "Europe/Paris"
 });
 
-function getStatusVariant(status: ClientDossier["status"]) {
+function formatDate(value: string | null) {
+  if (!value) {
+    return "En attente de génération";
+  }
+
+  return dateFormatter.format(new Date(value));
+}
+
+function formatPipelineStatus(status: string) {
   switch (status) {
-    case "ready":
-      return "info" as const;
-    case "sent":
-      return "success" as const;
+    case "nouveau":
+      return "Nouveau";
+    case "contacte":
+      return "Contacté";
+    case "interesse":
+      return "Intéressé";
+    case "rdv_planifie":
+      return "RDV planifié";
+    case "negociation":
+      return "Négociation";
+    case "gagne":
+      return "Gagné";
+    case "perdu":
+      return "Perdu";
+    case "client_actif":
+      return "Client actif";
     default:
-      return "secondary" as const;
+      return status;
   }
 }
 
-function getStatusLabel(status: ClientDossier["status"]) {
-  switch (status) {
-    case "draft":
-      return "Brouillon";
-    case "ready":
-      return "Prêt";
-    case "sent":
-      return "Envoyé";
+function getPriorityBadge(priority: DossierActionPriority) {
+  switch (priority) {
+    case "haute":
+      return "border-rose-200 bg-rose-50 text-rose-700";
+    case "moyenne":
+      return "border-amber-200 bg-amber-50 text-amber-800";
+    case "faible":
+      return "border-slate-200 bg-slate-100 text-slate-700";
   }
 }
 
-function renderStructuredSection(section: DossierSection) {
-  if (section.type === "text") {
-    return <RichTextEditorDemo value={section.content} editable={false} className="max-h-[340px]" />;
-  }
-
+function RecommendedTermCard({ term }: { term: DossierRecommendedTerm }) {
   return (
-    <div className="rounded-xl border bg-muted/20 p-4">
-      <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: section.content }} />
+    <div className="rounded-2xl border border-[#C5A572]/12 bg-[#FCFAF6] p-4 shadow-sm">
+      <p className="text-sm font-semibold">{term.title}</p>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">{term.detail}</p>
     </div>
   );
 }
 
-export function DossierDetailClient({ id }: { id: string }) {
-  const dossier = getDossierById(id);
-  const [title, setTitle] = React.useState(dossier?.title ?? "");
-  const [status, setStatus] = React.useState<ClientDossier["status"]>(dossier?.status ?? "draft");
-  const [sections, setSections] = React.useState<DossierSection[]>(dossier?.sections ?? []);
+function RecommendedActionCard({ action }: { action: DossierRecommendedAction }) {
+  return (
+    <div className="rounded-2xl border border-[#C5A572]/12 bg-white p-4 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="space-y-1">
+          <p className="text-sm font-semibold">{action.title}</p>
+          <p className="text-sm leading-6 text-muted-foreground">{action.detail}</p>
+        </div>
+        <Badge variant="outline" className={getPriorityBadge(action.priority)}>
+          Priorité {action.priority}
+        </Badge>
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <span>{action.owner}</span>
+        <span>{action.due_label}</span>
+      </div>
+    </div>
+  );
+}
 
-  if (!dossier) {
+export function DossierDetailClient({ dossier }: { dossier: ClientDossierRecord }) {
+  const content = dossier.content;
+
+  if (!content) {
     return null;
   }
 
-  const moveSection = (index: number, direction: -1 | 1) => {
-    setSections((current) => {
-      const nextIndex = index + direction;
-      if (nextIndex < 0 || nextIndex >= current.length) return current;
-      const copy = [...current];
-      const [removed] = copy.splice(index, 1);
-      copy.splice(nextIndex, 0, removed);
-      return copy;
-    });
-  };
-
-  const updateSection = (idToUpdate: string, patch: Partial<DossierSection>) => {
-    setSections((current) =>
-      current.map((section) => (section.id === idToUpdate ? { ...section, ...patch } : section))
-    );
-  };
-
-  const addSection = () => {
-    setSections((current) => [
-      ...current,
-      {
-        id: `section-${Date.now()}`,
-        title: "Nouvelle section",
-        type: "text",
-        content: "<p>Ajoutez ici le contenu éditorial du dossier.</p>"
-      }
-    ]);
-  };
-
-  const removeSection = (idToRemove: string) => {
-    setSections((current) => current.filter((section) => section.id !== idToRemove));
-  };
-
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
-        <div>
-          <Button variant="ghost" size="sm" asChild className="-ml-3">
-            <Link prefetch={false} href="/dashboard/dossiers">
-              <ArrowLeftIcon />
-              Retour aux dossiers
-            </Link>
-          </Button>
-          <div className="mt-3 flex items-center gap-2">
-            <Badge variant={getStatusVariant(status)}>{getStatusLabel(status)}</Badge>
-            <Badge variant="outline">{dossier.salon}</Badge>
-            {dossier.brands.map((brand) => (
-              <Badge key={brand} variant="outline">
-                {brand}
+    <div className="space-y-6 pb-8">
+      <Button variant="ghost" size="sm" asChild className="-ml-3 w-fit">
+        <Link prefetch={false} href="/dashboard/dossiers">
+          <ArrowLeftIcon className="size-4" />
+          Retour aux dossiers
+        </Link>
+      </Button>
+
+      <div className="rounded-[28px] border border-[#C5A572]/15 bg-linear-to-br from-[#FCFAF6] via-white to-white p-6 shadow-sm">
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+          <div className="min-w-0 space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#C5A572]/15 bg-[#FBF7F1] px-3 py-1 text-xs font-medium text-[#8C6B2D]">
+              <SparklesIcon className="size-3.5" />
+              Dossier client • {dossier.brand_name}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <DossierStatusBadge status={dossier.status} />
+              <Badge variant="outline" className="rounded-full border-[#C5A572]/20 bg-white text-[#8C6B2D]">
+                {dossier.brand_name}
               </Badge>
-            ))}
+              <Badge variant="outline" className="rounded-full">
+                {formatPipelineStatus(dossier.salon_info.salon_status)}
+              </Badge>
+            </div>
+
+            <div className="space-y-2">
+              <h1 className="text-3xl font-semibold tracking-tight">{dossier.salon_name}</h1>
+              <p className="max-w-3xl text-sm leading-7 text-muted-foreground">{content.executive_summary}</p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-2">
+                <MapPinIcon className="size-4" />
+                {dossier.salon_city} • {dossier.salon_info.address}
+              </span>
+              <a
+                href={dossier.salon_info.website}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 hover:text-foreground">
+                <GlobeIcon className="size-4" />
+                {dossier.salon_info.website.replace(/^https?:\/\//, "")}
+              </a>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {dossier.salon_info.specialties.map((specialty) => (
+                <Badge
+                  key={specialty}
+                  variant="outline"
+                  className="rounded-full border-[#C5A572]/20 bg-[#FBF7F1] text-[#8C6B2D]">
+                  {specialty}
+                </Badge>
+              ))}
+            </div>
           </div>
-          <Input
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            className="mt-3 h-auto border-none px-0 text-3xl font-semibold shadow-none focus-visible:ring-0"
-          />
-          <p className="mt-2 text-sm text-muted-foreground">
-            {dossier.city} • créé le {dateFormatter.format(new Date(dossier.createdAt))} • owner {dossier.owner}
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Select value={status} onValueChange={(value) => setStatus(value as ClientDossier["status"])}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="draft">Brouillon</SelectItem>
-              <SelectItem value="ready">Prêt</SelectItem>
-              <SelectItem value="sent">Envoyé</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button variant="outline">
-            <Share2Icon />
-            Partager avec marque
-          </Button>
-          <Button variant="outline" asChild>
-            <Link prefetch={false} href={dossier.pdfUrl}>
-              <FileTextIcon />
-              Générer PDF
-            </Link>
-          </Button>
-          <Button>
-            <SaveIcon />
-            Enregistrer
-          </Button>
+
+          <div className="w-full max-w-md rounded-3xl border border-[#C5A572]/15 bg-white/90 p-5 shadow-sm">
+            <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+              <div className="rounded-2xl border border-[#C5A572]/12 bg-[#FCFAF6] p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-[#8C6B2D]">Compatibilité</p>
+                <p className="mt-2 text-2xl font-semibold tracking-tight">{dossier.compatibility_score}%</p>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-white p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Équipe</p>
+                <p className="mt-2 text-2xl font-semibold tracking-tight">{dossier.salon_info.team_size}</p>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-white p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Note Google</p>
+                <p className="mt-2 text-2xl font-semibold tracking-tight">
+                  {dossier.salon_info.google_rating.toFixed(1)}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Button className="bg-[#1F1A16] text-white hover:bg-[#2A241E]">
+                <DownloadIcon className="size-4" />
+                Exporter PDF
+              </Button>
+            </div>
+
+            <div className="mt-5 space-y-3 rounded-2xl border border-border/60 bg-muted/20 p-4 text-sm">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-muted-foreground">Créé le</span>
+                <span className="font-medium">{formatDate(dossier.created_at)}</span>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-muted-foreground">Généré le</span>
+                <span className="font-medium">{formatDate(dossier.generated_at)}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between gap-3">
-              <div>
-                <CardTitle>Sections du dossier</CardTitle>
-                <CardDescription>
-                  Sections réordonnables, éditables inline, prêtes pour export PDF.
-                </CardDescription>
-              </div>
-              <Button size="sm" onClick={addSection}>
-                <PlusIcon />
-                Ajouter une section
-              </Button>
+      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+        <div className="space-y-6">
+          <Card className="border-[#C5A572]/12 bg-white shadow-sm">
+            <CardHeader className="border-b border-border/60 pb-4">
+              <CardTitle className="text-base">Analyse du match marque</CardTitle>
+              <CardDescription>
+                Pourquoi ce salon mérite l'attention de {dossier.brand_name} et dans quelles conditions.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {sections.map((section, index) => (
-                <div key={section.id} className="rounded-2xl border p-4">
-                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="flex-1 space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant="outline">Section {index + 1}</Badge>
-                        <Badge variant="secondary">{section.type}</Badge>
-                      </div>
-                      <Input
-                        value={section.title}
-                        onChange={(event) =>
-                          updateSection(section.id, {
-                            title: event.target.value
-                          })
-                        }
-                      />
-                      <Select
-                        value={section.type}
-                        onValueChange={(value) =>
-                          updateSection(section.id, {
-                            type: value as DossierSection["type"]
-                          })
-                        }
-                      >
-                        <SelectTrigger className="max-w-[220px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="text">Texte</SelectItem>
-                          <SelectItem value="stats">Stats</SelectItem>
-                          <SelectItem value="photos">Photos</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      {section.type === "text" ? (
-                        <RichTextEditorDemo
-                          value={section.content}
-                          onChange={(value) => updateSection(section.id, { content: String(value) })}
-                          className="max-h-[380px]"
-                        />
-                      ) : (
-                        <Textarea
-                          value={section.content}
-                          onChange={(event) =>
-                            updateSection(section.id, {
-                              content: event.target.value
-                            })
-                          }
-                          className="min-h-32"
-                        />
-                      )}
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => moveSection(index, -1)}
-                        disabled={index === 0}
-                      >
-                        <ArrowUpIcon />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => moveSection(index, 1)}
-                        disabled={index === sections.length - 1}
-                      >
-                        <ArrowDownIcon />
-                      </Button>
-                      <Button variant="outline" size="icon" onClick={() => removeSection(section.id)}>
-                        <Trash2Icon />
-                      </Button>
-                    </div>
+            <CardContent className="space-y-6 px-6 py-6">
+              <div className="rounded-2xl border border-[#C5A572]/15 bg-[#FCFAF6] p-5">
+                <p className="text-sm leading-7 text-foreground">{content.brand_rationale}</p>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-2">
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+                  <div className="flex items-center gap-2 text-emerald-800">
+                    <BadgeCheckIcon className="size-4" />
+                    <p className="text-sm font-semibold">Points forts</p>
                   </div>
+                  <ul className="mt-4 space-y-3 text-sm leading-6 text-emerald-950/90">
+                    {content.strengths.map((strength) => (
+                      <li key={strength} className="flex gap-3">
+                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-emerald-500" />
+                        <span>{strength}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
+
+                <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-5">
+                  <div className="flex items-center gap-2 text-amber-900">
+                    <TriangleAlertIcon className="size-4" />
+                    <p className="text-sm font-semibold">Points de vigilance</p>
+                  </div>
+                  <ul className="mt-4 space-y-3 text-sm leading-6 text-amber-950/90">
+                    {content.watchpoints.map((watchpoint) => (
+                      <li key={watchpoint} className="flex gap-3">
+                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-amber-500" />
+                        <span>{watchpoint}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Prévisualisation des sections</CardTitle>
-              <CardDescription>Rendu rapide du contenu avant export PDF.</CardDescription>
+          <DossierScoreBreakdown
+            score={dossier.compatibility_score}
+            breakdown={content.score_breakdown}
+          />
+
+          <Card className="border-[#C5A572]/12 bg-white shadow-sm">
+            <CardHeader className="border-b border-border/60 pb-4">
+              <CardTitle className="text-base">Conditions recommandées</CardTitle>
+              <CardDescription>
+                Structure de partenariat suggérée pour sécuriser le lancement et l'adhésion terrain.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {sections.map((section) => (
-                <div key={`${section.id}-preview`} className="rounded-2xl border p-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <Badge variant="outline">{section.type}</Badge>
-                    <h3 className="font-semibold">{section.title}</h3>
-                  </div>
-                  {renderStructuredSection(section)}
-                </div>
+            <CardContent className="grid gap-4 px-6 py-6 lg:grid-cols-3">
+              {content.recommended_terms.map((term) => (
+                <RecommendedTermCard key={term.title} term={term} />
               ))}
             </CardContent>
           </Card>
         </div>
 
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Compatibilité marque</CardTitle>
-              <CardDescription>Lecture visuelle des scores et rationales.</CardDescription>
+        <div className="space-y-6">
+          <Card className="border-[#C5A572]/12 bg-white shadow-sm">
+            <CardHeader className="border-b border-border/60 pb-4">
+              <CardTitle className="text-base">Fiche salon</CardTitle>
+              <CardDescription>Données opérationnelles injectées dans le dossier client.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {dossier.brandCompatibility.map((entry) => (
-                <div key={entry.brand} className="rounded-2xl border p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="font-medium">{entry.brand}</p>
-                      <p className="text-sm text-muted-foreground">{entry.rationale}</p>
-                    </div>
-                    <Badge variant={entry.score >= 85 ? "success" : "info"}>{entry.score}/100</Badge>
+            <CardContent className="space-y-5 px-6 py-6">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
+                  <div className="inline-flex items-center gap-2 text-sm font-medium">
+                    <Users2Icon className="size-4 text-[#8C6B2D]" />
+                    Équipe
                   </div>
-                  <Progress value={entry.score} className="mt-4 h-2" />
+                  <p className="mt-2 text-2xl font-semibold tracking-tight">{dossier.salon_info.team_size}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">collaborateurs actifs</p>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Stats clés</CardTitle>
-              <CardDescription>Indicateurs déjà injectés dans le dossier.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-3 md:grid-cols-3 xl:grid-cols-1">
-              {dossier.stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border p-4">
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className="mt-1 text-2xl font-semibold">{stat.value}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{stat.trend}</p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Photos</CardTitle>
-              <CardDescription>Galerie utilisée pour l’export PDF.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3">
-              {dossier.photos.map((photo) => (
-                <div key={photo.id} className="overflow-hidden rounded-2xl border bg-muted/30">
-                  <img src={photo.url} alt={photo.alt} className="h-36 w-full object-cover" />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Highlights</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {dossier.highlights.map((highlight) => (
-                <div key={highlight} className="rounded-xl border px-3 py-2 text-sm">
-                  {highlight}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Propositions liées</CardTitle>
-              <CardDescription>Suivi des transmissions marque autour du dossier.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {dossier.proposals.map((proposal) => (
-                <div key={proposal.id} className="rounded-2xl border p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="font-medium">{proposal.brand}</p>
-                      <p className="text-sm text-muted-foreground">{proposal.contact}</p>
-                    </div>
-                    <Badge variant="outline">{proposal.status}</Badge>
+                <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
+                  <div className="inline-flex items-center gap-2 text-sm font-medium">
+                    <StarIcon className="size-4 text-[#8C6B2D]" />
+                    Avis Google
                   </div>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight">{dossier.salon_info.review_count}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    note moyenne {dossier.salon_info.google_rating.toFixed(1)} / 5
+                  </p>
                 </div>
-              ))}
-              <Separator />
-              <div className="text-sm text-muted-foreground">
-                Partagé avec : {dossier.sharedWithBrands.length > 0 ? dossier.sharedWithBrands.join(", ") : "aucune marque pour le moment"}
+              </div>
+
+              <div className="rounded-2xl border border-border/60 bg-white p-4">
+                <p className="text-sm font-semibold">Contact principal</p>
+                <p className="mt-2 text-sm text-muted-foreground">{dossier.salon_info.owner_name}</p>
+              </div>
+
+              <div className="rounded-2xl border border-border/60 bg-white p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold">
+                  <CalendarClockIcon className="size-4 text-[#8C6B2D]" />
+                  Statut pipeline
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {formatPipelineStatus(dossier.salon_info.salon_status)} • suivi commercial La Loge
+                </p>
               </div>
             </CardContent>
           </Card>
+
+          <Card className="border-[#C5A572]/12 bg-white shadow-sm">
+            <CardHeader className="border-b border-border/60 pb-4">
+              <CardTitle className="text-base">Actions recommandées</CardTitle>
+              <CardDescription>Prochaines étapes proposées pour faire avancer le dossier.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 px-6 py-6">
+              {content.recommended_actions.map((action) => (
+                <RecommendedActionCard key={action.id} action={action} />
+              ))}
+            </CardContent>
+          </Card>
+
+          <DossierTimeline events={content.timeline} />
         </div>
       </div>
     </div>
