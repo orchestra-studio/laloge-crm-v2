@@ -1,0 +1,553 @@
+{
+  "auto_rules": [
+    {
+      "id": "rule_001",
+      "agent_id": "EnrichBot",
+      "action_type": "enrichment",
+      "description": "Auto-approuver les enrichissements basiques quand téléphone + website + contact principal sont présents.",
+      "scope": "salons score > 50",
+      "mode": "auto_approve",
+      "enabled": true,
+      "success_rate": "94%",
+      "last_triggered_at": "2026-03-12T08:05:00.000Z"
+    },
+    {
+      "id": "rule_002",
+      "agent_id": "ScoreMaster",
+      "action_type": "scoring",
+      "description": "Auto-approuver les refresh de score lorsque la confiance est supérieure à 0,85.",
+      "scope": "recalculs nocturnes",
+      "mode": "auto_approve",
+      "enabled": true,
+      "success_rate": "91%",
+      "last_triggered_at": "2026-03-12T05:42:00.000Z"
+    },
+    {
+      "id": "rule_003",
+      "agent_id": "OutreachPilot",
+      "action_type": "outreach",
+      "description": "Tout draft d’email contenant une remise commerciale nécessite une validation manuelle.",
+      "scope": "séquences marques",
+      "mode": "manual_review",
+      "enabled": true,
+      "success_rate": "N/A",
+      "last_triggered_at": "2026-03-11T16:14:00.000Z"
+    },
+    {
+      "id": "rule_004",
+      "agent_id": "QualityGuard",
+      "action_type": "status_change",
+      "description": "Bloquer toute bascule directe vers Gagné sans historique de négociation.",
+      "scope": "pipeline commercial",
+      "mode": "guardrail",
+      "enabled": true,
+      "success_rate": "100%",
+      "last_triggered_at": "2026-03-10T13:28:00.000Z"
+    }
+  ],
+  "actions": [
+    {
+      "id": "act_001",
+      "agent_id": "DataScout",
+      "action_type": "status_change",
+      "target_type": "salon",
+      "target_id": "sal_001",
+      "target_name": "Maison Léonie",
+      "target_href": "/dashboard/salons/sal_001",
+      "priority": "haute",
+      "created_at": "2026-03-12T10:18:00.000Z",
+      "status": "pending",
+      "summary": "Passer le salon en Contacté après réponse détectée à l’email d’introduction.",
+      "payload": {
+        "from_status": "nouveau",
+        "to_status": "contacte",
+        "channel": "email",
+        "confidence": 0.91,
+        "reason": "Réponse positive détectée avec demande de rappel."
+      },
+      "history": [
+        {
+          "at": "2026-03-12T10:18:00.000Z",
+          "actor": "DataScout",
+          "label": "Action proposée"
+        },
+        {
+          "at": "2026-03-12T10:19:00.000Z",
+          "actor": "QualityGuard",
+          "label": "Confiance validée au-dessus du seuil requis"
+        }
+      ]
+    },
+    {
+      "id": "act_002",
+      "agent_id": "EnrichBot",
+      "action_type": "enrichment",
+      "target_type": "salon",
+      "target_id": "sal_005",
+      "target_name": "Maison Auguste",
+      "target_href": "/dashboard/salons/sal_005",
+      "priority": "normale",
+      "created_at": "2026-03-12T09:42:00.000Z",
+      "status": "pending",
+      "summary": "Ajouter le contact principal, le SIRET et l’Instagram détectés pendant l’enrichissement.",
+      "payload": {
+        "fields": {
+          "owner_name": "Auguste Simon",
+          "instagram": "https://instagram.com/maisonauguste",
+          "siret": "92134567800018"
+        },
+        "source": ["Google Business", "Pappers"],
+        "confidence": 0.88
+      },
+      "history": [
+        {
+          "at": "2026-03-12T09:42:00.000Z",
+          "actor": "EnrichBot",
+          "label": "Proposition d’enrichissement créée"
+        }
+      ]
+    },
+    {
+      "id": "act_003",
+      "agent_id": "ScoreMaster",
+      "action_type": "scoring",
+      "target_type": "salon",
+      "target_id": "sal_007",
+      "target_name": "Atelier Nacré",
+      "target_href": "/dashboard/salons/sal_007",
+      "priority": "normale",
+      "created_at": "2026-03-12T08:16:00.000Z",
+      "status": "approved",
+      "summary": "Recalcul du score après ajout de la prestation spa et d’un rating Google de 4,8.",
+      "payload": {
+        "previous_score": 69,
+        "new_score": 77,
+        "breakdown": {
+          "google_rating": 18,
+          "service_mix": 14,
+          "instagram_signal": 9
+        },
+        "confidence": 0.93
+      },
+      "reviewed_by": "Bonnie",
+      "reviewed_at": "2026-03-12T08:29:00.000Z",
+      "review_note": "Score cohérent, validé.",
+      "history": [
+        {
+          "at": "2026-03-12T08:16:00.000Z",
+          "actor": "ScoreMaster",
+          "label": "Recalcul proposé"
+        },
+        {
+          "at": "2026-03-12T08:29:00.000Z",
+          "actor": "Bonnie",
+          "label": "Action approuvée"
+        }
+      ]
+    },
+    {
+      "id": "act_004",
+      "agent_id": "OutreachPilot",
+      "action_type": "outreach",
+      "target_type": "salon",
+      "target_id": "sal_009",
+      "target_name": "Salon Vendôme",
+      "target_href": "/dashboard/salons/sal_009",
+      "priority": "haute",
+      "created_at": "2026-03-12T11:04:00.000Z",
+      "status": "pending",
+      "summary": "Envoyer un email premium avec étude de cas Wella et proposition de rendez-vous de 15 minutes.",
+      "payload": {
+        "channel": "email",
+        "template": "wella_premium_case_study_v3",
+        "subject": "Une proposition premium adaptée à votre salon",
+        "cta": "Choisir un créneau de présentation",
+        "confidence": 0.86
+      },
+      "history": [
+        {
+          "at": "2026-03-12T11:04:00.000Z",
+          "actor": "OutreachPilot",
+          "label": "Draft d’outreach généré"
+        }
+      ]
+    },
+    {
+      "id": "act_005",
+      "agent_id": "QualityGuard",
+      "action_type": "status_change",
+      "target_type": "salon",
+      "target_id": "sal_008",
+      "target_name": "Maison Alba",
+      "target_href": "/dashboard/salons/sal_008",
+      "priority": "normale",
+      "created_at": "2026-03-11T17:12:00.000Z",
+      "status": "rejected",
+      "summary": "Proposition de passage à Intéressé suite à un simple clic email jugé trop faible.",
+      "payload": {
+        "from_status": "contacte",
+        "to_status": "interesse",
+        "signal": "email_click",
+        "confidence": 0.54,
+        "reason": "Signal insuffisant pour changer de statut"
+      },
+      "reviewed_by": "Marie-Pierre",
+      "reviewed_at": "2026-03-11T17:26:00.000Z",
+      "review_note": "On garde Contacté tant qu’il n’y a pas d’échange réel.",
+      "history": [
+        {
+          "at": "2026-03-11T17:12:00.000Z",
+          "actor": "QualityGuard",
+          "label": "Alerte sur changement de statut proposé"
+        },
+        {
+          "at": "2026-03-11T17:26:00.000Z",
+          "actor": "Marie-Pierre",
+          "label": "Action rejetée"
+        }
+      ]
+    },
+    {
+      "id": "act_006",
+      "agent_id": "BrandMatcher",
+      "action_type": "brand_match",
+      "target_type": "salon",
+      "target_id": "sal_011",
+      "target_name": "Maison Dahlia",
+      "target_href": "/dashboard/salons/sal_011",
+      "priority": "normale",
+      "created_at": "2026-03-11T14:08:00.000Z",
+      "status": "approved",
+      "summary": "Créer un dossier prioritaire Myspa avec angle cabine bien-être et ticket moyen élevé.",
+      "payload": {
+        "brand": "Myspa",
+        "compatibility_score": 89,
+        "criteria": {
+          "service_mix": 24,
+          "wellness_positioning": 28,
+          "google_reviews": 15
+        }
+      },
+      "reviewed_by": "Bonnie",
+      "reviewed_at": "2026-03-11T14:21:00.000Z",
+      "review_note": "Go, dossier à générer demain.",
+      "history": [
+        {
+          "at": "2026-03-11T14:08:00.000Z",
+          "actor": "BrandMatcher",
+          "label": "Match marque proposé"
+        },
+        {
+          "at": "2026-03-11T14:21:00.000Z",
+          "actor": "Bonnie",
+          "label": "Action approuvée"
+        }
+      ]
+    },
+    {
+      "id": "act_007",
+      "agent_id": "DataScout 2026",
+      "action_type": "contact_sync",
+      "target_type": "salon",
+      "target_id": "sal_004",
+      "target_name": "Nuance Bastille",
+      "target_href": "/dashboard/salons/sal_004",
+      "priority": "haute",
+      "created_at": "2026-03-12T07:58:00.000Z",
+      "status": "pending",
+      "summary": "Ajouter un nouveau numéro direct et un contact gérante détectés sur Planity.",
+      "payload": {
+        "new_contact": {
+          "name": "Julie Perez",
+          "role": "Gérante",
+          "phone": "06 71 44 12 90"
+        },
+        "source": "Planity",
+        "confidence": 0.84
+      },
+      "history": [
+        {
+          "at": "2026-03-12T07:58:00.000Z",
+          "actor": "DataScout 2026",
+          "label": "Synchronisation contact proposée"
+        }
+      ]
+    },
+    {
+      "id": "act_008",
+      "agent_id": "Rapport Hebdo",
+      "action_type": "dossier_generation",
+      "target_type": "salon",
+      "target_id": "sal_016",
+      "target_name": "Atelier Lumière",
+      "target_href": "/dashboard/salons/sal_016",
+      "priority": "normale",
+      "created_at": "2026-03-12T06:24:00.000Z",
+      "status": "pending",
+      "summary": "Générer un mini dossier de négociation avec comparaison marge actuelle vs marge projetée.",
+      "payload": {
+        "template": "negociation_margin_delta_v2",
+        "includes": ["benchmark prix", "projection marge", "timeline onboarding"],
+        "deadline": "2026-03-13T08:00:00.000Z"
+      },
+      "history": [
+        {
+          "at": "2026-03-12T06:24:00.000Z",
+          "actor": "Rapport Hebdo",
+          "label": "Dossier prêt à être généré"
+        }
+      ]
+    },
+    {
+      "id": "act_009",
+      "agent_id": "OutreachPilot",
+      "action_type": "outreach",
+      "target_type": "salon",
+      "target_id": "sal_013",
+      "target_name": "Le Cercle Coiffure",
+      "target_href": "/dashboard/salons/sal_013",
+      "priority": "normale",
+      "created_at": "2026-03-11T09:12:00.000Z",
+      "status": "approved",
+      "summary": "Envoyer un rappel de rendez-vous avec agenda, deck et cas client attachés.",
+      "payload": {
+        "channel": "email",
+        "template": "meeting_reminder_premium_v1",
+        "attachments": ["deck.pdf", "case-study.pdf"],
+        "confidence": 0.95
+      },
+      "reviewed_by": "Marie-Pierre",
+      "reviewed_at": "2026-03-11T09:20:00.000Z",
+      "review_note": "Parfait, validé sans modification.",
+      "history": [
+        {
+          "at": "2026-03-11T09:12:00.000Z",
+          "actor": "OutreachPilot",
+          "label": "Rappel préparé"
+        },
+        {
+          "at": "2026-03-11T09:20:00.000Z",
+          "actor": "Marie-Pierre",
+          "label": "Action approuvée"
+        }
+      ]
+    },
+    {
+      "id": "act_010",
+      "agent_id": "EnrichBot",
+      "action_type": "enrichment",
+      "target_type": "salon",
+      "target_id": "sal_003",
+      "target_name": "Studio Épure",
+      "target_href": "/dashboard/salons/sal_003",
+      "priority": "basse",
+      "created_at": "2026-03-10T15:05:00.000Z",
+      "status": "rejected",
+      "summary": "Remplacer le site web par une URL détectée secondairement, mais la source est jugée peu fiable.",
+      "payload": {
+        "old_website": "https://studioepure.fr",
+        "new_website": "https://studioepure-booking.netlify.app",
+        "confidence": 0.41,
+        "source": "scraping social bio"
+      },
+      "reviewed_by": "Bonnie",
+      "reviewed_at": "2026-03-10T15:19:00.000Z",
+      "review_note": "On garde le site actuel, la source alternative n’est pas fiable.",
+      "history": [
+        {
+          "at": "2026-03-10T15:05:00.000Z",
+          "actor": "EnrichBot",
+          "label": "Modification de site proposée"
+        },
+        {
+          "at": "2026-03-10T15:19:00.000Z",
+          "actor": "Bonnie",
+          "label": "Action rejetée"
+        }
+      ]
+    },
+    {
+      "id": "act_011",
+      "agent_id": "ScoreMaster",
+      "action_type": "scoring",
+      "target_type": "salon",
+      "target_id": "sal_012",
+      "target_name": "Studio Rive Gauche",
+      "target_href": "/dashboard/salons/sal_012",
+      "priority": "basse",
+      "created_at": "2026-03-12T05:55:00.000Z",
+      "status": "pending",
+      "summary": "Refresh de score mineur après mise à jour des avis Google et de la fréquence de posts Instagram.",
+      "payload": {
+        "previous_score": 82,
+        "new_score": 84,
+        "delta": 2,
+        "confidence": 0.87
+      },
+      "history": [
+        {
+          "at": "2026-03-12T05:55:00.000Z",
+          "actor": "ScoreMaster",
+          "label": "Refresh nocturne proposé"
+        }
+      ]
+    },
+    {
+      "id": "act_012",
+      "agent_id": "QualityGuard",
+      "action_type": "status_change",
+      "target_type": "salon",
+      "target_id": "sal_020",
+      "target_name": "Maison Marli",
+      "target_href": "/dashboard/salons/sal_020",
+      "priority": "normale",
+      "created_at": "2026-03-11T18:44:00.000Z",
+      "status": "approved",
+      "summary": "Valider le passage en phase onboarding après signature et réception du bon de commande.",
+      "payload": {
+        "from_status": "gagne",
+        "to_status": "client_actif",
+        "evidence": ["contrat signé", "bon de commande reçu"],
+        "confidence": 0.97
+      },
+      "reviewed_by": "Marie-Pierre",
+      "reviewed_at": "2026-03-11T18:53:00.000Z",
+      "review_note": "OK, on déclenche l’onboarding.",
+      "history": [
+        {
+          "at": "2026-03-11T18:44:00.000Z",
+          "actor": "QualityGuard",
+          "label": "Contrôle de conformité terminé"
+        },
+        {
+          "at": "2026-03-11T18:53:00.000Z",
+          "actor": "Marie-Pierre",
+          "label": "Action approuvée"
+        }
+      ]
+    },
+    {
+      "id": "act_013",
+      "agent_id": "BrandMatcher",
+      "action_type": "brand_match",
+      "target_type": "salon",
+      "target_id": "sal_021",
+      "target_name": "Atelier Opaline",
+      "target_href": "/dashboard/salons/sal_021",
+      "priority": "normale",
+      "created_at": "2026-03-12T09:10:00.000Z",
+      "status": "pending",
+      "summary": "Proposer un bundle Revlon + Myspa pour accélérer le pilote commercial signé.",
+      "payload": {
+        "brands": ["Revlon", "Myspa"],
+        "compatibility_score": 85,
+        "reason": "Double usage retail + cabine pertinent pour le salon"
+      },
+      "history": [
+        {
+          "at": "2026-03-12T09:10:00.000Z",
+          "actor": "BrandMatcher",
+          "label": "Proposition de bundle créée"
+        }
+      ]
+    },
+    {
+      "id": "act_014",
+      "agent_id": "DataScout Travaux",
+      "action_type": "status_change",
+      "target_type": "salon",
+      "target_id": "sal_019",
+      "target_name": "Maison Azur",
+      "target_href": "/dashboard/salons/sal_019",
+      "priority": "haute",
+      "created_at": "2026-03-10T13:05:00.000Z",
+      "status": "rejected",
+      "summary": "Proposition de passage en Gagné sur la base d’un message ambigu lié à des travaux de rénovation.",
+      "payload": {
+        "from_status": "negociation",
+        "to_status": "gagne",
+        "reason": "Le salon parle d’un chantier, pas d’une signature commerciale",
+        "confidence": 0.39
+      },
+      "reviewed_by": "Bonnie",
+      "reviewed_at": "2026-03-10T13:28:00.000Z",
+      "review_note": "Fausse interprétation, on reste en négociation.",
+      "history": [
+        {
+          "at": "2026-03-10T13:05:00.000Z",
+          "actor": "DataScout Travaux",
+          "label": "Signal chantier détecté"
+        },
+        {
+          "at": "2026-03-10T13:28:00.000Z",
+          "actor": "Bonnie",
+          "label": "Action rejetée"
+        }
+      ]
+    },
+    {
+      "id": "act_015",
+      "agent_id": "OutreachPilot",
+      "action_type": "outreach",
+      "target_type": "salon",
+      "target_id": "sal_018",
+      "target_name": "Maison Tuileries",
+      "target_href": "/dashboard/salons/sal_018",
+      "priority": "haute",
+      "created_at": "2026-03-12T12:32:00.000Z",
+      "status": "pending",
+      "summary": "Envoyer une relance douce avec proposition de démarrage en deux temps et levée du point délai.",
+      "payload": {
+        "channel": "email",
+        "template": "negociation_soft_followup_v2",
+        "tone": "premium",
+        "attachments": ["roadmap-onboarding.pdf"],
+        "confidence": 0.89
+      },
+      "history": [
+        {
+          "at": "2026-03-12T12:32:00.000Z",
+          "actor": "OutreachPilot",
+          "label": "Relance négociation préparée"
+        }
+      ]
+    },
+    {
+      "id": "act_016",
+      "agent_id": "DataScout 2026",
+      "action_type": "enrichment",
+      "target_type": "salon",
+      "target_id": "sal_022",
+      "target_name": "Studio Héritage",
+      "target_href": "/dashboard/salons/sal_022",
+      "priority": "normale",
+      "created_at": "2026-03-11T07:36:00.000Z",
+      "status": "approved",
+      "summary": "Compléter la fiche avec le propriétaire, la taille d’équipe et le site e-commerce retail.",
+      "payload": {
+        "fields": {
+          "owner_name": "Bastien Rolland",
+          "team_size": 8,
+          "ecommerce_url": "https://shop.studioheritage.fr"
+        },
+        "source": ["site officiel", "mentions légales"],
+        "confidence": 0.92
+      },
+      "reviewed_by": "Marie-Pierre",
+      "reviewed_at": "2026-03-11T07:44:00.000Z",
+      "review_note": "Très utile pour le suivi du compte.",
+      "history": [
+        {
+          "at": "2026-03-11T07:36:00.000Z",
+          "actor": "DataScout 2026",
+          "label": "Enrichissement proposé"
+        },
+        {
+          "at": "2026-03-11T07:44:00.000Z",
+          "actor": "Marie-Pierre",
+          "label": "Action approuvée"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "agents": [
+    {
+      "id": "data_scout",
+      "name": "DataScout",
+      "icon": "Search",
+      "status": "active",
+      "last_run_at": "2026-03-12T12:42:00.000Z",
+      "result_summary": "42 salons trouvés à Paris 11e, 37 importés sans doublon.",
+      "primary_kpi_label": "Salons trouvés aujourd’hui",
+      "primary_kpi_value": "42",
+      "secondary_kpi_label": "Imports valides",
+      "secondary_kpi_value": "37",
+      "logs": [
+        "12:42 — Prospection Paris 11e terminée, 42 résultats consolidés.",
+        "12:11 — 5 doublons détectés et ignorés automatiquement.",
+        "11:54 — Source Google Maps synchronisée avec succès."
+      ]
+    },
+    {
+      "id": "data_scout_2026",
+      "name": "DataScout 2026",
+      "icon": "Bot",
+      "status": "idle",
+      "last_run_at": "2026-03-12T05:58:00.000Z",
+      "result_summary": "Batch nocturne terminé, 128 leads qualifiés pour revue humaine.",
+      "primary_kpi_label": "Leads qualifiés semaine",
+      "primary_kpi_value": "128",
+      "secondary_kpi_label": "Taux de qualité",
+      "secondary_kpi_value": "92%",
+      "logs": [
+        "05:58 — Batch national terminé, 128 leads marqués high-fit.",
+        "05:12 — Vérification d’emails pro sur 63 salons.",
+        "04:48 — Déduplication terminée sur 4 zones."
+      ]
+    },
+    {
+      "id": "enrich_bot",
+      "name": "EnrichBot",
+      "icon": "Zap",
+      "status": "active",
+      "last_run_at": "2026-03-12T13:05:00.000Z",
+      "result_summary": "31 salons enrichis depuis ce matin, 214 encore dans la queue.",
+      "primary_kpi_label": "Salons enrichis aujourd’hui",
+      "primary_kpi_value": "31",
+      "secondary_kpi_label": "Queue restante",
+      "secondary_kpi_value": "214",
+      "logs": [
+        "13:05 — Maison Auguste enrichi avec SIRET, owner et Instagram.",
+        "12:44 — Taux de succès des sources externes: 89%.",
+        "12:17 — 9 salons passés en enrichissement approfondi."
+      ]
+    },
+    {
+      "id": "score_master",
+      "name": "ScoreMaster",
+      "icon": "Target",
+      "status": "idle",
+      "last_run_at": "2026-03-12T06:02:00.000Z",
+      "result_summary": "86 scores recalculés durant la fenêtre nocturne, confiance moyenne 0,89.",
+      "primary_kpi_label": "Scores calculés aujourd’hui",
+      "primary_kpi_value": "86",
+      "secondary_kpi_label": "Confiance moyenne",
+      "secondary_kpi_value": "0.89",
+      "logs": [
+        "06:02 — Refresh nocturne terminé sans anomalie critique.",
+        "05:41 — 12 salons Paris premium au-dessus de 80 détectés.",
+        "05:03 — Calibration des critères brand metadata appliquée."
+      ]
+    },
+    {
+      "id": "outreach_pilot",
+      "name": "OutreachPilot",
+      "icon": "Mail",
+      "status": "active",
+      "last_run_at": "2026-03-12T12:18:00.000Z",
+      "result_summary": "24 emails envoyés, 3 réponses reçues et 2 rendez-vous suggérés.",
+      "primary_kpi_label": "Emails envoyés aujourd’hui",
+      "primary_kpi_value": "24",
+      "secondary_kpi_label": "Réponses reçues",
+      "secondary_kpi_value": "3",
+      "logs": [
+        "12:18 — Séquence Wella premium envoyée à 6 salons intéressés.",
+        "11:47 — 3 réponses détectées et routées vers Actions.",
+        "11:12 — Warmup de domaine conforme."
+      ]
+    },
+    {
+      "id": "quality_guard",
+      "name": "QualityGuard",
+      "icon": "Shield",
+      "status": "error",
+      "last_run_at": "2026-03-12T09:36:00.000Z",
+      "result_summary": "4 anomalies détectées, puis arrêt sur timeout API Supabase Realtime.",
+      "primary_kpi_label": "Contrôles effectués",
+      "primary_kpi_value": "56",
+      "secondary_kpi_label": "Anomalies détectées",
+      "secondary_kpi_value": "4",
+      "logs": [
+        "09:36 — Erreur: timeout sur subscription Realtime agent_actions.",
+        "09:33 — 1 changement de statut bloqué sans historique de négo.",
+        "09:08 — Audit de cohérence pipeline lancé."
+      ]
+    },
+    {
+      "id": "brand_matcher",
+      "name": "BrandMatcher",
+      "icon": "Link",
+      "status": "active",
+      "last_run_at": "2026-03-12T11:26:00.000Z",
+      "result_summary": "73 scores marques calculés, 12 dossiers prioritaires suggérés.",
+      "primary_kpi_label": "Scores brand aujourd’hui",
+      "primary_kpi_value": "73",
+      "secondary_kpi_label": "Dossiers prioritaires",
+      "secondary_kpi_value": "12",
+      "logs": [
+        "11:26 — Match Myspa > 89 pour Maison Dahlia confirmé.",
+        "10:58 — 7 bundles multi-marques détectés comme upsell.",
+        "10:40 — Critères dynamiques brands.metadata rechargés."
+      ]
+    },
+    {
+      "id": "rapport_hebdo",
+      "name": "Rapport Hebdo",
+      "icon": "FileText",
+      "status": "idle",
+      "last_run_at": "2026-03-11T18:02:00.000Z",
+      "result_summary": "7 rapports générés cette semaine, prochain run prévu vendredi à 07h00.",
+      "primary_kpi_label": "Rapports générés semaine",
+      "primary_kpi_value": "7",
+      "secondary_kpi_label": "Prochain run",
+      "secondary_kpi_value": "Ven 07:00",
+      "logs": [
+        "18:02 — Rapport quotidien exporté et stocké dans Supabase Storage.",
+        "17:31 — 3 anomalies de progression pipeline mentionnées.",
+        "17:05 — Snapshot KPI commercial calculé."
+      ]
+    },
+    {
+      "id": "data_scout_travaux",
+      "name": "DataScout Travaux",
+      "icon": "HardHat",
+      "status": "idle",
+      "last_run_at": "2026-03-10T15:18:00.000Z",
+      "result_summary": "18 signaux travaux détectés, 5 leads exploitables conservés.",
+      "primary_kpi_label": "Signaux travaux",
+      "primary_kpi_value": "18",
+      "secondary_kpi_label": "Leads exploitables",
+      "secondary_kpi_value": "5",
+      "logs": [
+        "15:18 — Analyse travaux Côte d’Azur terminée.",
+        "14:51 — 3 faux positifs écartés par QualityGuard.",
+        "14:20 — Extraction signaux Instagram chantier complétée."
+      ]
+    }
+  ],
+  "prospecting_runs": [
+    {
+      "id": "run_001",
+      "area": "Paris 11e",
+      "status": "completed",
+      "found_count": 42,
+      "imported_count": 37,
+      "enriched_count": 18,
+      "scored_count": 17,
+      "error_count": 1,
+      "created_at": "2026-03-12T12:42:00.000Z",
+      "source": "Google Maps + Planity"
+    },
+    {
+      "id": "run_002",
+      "area": "Lyon 2e",
+      "status": "running",
+      "found_count": 31,
+      "imported_count": 25,
+      "enriched_count": 11,
+      "scored_count": 9,
+      "error_count": 0,
+      "created_at": "2026-03-12T11:05:00.000Z",
+      "source": "Google Maps + Instagram"
+    },
+    {
+      "id": "run_003",
+      "area": "Marseille 8e",
+      "status": "completed",
+      "found_count": 28,
+      "imported_count": 23,
+      "enriched_count": 19,
+      "scored_count": 18,
+      "error_count": 2,
+      "created_at": "2026-03-11T17:18:00.000Z",
+      "source": "Google Maps + Pappers"
+    },
+    {
+      "id": "run_004",
+      "area": "Bordeaux centre",
+      "status": "queued",
+      "found_count": 0,
+      "imported_count": 0,
+      "enriched_count": 0,
+      "scored_count": 0,
+      "error_count": 0,
+      "created_at": "2026-03-12T13:10:00.000Z",
+      "source": "Batch programmé"
+    },
+    {
+      "id": "run_005",
+      "area": "Lille Vieux-Lille",
+      "status": "failed",
+      "found_count": 12,
+      "imported_count": 8,
+      "enriched_count": 0,
+      "scored_count": 0,
+      "error_count": 4,
+      "created_at": "2026-03-11T09:22:00.000Z",
+      "source": "Google Maps + Planity"
+    },
+    {
+      "id": "run_006",
+      "area": "Nice Carré d’Or",
+      "status": "completed",
+      "found_count": 19,
+      "imported_count": 16,
+      "enriched_count": 12,
+      "scored_count": 12,
+      "error_count": 1,
+      "created_at": "2026-03-10T16:46:00.000Z",
+      "source": "Google Maps + Site web"
+    }
+  ],
+  "work_items": [
+    {
+      "id": "work_001",
+      "type": "enrichment",
+      "target_name": "Nuance Bastille",
+      "target_href": "/dashboard/salons/sal_004",
+      "priority": "haute",
+      "assigned_agent": "EnrichBot",
+      "created_at": "2026-03-12T13:08:00.000Z"
+    },
+    {
+      "id": "work_002",
+      "type": "outreach",
+      "target_name": "Salon Vendôme",
+      "target_href": "/dashboard/salons/sal_009",
+      "priority": "haute",
+      "assigned_agent": "OutreachPilot",
+      "created_at": "2026-03-12T12:58:00.000Z"
+    },
+    {
+      "id": "work_003",
+      "type": "brand_match",
+      "target_name": "Maison Dahlia",
+      "target_href": "/dashboard/salons/sal_011",
+      "priority": "normale",
+      "assigned_agent": "BrandMatcher",
+      "created_at": "2026-03-12T12:21:00.000Z"
+    },
+    {
+      "id": "work_004",
+      "type": "score_refresh",
+      "target_name": "Studio Rive Gauche",
+      "target_href": "/dashboard/salons/sal_012",
+      "priority": "basse",
+      "assigned_agent": "ScoreMaster",
+      "created_at": "2026-03-12T11:44:00.000Z"
+    },
+    {
+      "id": "work_005",
+      "type": "quality_review",
+      "target_name": "Maison Azur",
+      "target_href": "/dashboard/salons/sal_019",
+      "priority": "haute",
+      "assigned_agent": "QualityGuard",
+      "created_at": "2026-03-12T11:02:00.000Z"
+    },
+    {
+      "id": "work_006",
+      "type": "prospecting",
+      "target_name": "Bordeaux centre",
+      "target_href": "/dashboard/agents",
+      "priority": "normale",
+      "assigned_agent": "DataScout",
+      "created_at": "2026-03-12T10:39:00.000Z"
+    },
+    {
+      "id": "work_007",
+      "type": "dossier_generation",
+      "target_name": "Atelier Lumière",
+      "target_href": "/dashboard/salons/sal_016",
+      "priority": "normale",
+      "assigned_agent": "Rapport Hebdo",
+      "created_at": "2026-03-12T10:12:00.000Z"
+    },
+    {
+      "id": "work_008",
+      "type": "contact_sync",
+      "target_name": "Atelier Sacha",
+      "target_href": "/dashboard/salons/sal_002",
+      "priority": "basse",
+      "assigned_agent": "DataScout 2026",
+      "created_at": "2026-03-12T09:48:00.000Z"
+    },
+    {
+      "id": "work_009",
+      "type": "travaux_signal",
+      "target_name": "Maison Azur",
+      "target_href": "/dashboard/salons/sal_019",
+      "priority": "normale",
+      "assigned_agent": "DataScout Travaux",
+      "created_at": "2026-03-12T09:20:00.000Z"
+    },
+    {
+      "id": "work_010",
+      "type": "outreach",
+      "target_name": "Maison Tuileries",
+      "target_href": "/dashboard/salons/sal_018",
+      "priority": "haute",
+      "assigned_agent": "OutreachPilot",
+      "created_at": "2026-03-12T08:54:00.000Z"
+    }
+  ]
+}

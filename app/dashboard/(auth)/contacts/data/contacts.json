@@ -1,0 +1,549 @@
+[
+  {
+    "id": "contact-001",
+    "first_name": "Camille",
+    "last_name": "Martin",
+    "salon_id": "salon-atelier-lumiere",
+    "salon_name": "Atelier Lumière",
+    "salon_city": "Paris 9",
+    "role": "Gérante",
+    "phone": "+33 6 12 44 30 91",
+    "email": "camille.martin@atelierlumiere.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/camille-martin-lumiere",
+    "instagram": "https://www.instagram.com/atelierlumiere.paris",
+    "last_contact": "2026-03-07",
+    "outreach_history": [
+      {
+        "id": "outreach-001-a",
+        "date": "2026-03-07",
+        "channel": "Téléphone",
+        "status": "Appel effectué",
+        "summary": "Validation du besoin coloration premium et intérêt pour un rendez-vous Revlon."
+      },
+      {
+        "id": "outreach-001-b",
+        "date": "2026-03-02",
+        "channel": "Email",
+        "status": "Répondu",
+        "summary": "Camille a demandé une synthèse des conditions commerciales et du support formation."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-001",
+        "date": "2026-03-07",
+        "content": "Très structurée, souhaite un onboarding propre et un plan retail mesurable dès le lancement."
+      }
+    ]
+  },
+  {
+    "id": "contact-002",
+    "first_name": "Julien",
+    "last_name": "Robert",
+    "salon_id": "salon-atelier-lumiere",
+    "salon_name": "Atelier Lumière",
+    "salon_city": "Paris 9",
+    "role": "Responsable technique",
+    "phone": "+33 6 44 13 88 20",
+    "email": "julien.robert@atelierlumiere.fr",
+    "is_decision_maker": false,
+    "status": "actif",
+    "linkedin": null,
+    "instagram": "https://www.instagram.com/julien.color.lab",
+    "last_contact": "2026-03-05",
+    "outreach_history": [
+      {
+        "id": "outreach-002-a",
+        "date": "2026-03-05",
+        "channel": "WhatsApp",
+        "status": "Répondu",
+        "summary": "A partagé les besoins techniques sur la gamme coloration et les attentes formation équipe."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-002",
+        "date": "2026-03-05",
+        "content": "Profil relais terrain. À inclure dans toute démo produit ou session masterclass."
+      }
+    ]
+  },
+  {
+    "id": "contact-003",
+    "first_name": "Sophie",
+    "last_name": "Bernard",
+    "salon_id": "salon-maison-elegance",
+    "salon_name": "Maison Élégance",
+    "salon_city": "Lyon 2",
+    "role": "Gérante",
+    "phone": "+33 6 25 10 41 78",
+    "email": "sophie.bernard@maisonelegance.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/sophie-bernard-lyon",
+    "instagram": "https://www.instagram.com/maison.elegance.lyon",
+    "last_contact": "2026-03-06",
+    "outreach_history": [
+      {
+        "id": "outreach-003-a",
+        "date": "2026-03-06",
+        "channel": "Email",
+        "status": "Répondu",
+        "summary": "A confirmé l'intérêt pour Schwarzkopf et souhaite une projection marge + formation."
+      },
+      {
+        "id": "outreach-003-b",
+        "date": "2026-02-27",
+        "channel": "Téléphone",
+        "status": "Appel effectué",
+        "summary": "Bon fit stratégique, salon très structuré avec forte culture équipe."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-003",
+        "date": "2026-03-06",
+        "content": "Décision rapide si la marque apporte un vrai plan d'animation commerciale sur 90 jours."
+      }
+    ]
+  },
+  {
+    "id": "contact-004",
+    "first_name": "Arthur",
+    "last_name": "Perrin",
+    "salon_id": "salon-maison-elegance",
+    "salon_name": "Maison Élégance",
+    "salon_city": "Lyon 2",
+    "role": "Coloriste",
+    "phone": null,
+    "email": "arthur.perrin@maisonelegance.fr",
+    "is_decision_maker": false,
+    "status": "actif",
+    "linkedin": null,
+    "instagram": "https://www.instagram.com/arthur.perrin.color",
+    "last_contact": "2026-02-28",
+    "outreach_history": [
+      {
+        "id": "outreach-004-a",
+        "date": "2026-02-28",
+        "channel": "Email",
+        "status": "Envoyé",
+        "summary": "Envoi du comparatif technique sur les protocoles coloration et la tenue des nuances."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-004",
+        "date": "2026-02-28",
+        "content": "Influence technique forte sur l'équipe mais pas décisionnaire budget."
+      }
+    ]
+  },
+  {
+    "id": "contact-005",
+    "first_name": "Emma",
+    "last_name": "Lefèvre",
+    "salon_id": "salon-studio-marais",
+    "salon_name": "Studio Marais",
+    "salon_city": "Paris 3",
+    "role": "Coloriste senior",
+    "phone": "+33 6 81 42 02 71",
+    "email": "emma@studiomarais.fr",
+    "is_decision_maker": false,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/emma-lefevre-marais",
+    "instagram": "https://www.instagram.com/studiomarais.paris",
+    "last_contact": "2026-03-04",
+    "outreach_history": [
+      {
+        "id": "outreach-005-a",
+        "date": "2026-03-04",
+        "channel": "WhatsApp",
+        "status": "Répondu",
+        "summary": "A demandé les références styling les plus Instagrammables pour une présentation Wella."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-005",
+        "date": "2026-03-04",
+        "content": "Très prescriptrice sur les tendances. Peut accélérer l'adhésion interne à une nouvelle marque."
+      }
+    ]
+  },
+  {
+    "id": "contact-006",
+    "first_name": "Laura",
+    "last_name": "Renault",
+    "salon_id": "salon-studio-marais",
+    "salon_name": "Studio Marais",
+    "salon_city": "Paris 3",
+    "role": "Responsable salon",
+    "phone": "+33 6 34 98 22 16",
+    "email": "laura.renault@studiomarais.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": null,
+    "instagram": null,
+    "last_contact": "2026-03-03",
+    "outreach_history": [
+      {
+        "id": "outreach-006-a",
+        "date": "2026-03-03",
+        "channel": "Téléphone",
+        "status": "Appel effectué",
+        "summary": "Validation du créneau pour un rendez-vous de présentation marque et test équipe."
+      },
+      {
+        "id": "outreach-006-b",
+        "date": "2026-02-24",
+        "channel": "Email",
+        "status": "Répondu",
+        "summary": "A demandé un chiffrage précis sur le panier moyen de lancement."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-006",
+        "date": "2026-03-03",
+        "content": "Très orientée rentabilité et expérience client. Décision rapide si dossier clair."
+      }
+    ]
+  },
+  {
+    "id": "contact-007",
+    "first_name": "Antoine",
+    "last_name": "Mercier",
+    "salon_id": "salon-salon-horizon",
+    "salon_name": "Salon Horizon",
+    "salon_city": "Marseille 6",
+    "role": "Gérant",
+    "phone": "+33 6 58 70 11 33",
+    "email": "antoine@salonhorizon.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/antoine-mercier-salon",
+    "instagram": "https://www.instagram.com/salonhorizon.marseille",
+    "last_contact": "2026-03-01",
+    "outreach_history": [
+      {
+        "id": "outreach-007-a",
+        "date": "2026-03-01",
+        "channel": "Téléphone",
+        "status": "Appel effectué",
+        "summary": "A validé un intérêt pour Wella et Myspa selon le scénario de montée en gamme."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-007",
+        "date": "2026-03-01",
+        "content": "Salon en transformation. Bon momentum si l'offre inclut accompagnement image + retail."
+      }
+    ]
+  },
+  {
+    "id": "contact-008",
+    "first_name": "Claire",
+    "last_name": "Moreau",
+    "salon_id": "salon-le-carre-dor",
+    "salon_name": "Le Carré d'Or",
+    "salon_city": "Nice",
+    "role": "Responsable achats",
+    "phone": "+33 6 72 01 54 49",
+    "email": "claire.moreau@carredor.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": null,
+    "instagram": "https://www.instagram.com/lecarredor.nice",
+    "last_contact": "2026-03-08",
+    "outreach_history": [
+      {
+        "id": "outreach-008-a",
+        "date": "2026-03-08",
+        "channel": "Email",
+        "status": "Répondu",
+        "summary": "A demandé le détail des conditions logistiques et des minimums de commande."
+      },
+      {
+        "id": "outreach-008-b",
+        "date": "2026-02-26",
+        "channel": "Téléphone",
+        "status": "Appel effectué",
+        "summary": "Intérêt fort pour Schwarzkopf et Myspa sur le volet expérience cabine."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-008",
+        "date": "2026-03-08",
+        "content": "Très précise sur les conditions commerciales. À rassurer sur la fluidité supply."
+      }
+    ]
+  },
+  {
+    "id": "contact-009",
+    "first_name": "Anaïs",
+    "last_name": "Petit",
+    "salon_id": "salon-signature-coiffure",
+    "salon_name": "Signature Coiffure",
+    "salon_city": "Bordeaux",
+    "role": "Directrice",
+    "phone": "+33 6 90 24 16 01",
+    "email": "anais.petit@signaturecoiffure.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/anais-petit-signature",
+    "instagram": "https://www.instagram.com/signaturecoiffure.bordeaux",
+    "last_contact": "2026-03-02",
+    "outreach_history": [
+      {
+        "id": "outreach-009-a",
+        "date": "2026-03-02",
+        "channel": "Email",
+        "status": "Répondu",
+        "summary": "A demandé un dossier comparatif Revlon vs Saint-Algue selon deux scénarios de croissance."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-009",
+        "date": "2026-03-02",
+        "content": "Profil stratège. Veut des chiffres, des preuves et une vision de marque forte."
+      }
+    ]
+  },
+  {
+    "id": "contact-010",
+    "first_name": "Chloé",
+    "last_name": "Fabre",
+    "salon_id": "salon-signature-coiffure",
+    "salon_name": "Signature Coiffure",
+    "salon_city": "Bordeaux",
+    "role": "Responsable partenariats",
+    "phone": null,
+    "email": "chloe.fabre@signaturecoiffure.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/chloe-fabre-partnerships",
+    "instagram": null,
+    "last_contact": "2026-02-25",
+    "outreach_history": [
+      {
+        "id": "outreach-010-a",
+        "date": "2026-02-25",
+        "channel": "Email",
+        "status": "Envoyé",
+        "summary": "Envoi d'un draft de proposition de partenariat annuel incluant activations locales."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-010",
+        "date": "2026-02-25",
+        "content": "Très utile pour fluidifier les validations internes et la mécanique co-marketing."
+      }
+    ]
+  },
+  {
+    "id": "contact-011",
+    "first_name": "Thomas",
+    "last_name": "Garnier",
+    "salon_id": "salon-maison-capucine",
+    "salon_name": "Maison Capucine",
+    "salon_city": "Lille",
+    "role": "Responsable formation",
+    "phone": "+33 6 21 65 40 75",
+    "email": "thomas.garnier@maisoncapucine.fr",
+    "is_decision_maker": false,
+    "status": "actif",
+    "linkedin": null,
+    "instagram": "https://www.instagram.com/maisoncapucine.lille",
+    "last_contact": "2026-03-04",
+    "outreach_history": [
+      {
+        "id": "outreach-011-a",
+        "date": "2026-03-04",
+        "channel": "WhatsApp",
+        "status": "Répondu",
+        "summary": "A listé les besoins de formation équipe et le niveau attendu des coachs marque."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-011",
+        "date": "2026-03-04",
+        "content": "Interlocuteur clé pour transformer un accord commercial en adhésion opérationnelle."
+      }
+    ]
+  },
+  {
+    "id": "contact-012",
+    "first_name": "Léa",
+    "last_name": "Rousseau",
+    "salon_id": "salon-atelier-21",
+    "salon_name": "Atelier 21",
+    "salon_city": "Toulouse",
+    "role": "Gérante",
+    "phone": "+33 6 49 14 32 56",
+    "email": "lea.rousseau@atelier21.fr",
+    "is_decision_maker": true,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/lea-rousseau-atelier21",
+    "instagram": "https://www.instagram.com/atelier21.toulouse",
+    "last_contact": "2026-03-03",
+    "outreach_history": [
+      {
+        "id": "outreach-012-a",
+        "date": "2026-03-03",
+        "channel": "Téléphone",
+        "status": "Appel effectué",
+        "summary": "A confirmé sa curiosité pour Wella et l'envie d'une offre très visuelle pour recruter."
+      },
+      {
+        "id": "outreach-012-b",
+        "date": "2026-02-19",
+        "channel": "Email",
+        "status": "Répondu",
+        "summary": "Demande de benchmark sur les marques qui performent en salon urbain premium."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-012",
+        "date": "2026-03-03",
+        "content": "Décisionnaire ouverte mais veut garder sa singularité. Éviter tout discours trop franchise."
+      }
+    ]
+  },
+  {
+    "id": "contact-013",
+    "first_name": "Nicolas",
+    "last_name": "Blanchard",
+    "salon_id": "salon-maison-voltaire",
+    "salon_name": "Maison Voltaire",
+    "salon_city": "Paris 11",
+    "role": "Responsable digital",
+    "phone": null,
+    "email": "nicolas.blanchard@maisonvoltaire.fr",
+    "is_decision_maker": false,
+    "status": "actif",
+    "linkedin": "https://www.linkedin.com/in/nicolas-blanchard-digital",
+    "instagram": null,
+    "last_contact": "2026-02-21",
+    "outreach_history": [
+      {
+        "id": "outreach-013-a",
+        "date": "2026-02-21",
+        "channel": "Email",
+        "status": "Envoyé",
+        "summary": "Envoi d'un exemple d'activation digitale liée à une marque partenaire."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-013",
+        "date": "2026-02-21",
+        "content": "Pas décisionnaire budget mais très influent sur la désirabilité et la visibilité du partenariat."
+      }
+    ]
+  },
+  {
+    "id": "contact-014",
+    "first_name": "Julie",
+    "last_name": "Fontaine",
+    "salon_id": "salon-nuance-bastille",
+    "salon_name": "Nuance Bastille",
+    "salon_city": "Paris 12",
+    "role": "Gérante",
+    "phone": "+33 6 77 30 82 12",
+    "email": "julie.fontaine@nuancebastille.fr",
+    "is_decision_maker": true,
+    "status": "inactif",
+    "linkedin": null,
+    "instagram": "https://www.instagram.com/nuancebastille",
+    "last_contact": "2026-01-29",
+    "outreach_history": [
+      {
+        "id": "outreach-014-a",
+        "date": "2026-01-29",
+        "channel": "Email",
+        "status": "À relancer",
+        "summary": "Pas de retour après un premier envoi de proposition sur Revlon."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-014",
+        "date": "2026-01-29",
+        "content": "Contact tiède pour le moment. À réactiver avec un angle plus business et moins produit."
+      }
+    ]
+  },
+  {
+    "id": "contact-015",
+    "first_name": "Pauline",
+    "last_name": "Chevalier",
+    "salon_id": "salon-linstant-beaute",
+    "salon_name": "L'Instant Beauté",
+    "salon_city": "Nantes",
+    "role": "Responsable cabine",
+    "phone": "+33 6 63 12 90 11",
+    "email": "pauline.chevalier@linstantbeaute.fr",
+    "is_decision_maker": false,
+    "status": "actif",
+    "linkedin": null,
+    "instagram": "https://www.instagram.com/linstantbeaute.nantes",
+    "last_contact": "2026-03-06",
+    "outreach_history": [
+      {
+        "id": "outreach-015-a",
+        "date": "2026-03-06",
+        "channel": "WhatsApp",
+        "status": "Répondu",
+        "summary": "A confirmé le potentiel d'une offre Myspa et les besoins cabine prioritaires."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-015",
+        "date": "2026-03-06",
+        "content": "Très bonne entrée pour qualifier la maturité bien-être avant d'impliquer la direction."
+      }
+    ]
+  },
+  {
+    "id": "contact-016",
+    "first_name": "Mathilde",
+    "last_name": "Laurent",
+    "salon_id": "salon-atelier-velours",
+    "salon_name": "Atelier Velours",
+    "salon_city": "Strasbourg",
+    "role": "Gérante",
+    "phone": "+33 6 10 52 24 87",
+    "email": "mathilde.laurent@ateliervelours.fr",
+    "is_decision_maker": true,
+    "status": "inactif",
+    "linkedin": "https://www.linkedin.com/in/mathilde-laurent-velours",
+    "instagram": "https://www.instagram.com/ateliervelours.strasbourg",
+    "last_contact": "2026-02-12",
+    "outreach_history": [
+      {
+        "id": "outreach-016-a",
+        "date": "2026-02-12",
+        "channel": "Téléphone",
+        "status": "À relancer",
+        "summary": "A demandé de reprendre contact plus tard, agenda saturé jusqu'à fin trimestre."
+      }
+    ],
+    "notes": [
+      {
+        "id": "note-016",
+        "date": "2026-02-12",
+        "content": "Profil à garder tiède. Intérêt réel mais pas de bande passante immédiate."
+      }
+    ]
+  }
+]

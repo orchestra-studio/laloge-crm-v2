@@ -1,0 +1,860 @@
+[
+  {
+    "id": "sal_001",
+    "name": "Maison Léonie",
+    "city": "Paris",
+    "department": "75",
+    "status": "nouveau",
+    "score": 88,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-10T09:15:00.000Z",
+    "kanban_order": 1,
+    "phone": "01 43 22 18 08",
+    "email": "contact@maisonleonie.fr",
+    "website": "https://maisonleonie.fr",
+    "contact_name": "Léonie Martin",
+    "preferred_brands": ["Wella", "Revlon"],
+    "tags": ["Premium", "Instagram fort"],
+    "timeline": [
+      {
+        "id": "sal_001_evt_1",
+        "type": "enrichment",
+        "text": "Enrichissement validé automatiquement avec téléphone et site web.",
+        "at": "2026-03-10T08:40:00.000Z"
+      },
+      {
+        "id": "sal_001_evt_2",
+        "type": "score",
+        "text": "Score recalculé à 88 après détection d’un positionnement premium.",
+        "at": "2026-03-10T08:52:00.000Z"
+      },
+      {
+        "id": "sal_001_evt_3",
+        "type": "note",
+        "text": "À appeler avant 11h, gérante très réactive le matin.",
+        "at": "2026-03-10T09:15:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_002",
+    "name": "Atelier Sacha",
+    "city": "Lyon",
+    "department": "69",
+    "status": "nouveau",
+    "score": 74,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-11T11:05:00.000Z",
+    "kanban_order": 2,
+    "phone": "04 72 61 14 10",
+    "email": "bonjour@ateliersacha.fr",
+    "website": "https://ateliersacha.fr",
+    "contact_name": "Sacha Bernard",
+    "preferred_brands": ["Schwarzkopf", "Wella"],
+    "tags": ["Coloration", "Top quartier"],
+    "timeline": [
+      {
+        "id": "sal_002_evt_1",
+        "type": "import",
+        "text": "Importé depuis Google Maps et Planity sans doublon détecté.",
+        "at": "2026-03-11T10:12:00.000Z"
+      },
+      {
+        "id": "sal_002_evt_2",
+        "type": "score",
+        "text": "Score 74 grâce à un rating Google supérieur à 4,6.",
+        "at": "2026-03-11T10:40:00.000Z"
+      },
+      {
+        "id": "sal_002_evt_3",
+        "type": "note",
+        "text": "Besoin de vérifier la taille d’équipe avant prise de contact.",
+        "at": "2026-03-11T11:05:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_003",
+    "name": "Studio Épure",
+    "city": "Bordeaux",
+    "department": "33",
+    "status": "nouveau",
+    "score": 67,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-09T16:10:00.000Z",
+    "kanban_order": 3,
+    "phone": "05 56 44 92 18",
+    "email": "contact@studioepure.fr",
+    "website": "https://studioepure.fr",
+    "contact_name": "Inès Laurent",
+    "preferred_brands": ["Revlon"],
+    "tags": ["Concept store", "Centre-ville"],
+    "timeline": [
+      {
+        "id": "sal_003_evt_1",
+        "type": "enrichment",
+        "text": "Profil enrichi avec Instagram et fiche société complète.",
+        "at": "2026-03-09T15:12:00.000Z"
+      },
+      {
+        "id": "sal_003_evt_2",
+        "type": "brand_match",
+        "text": "Compatibilité élevée détectée avec Revlon sur l’axe premium.",
+        "at": "2026-03-09T15:44:00.000Z"
+      },
+      {
+        "id": "sal_003_evt_3",
+        "type": "note",
+        "text": "Salon design, bon potentiel pour un dossier de marque luxe.",
+        "at": "2026-03-09T16:10:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_004",
+    "name": "Nuance Bastille",
+    "city": "Paris",
+    "department": "75",
+    "status": "nouveau",
+    "score": 59,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-12T07:35:00.000Z",
+    "kanban_order": 4,
+    "phone": "01 48 05 39 12",
+    "email": "hello@nuancebastille.fr",
+    "website": "https://nuancebastille.fr",
+    "contact_name": "Julie Perez",
+    "preferred_brands": ["Schwarzkopf"],
+    "tags": ["Jeune équipe", "Besoin enrichissement"],
+    "timeline": [
+      {
+        "id": "sal_004_evt_1",
+        "type": "import",
+        "text": "Ajouté dans le CRM par DataScout 2026.",
+        "at": "2026-03-12T06:42:00.000Z"
+      },
+      {
+        "id": "sal_004_evt_2",
+        "type": "score",
+        "text": "Score modéré en attente de validation du chiffre d’avis.",
+        "at": "2026-03-12T07:02:00.000Z"
+      },
+      {
+        "id": "sal_004_evt_3",
+        "type": "note",
+        "text": "À prioriser si la page Instagram confirme le trafic organique.",
+        "at": "2026-03-12T07:35:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_005",
+    "name": "Maison Auguste",
+    "city": "Nantes",
+    "department": "44",
+    "status": "contacte",
+    "score": 82,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-11T14:20:00.000Z",
+    "kanban_order": 1,
+    "phone": "02 40 28 11 73",
+    "email": "contact@maisonauguste.fr",
+    "website": "https://maisonauguste.fr",
+    "contact_name": "Auguste Simon",
+    "preferred_brands": ["Wella", "Saint-Algue"],
+    "tags": ["Répondu email", "Multi-services"],
+    "timeline": [
+      {
+        "id": "sal_005_evt_1",
+        "type": "outreach",
+        "text": "Email d’introduction envoyé avec séquence Wella.",
+        "at": "2026-03-11T13:10:00.000Z"
+      },
+      {
+        "id": "sal_005_evt_2",
+        "type": "status_change",
+        "text": "Statut passé à Contacté après ouverture et clic sur la brochure.",
+        "at": "2026-03-11T13:54:00.000Z"
+      },
+      {
+        "id": "sal_005_evt_3",
+        "type": "note",
+        "text": "Relance téléphonique prévue demain fin de matinée.",
+        "at": "2026-03-11T14:20:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_006",
+    "name": "L’Appartement Hair Club",
+    "city": "Lille",
+    "department": "59",
+    "status": "contacte",
+    "score": 71,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-10T17:48:00.000Z",
+    "kanban_order": 2,
+    "phone": "03 20 15 88 22",
+    "email": "salon@appartementhairclub.fr",
+    "website": "https://appartementhairclub.fr",
+    "contact_name": "Claire Dumont",
+    "preferred_brands": ["Revlon"],
+    "tags": ["Réseau local", "Réponse tiède"],
+    "timeline": [
+      {
+        "id": "sal_006_evt_1",
+        "type": "outreach",
+        "text": "Premier appel sortant sans réponse, message vocal laissé.",
+        "at": "2026-03-10T16:35:00.000Z"
+      },
+      {
+        "id": "sal_006_evt_2",
+        "type": "outreach",
+        "text": "Email de suivi envoyé avec cas client similaire.",
+        "at": "2026-03-10T17:05:00.000Z"
+      },
+      {
+        "id": "sal_006_evt_3",
+        "type": "note",
+        "text": "Directrice souhaite plus de détails sur les conditions marques.",
+        "at": "2026-03-10T17:48:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_007",
+    "name": "Atelier Nacré",
+    "city": "Toulouse",
+    "department": "31",
+    "status": "contacte",
+    "score": 77,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-12T09:10:00.000Z",
+    "kanban_order": 3,
+    "phone": "05 61 77 63 40",
+    "email": "bonjour@ateliernacre.fr",
+    "website": "https://ateliernacre.fr",
+    "contact_name": "Marion Vidal",
+    "preferred_brands": ["Schwarzkopf", "Myspa"],
+    "tags": ["Spa capillaire", "Belle note Google"],
+    "timeline": [
+      {
+        "id": "sal_007_evt_1",
+        "type": "outreach",
+        "text": "SMS envoyé après tentative d’appel non aboutie.",
+        "at": "2026-03-12T08:12:00.000Z"
+      },
+      {
+        "id": "sal_007_evt_2",
+        "type": "status_change",
+        "text": "Le salon a demandé à recevoir une proposition par email.",
+        "at": "2026-03-12T08:37:00.000Z"
+      },
+      {
+        "id": "sal_007_evt_3",
+        "type": "note",
+        "text": "Bon feeling, insister sur l’accompagnement revente cabine.",
+        "at": "2026-03-12T09:10:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_008",
+    "name": "Maison Alba",
+    "city": "Marseille",
+    "department": "13",
+    "status": "contacte",
+    "score": 64,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-08T12:25:00.000Z",
+    "kanban_order": 4,
+    "phone": "04 91 51 74 62",
+    "email": "contact@maisonalba.fr",
+    "website": "https://maisonalba.fr",
+    "contact_name": "Laura Bianchi",
+    "preferred_brands": ["Saint-Algue"],
+    "tags": ["Rappel mardi", "Indépendant"],
+    "timeline": [
+      {
+        "id": "sal_008_evt_1",
+        "type": "outreach",
+        "text": "Prise de contact par téléphone, standard aimable mais pressé.",
+        "at": "2026-03-08T11:10:00.000Z"
+      },
+      {
+        "id": "sal_008_evt_2",
+        "type": "outreach",
+        "text": "Envoi d’un email récapitulatif avec proposition de créneau.",
+        "at": "2026-03-08T11:44:00.000Z"
+      },
+      {
+        "id": "sal_008_evt_3",
+        "type": "note",
+        "text": "À relancer après le rush du week-end.",
+        "at": "2026-03-08T12:25:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_009",
+    "name": "Salon Vendôme",
+    "city": "Paris",
+    "department": "75",
+    "status": "interesse",
+    "score": 91,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-12T10:40:00.000Z",
+    "kanban_order": 1,
+    "phone": "01 42 61 70 11",
+    "email": "direction@salonvendome.fr",
+    "website": "https://salonvendome.fr",
+    "contact_name": "Camille Roche",
+    "preferred_brands": ["Wella", "Revlon", "Myspa"],
+    "tags": ["Très chaud", "Mandat potentiel"],
+    "timeline": [
+      {
+        "id": "sal_009_evt_1",
+        "type": "outreach",
+        "text": "Réponse positive à l’email de présentation.",
+        "at": "2026-03-12T09:30:00.000Z"
+      },
+      {
+        "id": "sal_009_evt_2",
+        "type": "status_change",
+        "text": "Passé à Intéressé après demande de présentation détaillée.",
+        "at": "2026-03-12T10:02:00.000Z"
+      },
+      {
+        "id": "sal_009_evt_3",
+        "type": "note",
+        "text": "Préparer un angle haut de gamme avec chiffres de revente.",
+        "at": "2026-03-12T10:40:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_010",
+    "name": "Atelier Marceau",
+    "city": "Nice",
+    "department": "06",
+    "status": "interesse",
+    "score": 79,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-11T15:30:00.000Z",
+    "kanban_order": 2,
+    "phone": "04 93 88 14 25",
+    "email": "hello@ateliermarceau.fr",
+    "website": "https://ateliermarceau.fr",
+    "contact_name": "Nicolas Rey",
+    "preferred_brands": ["Schwarzkopf", "Wella"],
+    "tags": ["Demande brochure", "Sud-est"],
+    "timeline": [
+      {
+        "id": "sal_010_evt_1",
+        "type": "outreach",
+        "text": "Échange téléphonique de 8 minutes avec le gérant.",
+        "at": "2026-03-11T14:42:00.000Z"
+      },
+      {
+        "id": "sal_010_evt_2",
+        "type": "status_change",
+        "text": "Le salon veut comparer les conditions avec son fournisseur actuel.",
+        "at": "2026-03-11T15:05:00.000Z"
+      },
+      {
+        "id": "sal_010_evt_3",
+        "type": "note",
+        "text": "Envoyer un benchmark simple et orienté marge.",
+        "at": "2026-03-11T15:30:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_011",
+    "name": "Maison Dahlia",
+    "city": "Montpellier",
+    "department": "34",
+    "status": "interesse",
+    "score": 73,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-10T13:18:00.000Z",
+    "kanban_order": 3,
+    "phone": "04 67 93 45 11",
+    "email": "bonjour@maisondahlia.fr",
+    "website": "https://maisondahlia.fr",
+    "contact_name": "Dahlia Perrin",
+    "preferred_brands": ["Myspa"],
+    "tags": ["Spa", "Demande tarif"],
+    "timeline": [
+      {
+        "id": "sal_011_evt_1",
+        "type": "outreach",
+        "text": "Le salon a répondu vouloir recevoir une proposition chiffrée.",
+        "at": "2026-03-10T12:22:00.000Z"
+      },
+      {
+        "id": "sal_011_evt_2",
+        "type": "brand_match",
+        "text": "Myspa remonte comme meilleure marque compatible.",
+        "at": "2026-03-10T12:58:00.000Z"
+      },
+      {
+        "id": "sal_011_evt_3",
+        "type": "note",
+        "text": "Prévoir une version courte de l’offre avec mise en avant cabine.",
+        "at": "2026-03-10T13:18:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_012",
+    "name": "Studio Rive Gauche",
+    "city": "Paris",
+    "department": "75",
+    "status": "interesse",
+    "score": 84,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-09T18:00:00.000Z",
+    "kanban_order": 4,
+    "phone": "01 45 32 10 64",
+    "email": "contact@studiorivegauche.fr",
+    "website": "https://studiorivegauche.fr",
+    "contact_name": "Caroline Morel",
+    "preferred_brands": ["Revlon", "Wella"],
+    "tags": ["Paris 6", "Premium"],
+    "timeline": [
+      {
+        "id": "sal_012_evt_1",
+        "type": "outreach",
+        "text": "Le contact demande un rendez-vous de présentation rapide.",
+        "at": "2026-03-09T17:02:00.000Z"
+      },
+      {
+        "id": "sal_012_evt_2",
+        "type": "status_change",
+        "text": "Positionné en Intéressé avec forte probabilité de conversion.",
+        "at": "2026-03-09T17:28:00.000Z"
+      },
+      {
+        "id": "sal_012_evt_3",
+        "type": "note",
+        "text": "À orienter vers une sélection de marques premium.",
+        "at": "2026-03-09T18:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_013",
+    "name": "Le Cercle Coiffure",
+    "city": "Paris",
+    "department": "75",
+    "status": "rdv_planifie",
+    "score": 93,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-12T12:15:00.000Z",
+    "kanban_order": 1,
+    "phone": "01 40 12 87 00",
+    "email": "direction@lecerclecoiffure.fr",
+    "website": "https://lecerclecoiffure.fr",
+    "contact_name": "Aurore Delmas",
+    "preferred_brands": ["Wella", "Schwarzkopf"],
+    "tags": ["RDV vendredi", "Très premium"],
+    "timeline": [
+      {
+        "id": "sal_013_evt_1",
+        "type": "meeting",
+        "text": "Rendez-vous confirmé vendredi 14h en visio.",
+        "at": "2026-03-12T11:04:00.000Z"
+      },
+      {
+        "id": "sal_013_evt_2",
+        "type": "status_change",
+        "text": "Passage à RDV planifié après validation du créneau.",
+        "at": "2026-03-12T11:36:00.000Z"
+      },
+      {
+        "id": "sal_013_evt_3",
+        "type": "note",
+        "text": "Préparer deck avec focus exclusivité et image de marque.",
+        "at": "2026-03-12T12:15:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_014",
+    "name": "Salon Aster",
+    "city": "Lyon",
+    "department": "69",
+    "status": "rdv_planifie",
+    "score": 81,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-11T09:45:00.000Z",
+    "kanban_order": 2,
+    "phone": "04 78 52 13 17",
+    "email": "hello@salonaster.fr",
+    "website": "https://salonaster.fr",
+    "contact_name": "Mathilde Charvet",
+    "preferred_brands": ["Saint-Algue", "Revlon"],
+    "tags": ["RDV terrain", "Ticket moyen élevé"],
+    "timeline": [
+      {
+        "id": "sal_014_evt_1",
+        "type": "meeting",
+        "text": "Présentation sur place planifiée mardi prochain à 9h30.",
+        "at": "2026-03-11T08:44:00.000Z"
+      },
+      {
+        "id": "sal_014_evt_2",
+        "type": "status_change",
+        "text": "Le salon a confirmé être prêt à étudier une offre test.",
+        "at": "2026-03-11T09:11:00.000Z"
+      },
+      {
+        "id": "sal_014_evt_3",
+        "type": "note",
+        "text": "Apporter chiffres de marge et argumentaire fidélisation.",
+        "at": "2026-03-11T09:45:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_015",
+    "name": "Maison du Faubourg",
+    "city": "Strasbourg",
+    "department": "67",
+    "status": "rdv_planifie",
+    "score": 76,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-10T18:35:00.000Z",
+    "kanban_order": 3,
+    "phone": "03 88 14 67 30",
+    "email": "contact@maisondufaubourg.fr",
+    "website": "https://maisondufaubourg.fr",
+    "contact_name": "Elsa Klein",
+    "preferred_brands": ["Schwarzkopf"],
+    "tags": ["RDV visio", "Décideuse présente"],
+    "timeline": [
+      {
+        "id": "sal_015_evt_1",
+        "type": "meeting",
+        "text": "Créneau visio validé pour mercredi 16h00.",
+        "at": "2026-03-10T17:26:00.000Z"
+      },
+      {
+        "id": "sal_015_evt_2",
+        "type": "brand_match",
+        "text": "Schwarzkopf ressort comme meilleure piste à présenter.",
+        "at": "2026-03-10T17:58:00.000Z"
+      },
+      {
+        "id": "sal_015_evt_3",
+        "type": "note",
+        "text": "Prévoir une démo très concise, équipe pressée.",
+        "at": "2026-03-10T18:35:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_016",
+    "name": "Atelier Lumière",
+    "city": "Paris",
+    "department": "75",
+    "status": "negociation",
+    "score": 95,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-12T13:55:00.000Z",
+    "kanban_order": 1,
+    "phone": "01 47 63 55 90",
+    "email": "direction@atelierlumiere.fr",
+    "website": "https://atelierlumiere.fr",
+    "contact_name": "Pauline Henry",
+    "preferred_brands": ["Wella", "Revlon"],
+    "tags": ["Négo avancée", "Volume élevé"],
+    "timeline": [
+      {
+        "id": "sal_016_evt_1",
+        "type": "proposal",
+        "text": "Offre commerciale envoyée avec conditions négociées.",
+        "at": "2026-03-12T12:48:00.000Z"
+      },
+      {
+        "id": "sal_016_evt_2",
+        "type": "status_change",
+        "text": "Le salon compare deux scénarios de partenariat.",
+        "at": "2026-03-12T13:21:00.000Z"
+      },
+      {
+        "id": "sal_016_evt_3",
+        "type": "note",
+        "text": "Bonne chance de closing si remise de lancement confirmée.",
+        "at": "2026-03-12T13:55:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_017",
+    "name": "Studio Garance",
+    "city": "Aix-en-Provence",
+    "department": "13",
+    "status": "negociation",
+    "score": 86,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-11T16:22:00.000Z",
+    "kanban_order": 2,
+    "phone": "04 42 58 64 72",
+    "email": "contact@studiogarance.fr",
+    "website": "https://studiogarance.fr",
+    "contact_name": "Garance Roux",
+    "preferred_brands": ["Myspa", "Revlon"],
+    "tags": ["Budget validé", "Décision lundi"],
+    "timeline": [
+      {
+        "id": "sal_017_evt_1",
+        "type": "proposal",
+        "text": "Version finale du dossier transmise à la gérante.",
+        "at": "2026-03-11T15:02:00.000Z"
+      },
+      {
+        "id": "sal_017_evt_2",
+        "type": "status_change",
+        "text": "Le salon négocie uniquement le package de démarrage.",
+        "at": "2026-03-11T15:46:00.000Z"
+      },
+      {
+        "id": "sal_017_evt_3",
+        "type": "note",
+        "text": "Très bon alignement, blocage principal sur le timing d’installation.",
+        "at": "2026-03-11T16:22:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_018",
+    "name": "Maison Tuileries",
+    "city": "Paris",
+    "department": "75",
+    "status": "negociation",
+    "score": 89,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-10T10:55:00.000Z",
+    "kanban_order": 3,
+    "phone": "01 44 66 22 19",
+    "email": "bonjour@maisontuileries.fr",
+    "website": "https://maisontuileries.fr",
+    "contact_name": "Élodie Garnier",
+    "preferred_brands": ["Wella", "Myspa"],
+    "tags": ["Paris 1", "En attente signature"],
+    "timeline": [
+      {
+        "id": "sal_018_evt_1",
+        "type": "proposal",
+        "text": "Contrat envoyé pour relecture juridique.",
+        "at": "2026-03-10T09:42:00.000Z"
+      },
+      {
+        "id": "sal_018_evt_2",
+        "type": "status_change",
+        "text": "Le salon valide le principe mais veut ajuster les délais.",
+        "at": "2026-03-10T10:18:00.000Z"
+      },
+      {
+        "id": "sal_018_evt_3",
+        "type": "note",
+        "text": "Faire relance douce avec proposition de démarrage en deux temps.",
+        "at": "2026-03-10T10:55:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_019",
+    "name": "Maison Azur",
+    "city": "Cannes",
+    "department": "06",
+    "status": "negociation",
+    "score": 80,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-09T14:28:00.000Z",
+    "kanban_order": 4,
+    "phone": "04 93 47 29 18",
+    "email": "contact@maisonazur.fr",
+    "website": "https://maisonazur.fr",
+    "contact_name": "Sonia Marchand",
+    "preferred_brands": ["Schwarzkopf"],
+    "tags": ["Saison haute", "Négo prix"],
+    "timeline": [
+      {
+        "id": "sal_019_evt_1",
+        "type": "proposal",
+        "text": "Contre-proposition reçue sur les conditions d’entrée.",
+        "at": "2026-03-09T13:16:00.000Z"
+      },
+      {
+        "id": "sal_019_evt_2",
+        "type": "status_change",
+        "text": "Négociation ouverte sur le premier lot de lancement.",
+        "at": "2026-03-09T13:51:00.000Z"
+      },
+      {
+        "id": "sal_019_evt_3",
+        "type": "note",
+        "text": "Le contexte touristique justifie une proposition premium saisonnière.",
+        "at": "2026-03-09T14:28:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_020",
+    "name": "Maison Marli",
+    "city": "Paris",
+    "department": "75",
+    "status": "gagne",
+    "score": 97,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-12T15:40:00.000Z",
+    "kanban_order": 1,
+    "phone": "01 43 90 52 88",
+    "email": "direction@maisonmarli.fr",
+    "website": "https://maisonmarli.fr",
+    "contact_name": "Marion Lisnard",
+    "preferred_brands": ["Wella", "Revlon"],
+    "tags": ["Signé", "Onboarding"],
+    "timeline": [
+      {
+        "id": "sal_020_evt_1",
+        "type": "closing",
+        "text": "Accord signé électroniquement ce matin.",
+        "at": "2026-03-12T14:42:00.000Z"
+      },
+      {
+        "id": "sal_020_evt_2",
+        "type": "status_change",
+        "text": "Le deal est remporté et passe au suivi onboarding.",
+        "at": "2026-03-12T15:06:00.000Z"
+      },
+      {
+        "id": "sal_020_evt_3",
+        "type": "note",
+        "text": "Prévoir dossier d’activation avec Wella dès lundi.",
+        "at": "2026-03-12T15:40:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_021",
+    "name": "Atelier Opaline",
+    "city": "Bordeaux",
+    "department": "33",
+    "status": "gagne",
+    "score": 90,
+    "assigned_to": "Bonnie",
+    "assigned_avatar": "/images/avatars/01.png",
+    "assigned_initials": "BO",
+    "last_contact_at": "2026-03-11T12:10:00.000Z",
+    "kanban_order": 2,
+    "phone": "05 56 73 18 22",
+    "email": "hello@atelieropaline.fr",
+    "website": "https://atelieropaline.fr",
+    "contact_name": "Clémentine Faure",
+    "preferred_brands": ["Myspa", "Revlon"],
+    "tags": ["Pilote lancé", "Très satisfait"],
+    "timeline": [
+      {
+        "id": "sal_021_evt_1",
+        "type": "closing",
+        "text": "Bon de commande confirmé après dernier échange téléphonique.",
+        "at": "2026-03-11T11:05:00.000Z"
+      },
+      {
+        "id": "sal_021_evt_2",
+        "type": "status_change",
+        "text": "Le salon rejoint les clients gagnés du trimestre.",
+        "at": "2026-03-11T11:38:00.000Z"
+      },
+      {
+        "id": "sal_021_evt_3",
+        "type": "note",
+        "text": "Excellente référence potentielle pour la région Sud-Ouest.",
+        "at": "2026-03-11T12:10:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "sal_022",
+    "name": "Studio Héritage",
+    "city": "Lyon",
+    "department": "69",
+    "status": "gagne",
+    "score": 87,
+    "assigned_to": "Marie-Pierre",
+    "assigned_avatar": "/images/avatars/02.png",
+    "assigned_initials": "MP",
+    "last_contact_at": "2026-03-10T19:12:00.000Z",
+    "kanban_order": 3,
+    "phone": "04 72 02 61 43",
+    "email": "contact@studioheritage.fr",
+    "website": "https://studioheritage.fr",
+    "contact_name": "Bastien Rolland",
+    "preferred_brands": ["Schwarzkopf", "Saint-Algue"],
+    "tags": ["Closé", "Migration fournisseur"],
+    "timeline": [
+      {
+        "id": "sal_022_evt_1",
+        "type": "closing",
+        "text": "Le salon confirme le changement de fournisseur sur 6 mois.",
+        "at": "2026-03-10T18:10:00.000Z"
+      },
+      {
+        "id": "sal_022_evt_2",
+        "type": "status_change",
+        "text": "Deal gagné après validation finale du bon de commande.",
+        "at": "2026-03-10T18:36:00.000Z"
+      },
+      {
+        "id": "sal_022_evt_3",
+        "type": "note",
+        "text": "Prévoir accompagnement de reprise de stock au démarrage.",
+        "at": "2026-03-10T19:12:00.000Z"
+      }
+    ]
+  }
+]

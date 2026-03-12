@@ -1,0 +1,1040 @@
+[
+  {
+    "id": "brand-revlon-001",
+    "name": "Revlon",
+    "category": "Coloration",
+    "logo_url": "/logos/revlon.svg",
+    "website": "https://www.revlonprofessional.com/fr-fr",
+    "description": "Leader mondial de la coloration professionnelle avec une offre premium pensée pour les salons à forte exigence technique et commerciale.",
+    "contact_name": "Marie Dupont",
+    "contact_email": "contact@revlon.fr",
+    "contact_phone": "+33 1 42 10 24 30",
+    "is_active": true,
+    "compatible_salon_count": 124,
+    "average_compatibility": 78,
+    "total_proposals": 18,
+    "acceptance_rate": 61,
+    "metadata": {
+      "criteria": {
+        "team_size_min": 3,
+        "has_website": true,
+        "google_rating_min": 3.5,
+        "premium_positioning": true
+      },
+      "criteria_table": [
+        { "criterion": "Équipe minimum", "operator": ">=", "value": 3, "weight": 30 },
+        { "criterion": "Site web actif", "operator": "=", "value": true, "weight": 20 },
+        { "criterion": "Note Google", "operator": ">=", "value": 3.5, "weight": 25 },
+        { "criterion": "Positionnement premium", "operator": "=", "value": true, "weight": 25 }
+      ]
+    },
+    "salons": [
+      {
+        "id": "salon-atelier-lumiere",
+        "name": "Atelier Lumière",
+        "city": "Paris 9",
+        "department": "75",
+        "status": "interesse",
+        "salon_score": 89,
+        "compatibility_score": 94
+      },
+      {
+        "id": "salon-studio-marais",
+        "name": "Studio Marais",
+        "city": "Paris 3",
+        "department": "75",
+        "status": "rdv_planifie",
+        "salon_score": 84,
+        "compatibility_score": 88
+      },
+      {
+        "id": "salon-maison-elegance",
+        "name": "Maison Élégance",
+        "city": "Lyon 2",
+        "department": "69",
+        "status": "negociation",
+        "salon_score": 91,
+        "compatibility_score": 86
+      },
+      {
+        "id": "salon-signature-coiffure",
+        "name": "Signature Coiffure",
+        "city": "Bordeaux",
+        "department": "33",
+        "status": "contacte",
+        "salon_score": 79,
+        "compatibility_score": 81
+      },
+      {
+        "id": "salon-nuance-bastille",
+        "name": "Nuance Bastille",
+        "city": "Paris 12",
+        "department": "75",
+        "status": "nouveau",
+        "salon_score": 76,
+        "compatibility_score": 73
+      },
+      {
+        "id": "salon-atelier-velours",
+        "name": "Atelier Velours",
+        "city": "Strasbourg",
+        "department": "67",
+        "status": "contacte",
+        "salon_score": 74,
+        "compatibility_score": 68
+      }
+    ],
+    "proposals": [
+      {
+        "id": "prop-revlon-001",
+        "salon_name": "Atelier Lumière",
+        "status": "Acceptée",
+        "proposed_at": "2026-03-04",
+        "proposed_by": "Bonnie",
+        "brand_response": "Feu vert pour un démarrage test sur la coloration premium."
+      },
+      {
+        "id": "prop-revlon-002",
+        "salon_name": "Maison Élégance",
+        "status": "Envoyée",
+        "proposed_at": "2026-03-01",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "En attente du retour de la direction commerciale."
+      },
+      {
+        "id": "prop-revlon-003",
+        "salon_name": "Signature Coiffure",
+        "status": "Brouillon",
+        "proposed_at": "2026-02-28",
+        "proposed_by": "Bonnie",
+        "brand_response": "Dossier prêt, validation interne requise."
+      },
+      {
+        "id": "prop-revlon-004",
+        "salon_name": "Nuance Bastille",
+        "status": "Refusée",
+        "proposed_at": "2026-02-12",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Potentiel jugé trop junior sur la partie retail."
+      }
+    ],
+    "auctions": [
+      {
+        "id": "auc-revlon-001",
+        "title": "Pack coloration printemps Paris",
+        "status": "En cours",
+        "start_date": "2026-03-03",
+        "end_date": "2026-03-18",
+        "last_bid": "14 500 €",
+        "result": "Position actuelle : 2e sur 4"
+      },
+      {
+        "id": "auc-revlon-002",
+        "title": "Activation premium Bordeaux",
+        "status": "Terminée",
+        "start_date": "2026-02-10",
+        "end_date": "2026-02-24",
+        "last_bid": "9 800 €",
+        "result": "Remportée"
+      },
+      {
+        "id": "auc-revlon-003",
+        "title": "Dispositif réseau Est",
+        "status": "Perdue",
+        "start_date": "2026-01-12",
+        "end_date": "2026-01-25",
+        "last_bid": "11 200 €",
+        "result": "Wella retenue sur le lot final"
+      }
+    ],
+    "stats": {
+      "thresholds": { "gt50": 124, "gt70": 71, "gt90": 14 },
+      "compatibility_distribution": [
+        { "bucket": "0-50", "count": 12 },
+        { "bucket": "51-70", "count": 41 },
+        { "bucket": "71-85", "count": 49 },
+        { "bucket": "86-100", "count": 22 }
+      ],
+      "proposal_success": [
+        { "month": "Oct", "proposed": 8, "accepted": 4 },
+        { "month": "Nov", "proposed": 9, "accepted": 5 },
+        { "month": "Déc", "proposed": 7, "accepted": 4 },
+        { "month": "Jan", "proposed": 10, "accepted": 6 },
+        { "month": "Fév", "proposed": 11, "accepted": 7 },
+        { "month": "Mars", "proposed": 6, "accepted": 4 }
+      ],
+      "top_salons": [
+        { "name": "Atelier Lumière", "city": "Paris 9", "compatibility_score": 94 },
+        { "name": "Studio Marais", "city": "Paris 3", "compatibility_score": 88 },
+        { "name": "Maison Élégance", "city": "Lyon 2", "compatibility_score": 86 },
+        { "name": "Signature Coiffure", "city": "Bordeaux", "compatibility_score": 81 },
+        { "name": "Nuance Bastille", "city": "Paris 12", "compatibility_score": 73 }
+      ]
+    }
+  },
+  {
+    "id": "brand-schwarzkopf-001",
+    "name": "Schwarzkopf",
+    "category": "Soins & Coloration",
+    "logo_url": "/logos/schwarzkopf.svg",
+    "website": "https://www.schwarzkopf-professional.com",
+    "description": "Marque iconique alliant expertise coloration, soin et formation continue pour les salons structurés et orientés performance.",
+    "contact_name": "Thomas Keller",
+    "contact_email": "partenaires@schwarzkopf.fr",
+    "contact_phone": "+33 1 53 11 64 20",
+    "is_active": true,
+    "compatible_salon_count": 138,
+    "average_compatibility": 82,
+    "total_proposals": 24,
+    "acceptance_rate": 67,
+    "metadata": {
+      "criteria": {
+        "team_size_min": 4,
+        "has_training_space": true,
+        "google_rating_min": 4,
+        "instagram_min": 1500
+      },
+      "criteria_table": [
+        { "criterion": "Équipe minimum", "operator": ">=", "value": 4, "weight": 28 },
+        { "criterion": "Espace formation", "operator": "=", "value": true, "weight": 22 },
+        { "criterion": "Note Google", "operator": ">=", "value": 4, "weight": 25 },
+        { "criterion": "Communauté Instagram", "operator": ">=", "value": 1500, "weight": 25 }
+      ]
+    },
+    "salons": [
+      {
+        "id": "salon-maison-elegance",
+        "name": "Maison Élégance",
+        "city": "Lyon 2",
+        "department": "69",
+        "status": "negociation",
+        "salon_score": 91,
+        "compatibility_score": 95
+      },
+      {
+        "id": "salon-atelier-lumiere",
+        "name": "Atelier Lumière",
+        "city": "Paris 9",
+        "department": "75",
+        "status": "interesse",
+        "salon_score": 89,
+        "compatibility_score": 91
+      },
+      {
+        "id": "salon-le-carre-dor",
+        "name": "Le Carré d'Or",
+        "city": "Nice",
+        "department": "06",
+        "status": "contacte",
+        "salon_score": 83,
+        "compatibility_score": 87
+      },
+      {
+        "id": "salon-maison-capucine",
+        "name": "Maison Capucine",
+        "city": "Lille",
+        "department": "59",
+        "status": "rdv_planifie",
+        "salon_score": 80,
+        "compatibility_score": 84
+      },
+      {
+        "id": "salon-atelier-21",
+        "name": "Atelier 21",
+        "city": "Toulouse",
+        "department": "31",
+        "status": "contacte",
+        "salon_score": 77,
+        "compatibility_score": 79
+      },
+      {
+        "id": "salon-atelier-velours",
+        "name": "Atelier Velours",
+        "city": "Strasbourg",
+        "department": "67",
+        "status": "nouveau",
+        "salon_score": 74,
+        "compatibility_score": 72
+      }
+    ],
+    "proposals": [
+      {
+        "id": "prop-sch-001",
+        "salon_name": "Maison Élégance",
+        "status": "Acceptée",
+        "proposed_at": "2026-03-06",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Validation du kit d'ouverture et accompagnement formation."
+      },
+      {
+        "id": "prop-sch-002",
+        "salon_name": "Maison Capucine",
+        "status": "Envoyée",
+        "proposed_at": "2026-03-02",
+        "proposed_by": "Bonnie",
+        "brand_response": "Comité réseau programmé la semaine prochaine."
+      },
+      {
+        "id": "prop-sch-003",
+        "salon_name": "Atelier 21",
+        "status": "Envoyée",
+        "proposed_at": "2026-02-26",
+        "proposed_by": "Bonnie",
+        "brand_response": "Besoin d'un complément sur la partie retail."
+      },
+      {
+        "id": "prop-sch-004",
+        "salon_name": "Atelier Velours",
+        "status": "Brouillon",
+        "proposed_at": "2026-02-18",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Positionnement intéressant mais scoring à consolider."
+      }
+    ],
+    "auctions": [
+      {
+        "id": "auc-sch-001",
+        "title": "Déploiement Nord premium",
+        "status": "En cours",
+        "start_date": "2026-03-01",
+        "end_date": "2026-03-16",
+        "last_bid": "16 200 €",
+        "result": "Leader provisoire"
+      },
+      {
+        "id": "auc-sch-002",
+        "title": "Lot Lyon formation 360",
+        "status": "Terminée",
+        "start_date": "2026-02-03",
+        "end_date": "2026-02-19",
+        "last_bid": "12 600 €",
+        "result": "Remportée"
+      },
+      {
+        "id": "auc-sch-003",
+        "title": "Tournée Sud-Est salons experts",
+        "status": "Perdue",
+        "start_date": "2026-01-08",
+        "end_date": "2026-01-22",
+        "last_bid": "10 900 €",
+        "result": "Revlon retenue"
+      }
+    ],
+    "stats": {
+      "thresholds": { "gt50": 138, "gt70": 84, "gt90": 18 },
+      "compatibility_distribution": [
+        { "bucket": "0-50", "count": 10 },
+        { "bucket": "51-70", "count": 31 },
+        { "bucket": "71-85", "count": 58 },
+        { "bucket": "86-100", "count": 39 }
+      ],
+      "proposal_success": [
+        { "month": "Oct", "proposed": 7, "accepted": 4 },
+        { "month": "Nov", "proposed": 9, "accepted": 5 },
+        { "month": "Déc", "proposed": 11, "accepted": 7 },
+        { "month": "Jan", "proposed": 13, "accepted": 8 },
+        { "month": "Fév", "proposed": 12, "accepted": 8 },
+        { "month": "Mars", "proposed": 8, "accepted": 5 }
+      ],
+      "top_salons": [
+        { "name": "Maison Élégance", "city": "Lyon 2", "compatibility_score": 95 },
+        { "name": "Atelier Lumière", "city": "Paris 9", "compatibility_score": 91 },
+        { "name": "Le Carré d'Or", "city": "Nice", "compatibility_score": 87 },
+        { "name": "Maison Capucine", "city": "Lille", "compatibility_score": 84 },
+        { "name": "Atelier 21", "city": "Toulouse", "compatibility_score": 79 }
+      ]
+    }
+  },
+  {
+    "id": "brand-wella-001",
+    "name": "Wella",
+    "category": "Coloration & Styling",
+    "logo_url": "/logos/wella.svg",
+    "website": "https://www.wella.com/professional/fr-FR",
+    "description": "Référence premium en coloration et styling avec une forte culture d'innovation, idéale pour les salons à image tendance et prescriptrice.",
+    "contact_name": "Claire Roussel",
+    "contact_email": "partnerships@wella.fr",
+    "contact_phone": "+33 1 70 98 40 18",
+    "is_active": true,
+    "compatible_salon_count": 117,
+    "average_compatibility": 76,
+    "total_proposals": 20,
+    "acceptance_rate": 55,
+    "metadata": {
+      "criteria": {
+        "team_size_min": 3,
+        "has_styling_offer": true,
+        "google_rating_min": 3.8,
+        "instagram_min": 1000
+      },
+      "criteria_table": [
+        { "criterion": "Équipe minimum", "operator": ">=", "value": 3, "weight": 25 },
+        { "criterion": "Offre styling", "operator": "=", "value": true, "weight": 25 },
+        { "criterion": "Note Google", "operator": ">=", "value": 3.8, "weight": 20 },
+        { "criterion": "Communauté Instagram", "operator": ">=", "value": 1000, "weight": 30 }
+      ]
+    },
+    "salons": [
+      {
+        "id": "salon-studio-marais",
+        "name": "Studio Marais",
+        "city": "Paris 3",
+        "department": "75",
+        "status": "rdv_planifie",
+        "salon_score": 84,
+        "compatibility_score": 92
+      },
+      {
+        "id": "salon-maison-voltaire",
+        "name": "Maison Voltaire",
+        "city": "Paris 11",
+        "department": "75",
+        "status": "contacte",
+        "salon_score": 82,
+        "compatibility_score": 86
+      },
+      {
+        "id": "salon-atelier-21",
+        "name": "Atelier 21",
+        "city": "Toulouse",
+        "department": "31",
+        "status": "interesse",
+        "salon_score": 77,
+        "compatibility_score": 83
+      },
+      {
+        "id": "salon-salon-horizon",
+        "name": "Salon Horizon",
+        "city": "Marseille 6",
+        "department": "13",
+        "status": "contacte",
+        "salon_score": 78,
+        "compatibility_score": 80
+      },
+      {
+        "id": "salon-signature-coiffure",
+        "name": "Signature Coiffure",
+        "city": "Bordeaux",
+        "department": "33",
+        "status": "nouveau",
+        "salon_score": 79,
+        "compatibility_score": 74
+      },
+      {
+        "id": "salon-linstant-beaute",
+        "name": "L'Instant Beauté",
+        "city": "Nantes",
+        "department": "44",
+        "status": "contacte",
+        "salon_score": 71,
+        "compatibility_score": 69
+      }
+    ],
+    "proposals": [
+      {
+        "id": "prop-wella-001",
+        "salon_name": "Studio Marais",
+        "status": "Acceptée",
+        "proposed_at": "2026-03-03",
+        "proposed_by": "Bonnie",
+        "brand_response": "Accord sur un plan de lancement styling + coloration."
+      },
+      {
+        "id": "prop-wella-002",
+        "salon_name": "Atelier 21",
+        "status": "Envoyée",
+        "proposed_at": "2026-03-01",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Étude du potentiel par la direction régionale."
+      },
+      {
+        "id": "prop-wella-003",
+        "salon_name": "Maison Voltaire",
+        "status": "Brouillon",
+        "proposed_at": "2026-02-23",
+        "proposed_by": "Bonnie",
+        "brand_response": "Besoin d'une validation sur le panier moyen coloration."
+      },
+      {
+        "id": "prop-wella-004",
+        "salon_name": "L'Instant Beauté",
+        "status": "Refusée",
+        "proposed_at": "2026-02-11",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Trop faible visibilité digitale pour le moment."
+      }
+    ],
+    "auctions": [
+      {
+        "id": "auc-wella-001",
+        "title": "Programme styling influence Paris",
+        "status": "En cours",
+        "start_date": "2026-03-05",
+        "end_date": "2026-03-20",
+        "last_bid": "13 900 €",
+        "result": "Très bien placée"
+      },
+      {
+        "id": "auc-wella-002",
+        "title": "Lot Marseille image & retail",
+        "status": "Terminée",
+        "start_date": "2026-02-07",
+        "end_date": "2026-02-21",
+        "last_bid": "8 700 €",
+        "result": "Remportée"
+      },
+      {
+        "id": "auc-wella-003",
+        "title": "Activation façades Atlantique",
+        "status": "Perdue",
+        "start_date": "2026-01-10",
+        "end_date": "2026-01-24",
+        "last_bid": "7 900 €",
+        "result": "Schwarzkopf gagnante"
+      }
+    ],
+    "stats": {
+      "thresholds": { "gt50": 117, "gt70": 63, "gt90": 11 },
+      "compatibility_distribution": [
+        { "bucket": "0-50", "count": 15 },
+        { "bucket": "51-70", "count": 39 },
+        { "bucket": "71-85", "count": 43 },
+        { "bucket": "86-100", "count": 20 }
+      ],
+      "proposal_success": [
+        { "month": "Oct", "proposed": 6, "accepted": 3 },
+        { "month": "Nov", "proposed": 8, "accepted": 4 },
+        { "month": "Déc", "proposed": 7, "accepted": 3 },
+        { "month": "Jan", "proposed": 9, "accepted": 5 },
+        { "month": "Fév", "proposed": 10, "accepted": 5 },
+        { "month": "Mars", "proposed": 7, "accepted": 4 }
+      ],
+      "top_salons": [
+        { "name": "Studio Marais", "city": "Paris 3", "compatibility_score": 92 },
+        { "name": "Maison Voltaire", "city": "Paris 11", "compatibility_score": 86 },
+        { "name": "Atelier 21", "city": "Toulouse", "compatibility_score": 83 },
+        { "name": "Salon Horizon", "city": "Marseille 6", "compatibility_score": 80 },
+        { "name": "Signature Coiffure", "city": "Bordeaux", "compatibility_score": 74 }
+      ]
+    }
+  },
+  {
+    "id": "brand-provalliance-001",
+    "name": "Provalliance",
+    "category": "Distribution",
+    "logo_url": "/logos/provalliance.svg",
+    "website": "https://www.provalliance.com",
+    "description": "Groupe de distribution structurant pour les salons recherchant accompagnement réseau, puissance d'achat et pilotage commercial solide.",
+    "contact_name": "Nicolas André",
+    "contact_email": "reseau@provalliance.fr",
+    "contact_phone": "+33 1 46 83 67 00",
+    "is_active": true,
+    "compatible_salon_count": 102,
+    "average_compatibility": 71,
+    "total_proposals": 14,
+    "acceptance_rate": 50,
+    "metadata": {
+      "criteria": {
+        "team_size_min": 5,
+        "multi_service": true,
+        "has_retail_corner": true,
+        "city_tier": "A ou B"
+      },
+      "criteria_table": [
+        { "criterion": "Équipe minimum", "operator": ">=", "value": 5, "weight": 30 },
+        { "criterion": "Offre multi-service", "operator": "=", "value": true, "weight": 25 },
+        { "criterion": "Corner retail", "operator": "=", "value": true, "weight": 25 },
+        { "criterion": "Ville cible", "operator": "IN", "value": "A ou B", "weight": 20 }
+      ]
+    },
+    "salons": [
+      {
+        "id": "salon-maison-capucine",
+        "name": "Maison Capucine",
+        "city": "Lille",
+        "department": "59",
+        "status": "interesse",
+        "salon_score": 80,
+        "compatibility_score": 89
+      },
+      {
+        "id": "salon-le-carre-dor",
+        "name": "Le Carré d'Or",
+        "city": "Nice",
+        "department": "06",
+        "status": "contacte",
+        "salon_score": 83,
+        "compatibility_score": 84
+      },
+      {
+        "id": "salon-salon-horizon",
+        "name": "Salon Horizon",
+        "city": "Marseille 6",
+        "department": "13",
+        "status": "rdv_planifie",
+        "salon_score": 78,
+        "compatibility_score": 78
+      },
+      {
+        "id": "salon-atelier-lumiere",
+        "name": "Atelier Lumière",
+        "city": "Paris 9",
+        "department": "75",
+        "status": "negociation",
+        "salon_score": 89,
+        "compatibility_score": 76
+      },
+      {
+        "id": "salon-signature-coiffure",
+        "name": "Signature Coiffure",
+        "city": "Bordeaux",
+        "department": "33",
+        "status": "contacte",
+        "salon_score": 79,
+        "compatibility_score": 72
+      },
+      {
+        "id": "salon-linstant-beaute",
+        "name": "L'Instant Beauté",
+        "city": "Nantes",
+        "department": "44",
+        "status": "nouveau",
+        "salon_score": 71,
+        "compatibility_score": 67
+      }
+    ],
+    "proposals": [
+      {
+        "id": "prop-prov-001",
+        "salon_name": "Maison Capucine",
+        "status": "Acceptée",
+        "proposed_at": "2026-03-05",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Très bon fit avec la logique réseau et retail."
+      },
+      {
+        "id": "prop-prov-002",
+        "salon_name": "Le Carré d'Or",
+        "status": "Envoyée",
+        "proposed_at": "2026-03-03",
+        "proposed_by": "Bonnie",
+        "brand_response": "À compléter avec chiffres cabine et retail."
+      },
+      {
+        "id": "prop-prov-003",
+        "salon_name": "Atelier Lumière",
+        "status": "Brouillon",
+        "proposed_at": "2026-02-22",
+        "proposed_by": "Bonnie",
+        "brand_response": "Potentiel élevé mais questionnement sur l'indépendance du salon."
+      },
+      {
+        "id": "prop-prov-004",
+        "salon_name": "L'Instant Beauté",
+        "status": "Refusée",
+        "proposed_at": "2026-02-09",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Taille d'équipe encore insuffisante pour l'offre."
+      }
+    ],
+    "auctions": [
+      {
+        "id": "auc-prov-001",
+        "title": "Reprise réseau Hauts-de-France",
+        "status": "En cours",
+        "start_date": "2026-03-04",
+        "end_date": "2026-03-22",
+        "last_bid": "18 400 €",
+        "result": "En tête"
+      },
+      {
+        "id": "auc-prov-002",
+        "title": "Lot Méditerranée retail",
+        "status": "Terminée",
+        "start_date": "2026-02-05",
+        "end_date": "2026-02-18",
+        "last_bid": "10 100 €",
+        "result": "Remportée"
+      },
+      {
+        "id": "auc-prov-003",
+        "title": "Accompagnement franchise Ouest",
+        "status": "Perdue",
+        "start_date": "2026-01-14",
+        "end_date": "2026-01-28",
+        "last_bid": "9 300 €",
+        "result": "Saint-Algue retenue"
+      }
+    ],
+    "stats": {
+      "thresholds": { "gt50": 102, "gt70": 56, "gt90": 8 },
+      "compatibility_distribution": [
+        { "bucket": "0-50", "count": 19 },
+        { "bucket": "51-70", "count": 36 },
+        { "bucket": "71-85", "count": 34 },
+        { "bucket": "86-100", "count": 13 }
+      ],
+      "proposal_success": [
+        { "month": "Oct", "proposed": 5, "accepted": 2 },
+        { "month": "Nov", "proposed": 6, "accepted": 3 },
+        { "month": "Déc", "proposed": 5, "accepted": 2 },
+        { "month": "Jan", "proposed": 8, "accepted": 4 },
+        { "month": "Fév", "proposed": 7, "accepted": 4 },
+        { "month": "Mars", "proposed": 4, "accepted": 2 }
+      ],
+      "top_salons": [
+        { "name": "Maison Capucine", "city": "Lille", "compatibility_score": 89 },
+        { "name": "Le Carré d'Or", "city": "Nice", "compatibility_score": 84 },
+        { "name": "Salon Horizon", "city": "Marseille 6", "compatibility_score": 78 },
+        { "name": "Atelier Lumière", "city": "Paris 9", "compatibility_score": 76 },
+        { "name": "Signature Coiffure", "city": "Bordeaux", "compatibility_score": 72 }
+      ]
+    }
+  },
+  {
+    "id": "brand-myspa-001",
+    "name": "Myspa",
+    "category": "Bien-être",
+    "logo_url": "/logos/myspa.svg",
+    "website": "https://www.myspa.fr",
+    "description": "Spécialiste bien-être et cabine, adaptée aux salons qui développent une expérience globale premium autour du soin et du rituel client.",
+    "contact_name": "Sonia Bensaïd",
+    "contact_email": "hello@myspa.fr",
+    "contact_phone": "+33 4 91 20 30 40",
+    "is_active": true,
+    "compatible_salon_count": 89,
+    "average_compatibility": 74,
+    "total_proposals": 11,
+    "acceptance_rate": 58,
+    "metadata": {
+      "criteria": {
+        "has_cabin": true,
+        "wellness_offer": true,
+        "google_rating_min": 4,
+        "premium_positioning": true
+      },
+      "criteria_table": [
+        { "criterion": "Cabine de soin", "operator": "=", "value": true, "weight": 35 },
+        { "criterion": "Offre bien-être", "operator": "=", "value": true, "weight": 25 },
+        { "criterion": "Note Google", "operator": ">=", "value": 4, "weight": 20 },
+        { "criterion": "Positionnement premium", "operator": "=", "value": true, "weight": 20 }
+      ]
+    },
+    "salons": [
+      {
+        "id": "salon-linstant-beaute",
+        "name": "L'Instant Beauté",
+        "city": "Nantes",
+        "department": "44",
+        "status": "interesse",
+        "salon_score": 71,
+        "compatibility_score": 93
+      },
+      {
+        "id": "salon-le-carre-dor",
+        "name": "Le Carré d'Or",
+        "city": "Nice",
+        "department": "06",
+        "status": "rdv_planifie",
+        "salon_score": 83,
+        "compatibility_score": 88
+      },
+      {
+        "id": "salon-salon-horizon",
+        "name": "Salon Horizon",
+        "city": "Marseille 6",
+        "department": "13",
+        "status": "contacte",
+        "salon_score": 78,
+        "compatibility_score": 82
+      },
+      {
+        "id": "salon-maison-capucine",
+        "name": "Maison Capucine",
+        "city": "Lille",
+        "department": "59",
+        "status": "contacte",
+        "salon_score": 80,
+        "compatibility_score": 78
+      },
+      {
+        "id": "salon-atelier-velours",
+        "name": "Atelier Velours",
+        "city": "Strasbourg",
+        "department": "67",
+        "status": "nouveau",
+        "salon_score": 74,
+        "compatibility_score": 72
+      },
+      {
+        "id": "salon-maison-voltaire",
+        "name": "Maison Voltaire",
+        "city": "Paris 11",
+        "department": "75",
+        "status": "contacte",
+        "salon_score": 82,
+        "compatibility_score": 69
+      }
+    ],
+    "proposals": [
+      {
+        "id": "prop-myspa-001",
+        "salon_name": "L'Instant Beauté",
+        "status": "Acceptée",
+        "proposed_at": "2026-03-05",
+        "proposed_by": "Bonnie",
+        "brand_response": "Excellent alignement sur l'offre cabine et l'expérience client."
+      },
+      {
+        "id": "prop-myspa-002",
+        "salon_name": "Le Carré d'Or",
+        "status": "Envoyée",
+        "proposed_at": "2026-03-01",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Retour attendu sur le plan merchandising cabine."
+      },
+      {
+        "id": "prop-myspa-003",
+        "salon_name": "Atelier Velours",
+        "status": "Brouillon",
+        "proposed_at": "2026-02-25",
+        "proposed_by": "Bonnie",
+        "brand_response": "Besoin d'un audit cabine plus précis."
+      },
+      {
+        "id": "prop-myspa-004",
+        "salon_name": "Maison Voltaire",
+        "status": "Refusée",
+        "proposed_at": "2026-02-13",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Cabine non prioritaire dans la stratégie actuelle du salon."
+      }
+    ],
+    "auctions": [
+      {
+        "id": "auc-myspa-001",
+        "title": "Pack cabine premium Atlantique",
+        "status": "En cours",
+        "start_date": "2026-03-06",
+        "end_date": "2026-03-19",
+        "last_bid": "7 800 €",
+        "result": "Très compétitive"
+      },
+      {
+        "id": "auc-myspa-002",
+        "title": "Lot spa urbain Sud",
+        "status": "Terminée",
+        "start_date": "2026-02-08",
+        "end_date": "2026-02-17",
+        "last_bid": "6 200 €",
+        "result": "Remportée"
+      },
+      {
+        "id": "auc-myspa-003",
+        "title": "Déploiement cabine premium Est",
+        "status": "Perdue",
+        "start_date": "2026-01-06",
+        "end_date": "2026-01-18",
+        "last_bid": "5 600 €",
+        "result": "Provalliance retenue"
+      }
+    ],
+    "stats": {
+      "thresholds": { "gt50": 89, "gt70": 49, "gt90": 7 },
+      "compatibility_distribution": [
+        { "bucket": "0-50", "count": 11 },
+        { "bucket": "51-70", "count": 29 },
+        { "bucket": "71-85", "count": 33 },
+        { "bucket": "86-100", "count": 16 }
+      ],
+      "proposal_success": [
+        { "month": "Oct", "proposed": 3, "accepted": 2 },
+        { "month": "Nov", "proposed": 4, "accepted": 2 },
+        { "month": "Déc", "proposed": 5, "accepted": 3 },
+        { "month": "Jan", "proposed": 6, "accepted": 4 },
+        { "month": "Fév", "proposed": 5, "accepted": 3 },
+        { "month": "Mars", "proposed": 3, "accepted": 2 }
+      ],
+      "top_salons": [
+        { "name": "L'Instant Beauté", "city": "Nantes", "compatibility_score": 93 },
+        { "name": "Le Carré d'Or", "city": "Nice", "compatibility_score": 88 },
+        { "name": "Salon Horizon", "city": "Marseille 6", "compatibility_score": 82 },
+        { "name": "Maison Capucine", "city": "Lille", "compatibility_score": 78 },
+        { "name": "Atelier Velours", "city": "Strasbourg", "compatibility_score": 72 }
+      ]
+    }
+  },
+  {
+    "id": "brand-saint-algue-001",
+    "name": "Saint-Algue",
+    "category": "Franchise",
+    "logo_url": "/logos/saint-algue.svg",
+    "website": "https://www.saint-algue.com",
+    "description": "Enseigne reconnue pour sa force de marque et sa capacité à structurer des salons autour d'un concept clair, visible et performant.",
+    "contact_name": "Élodie Marchal",
+    "contact_email": "developpement@saint-algue.fr",
+    "contact_phone": "+33 1 55 33 44 55",
+    "is_active": false,
+    "compatible_salon_count": 73,
+    "average_compatibility": 68,
+    "total_proposals": 9,
+    "acceptance_rate": 44,
+    "metadata": {
+      "criteria": {
+        "team_size_min": 6,
+        "city_tier": "A",
+        "high_street_location": true,
+        "retail_share_min": 15
+      },
+      "criteria_table": [
+        { "criterion": "Équipe minimum", "operator": ">=", "value": 6, "weight": 30 },
+        { "criterion": "Ville cible", "operator": "=", "value": "A", "weight": 20 },
+        { "criterion": "Emplacement premium", "operator": "=", "value": true, "weight": 25 },
+        { "criterion": "Part retail", "operator": ">=", "value": 15, "weight": 25 }
+      ]
+    },
+    "salons": [
+      {
+        "id": "salon-maison-voltaire",
+        "name": "Maison Voltaire",
+        "city": "Paris 11",
+        "department": "75",
+        "status": "contacte",
+        "salon_score": 82,
+        "compatibility_score": 90
+      },
+      {
+        "id": "salon-atelier-lumiere",
+        "name": "Atelier Lumière",
+        "city": "Paris 9",
+        "department": "75",
+        "status": "negociation",
+        "salon_score": 89,
+        "compatibility_score": 84
+      },
+      {
+        "id": "salon-signature-coiffure",
+        "name": "Signature Coiffure",
+        "city": "Bordeaux",
+        "department": "33",
+        "status": "interesse",
+        "salon_score": 79,
+        "compatibility_score": 78
+      },
+      {
+        "id": "salon-studio-marais",
+        "name": "Studio Marais",
+        "city": "Paris 3",
+        "department": "75",
+        "status": "rdv_planifie",
+        "salon_score": 84,
+        "compatibility_score": 74
+      },
+      {
+        "id": "salon-atelier-21",
+        "name": "Atelier 21",
+        "city": "Toulouse",
+        "department": "31",
+        "status": "nouveau",
+        "salon_score": 77,
+        "compatibility_score": 66
+      },
+      {
+        "id": "salon-atelier-velours",
+        "name": "Atelier Velours",
+        "city": "Strasbourg",
+        "department": "67",
+        "status": "contacte",
+        "salon_score": 74,
+        "compatibility_score": 61
+      }
+    ],
+    "proposals": [
+      {
+        "id": "prop-sa-001",
+        "salon_name": "Maison Voltaire",
+        "status": "Envoyée",
+        "proposed_at": "2026-03-02",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Analyse en cours côté développement réseau."
+      },
+      {
+        "id": "prop-sa-002",
+        "salon_name": "Atelier Lumière",
+        "status": "Acceptée",
+        "proposed_at": "2026-02-27",
+        "proposed_by": "Bonnie",
+        "brand_response": "Intérêt confirmé sous réserve d'étude d'emplacement."
+      },
+      {
+        "id": "prop-sa-003",
+        "salon_name": "Atelier 21",
+        "status": "Brouillon",
+        "proposed_at": "2026-02-20",
+        "proposed_by": "Bonnie",
+        "brand_response": "Dossier à muscler sur la partie retail."
+      },
+      {
+        "id": "prop-sa-004",
+        "salon_name": "Atelier Velours",
+        "status": "Refusée",
+        "proposed_at": "2026-02-08",
+        "proposed_by": "Marie-Pierre",
+        "brand_response": "Zone non prioritaire pour le réseau 2026."
+      }
+    ],
+    "auctions": [
+      {
+        "id": "auc-sa-001",
+        "title": "Développement franchise IDF",
+        "status": "En cours",
+        "start_date": "2026-03-07",
+        "end_date": "2026-03-23",
+        "last_bid": "19 100 €",
+        "result": "Dans le top 2"
+      },
+      {
+        "id": "auc-sa-002",
+        "title": "Lot Bordeaux centre-ville",
+        "status": "Terminée",
+        "start_date": "2026-02-09",
+        "end_date": "2026-02-20",
+        "last_bid": "8 900 €",
+        "result": "Perdue face à Provalliance"
+      },
+      {
+        "id": "auc-sa-003",
+        "title": "Pack visibilité nationale",
+        "status": "Perdue",
+        "start_date": "2026-01-11",
+        "end_date": "2026-01-26",
+        "last_bid": "12 500 €",
+        "result": "Schwarzkopf gagnante"
+      }
+    ],
+    "stats": {
+      "thresholds": { "gt50": 73, "gt70": 37, "gt90": 5 },
+      "compatibility_distribution": [
+        { "bucket": "0-50", "count": 16 },
+        { "bucket": "51-70", "count": 24 },
+        { "bucket": "71-85", "count": 22 },
+        { "bucket": "86-100", "count": 11 }
+      ],
+      "proposal_success": [
+        { "month": "Oct", "proposed": 3, "accepted": 1 },
+        { "month": "Nov", "proposed": 4, "accepted": 2 },
+        { "month": "Déc", "proposed": 4, "accepted": 2 },
+        { "month": "Jan", "proposed": 5, "accepted": 2 },
+        { "month": "Fév", "proposed": 4, "accepted": 2 },
+        { "month": "Mars", "proposed": 2, "accepted": 1 }
+      ],
+      "top_salons": [
+        { "name": "Maison Voltaire", "city": "Paris 11", "compatibility_score": 90 },
+        { "name": "Atelier Lumière", "city": "Paris 9", "compatibility_score": 84 },
+        { "name": "Signature Coiffure", "city": "Bordeaux", "compatibility_score": 78 },
+        { "name": "Studio Marais", "city": "Paris 3", "compatibility_score": 74 },
+        { "name": "Atelier 21", "city": "Toulouse", "compatibility_score": 66 }
+      ]
+    }
+  }
+]
