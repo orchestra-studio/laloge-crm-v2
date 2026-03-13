@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { RichTextEditorDemo } from "@/components/ui/custom/tiptap/rich-text-editor";
+import { Textarea } from "@/components/ui/textarea";
 
 const templateSchema = z.object({
   name: z.string().min(2, "Nom requis"),
@@ -245,10 +245,11 @@ export default function SettingsTemplatesPage() {
                   <FormItem>
                     <FormLabel>Contenu</FormLabel>
                     <FormControl>
-                      <RichTextEditorDemo
+                      <Textarea
                         value={field.value}
-                        onChange={(value) => field.onChange(String(value))}
-                        className="max-h-[520px]"
+                        onChange={(e) => field.onChange(e.target.value)}
+                        className="min-h-[200px] max-h-[520px]"
+                        placeholder="Contenu du template..."
                       />
                     </FormControl>
                     <FormMessage />

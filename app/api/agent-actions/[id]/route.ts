@@ -41,7 +41,8 @@ export async function PATCH(
           updated_at: now
         };
 
-  const { data, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
     .from("agent_actions")
     .update(update)
     .eq("id", id)

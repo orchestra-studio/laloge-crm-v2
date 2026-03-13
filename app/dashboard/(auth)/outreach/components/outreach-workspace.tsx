@@ -53,7 +53,7 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from "@/components/ui/chart";
-import { RichTextEditorDemo } from "@/components/ui/custom/tiptap/rich-text-editor";
+import { Textarea } from "@/components/ui/textarea";
 import { OutreachHistoryTable } from "./outreach-history-table";
 
 type OutreachTab = "sequences" | "campaigns" | "templates" | "history";
@@ -160,7 +160,7 @@ function getTemplatePreview(template: EmailTemplate) {
           </div>
         </div>
         <div className="rounded-xl border">
-          <RichTextEditorDemo value={template.body} editable={false} className="max-h-[460px]" />
+          <Textarea value={template.body} readOnly className="min-h-[200px] max-h-[460px]" />
         </div>
       </div>
     </div>
@@ -345,7 +345,7 @@ function CampaignPreview({ campaign }: { campaign: Campaign }) {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="rounded-xl border">
-              <RichTextEditorDemo value={campaign.body} editable={false} className="max-h-[320px]" />
+              <Textarea value={campaign.body} readOnly className="min-h-[150px] max-h-[320px]" />
             </div>
             <div className="rounded-xl border">
               <Table>

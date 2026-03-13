@@ -48,7 +48,6 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from "@/components/ui/chart";
-import { RichTextEditorDemo } from "@/components/ui/custom/tiptap/rich-text-editor";
 
 const chartConfig = {
   sent: { label: "Envoyés", color: "var(--chart-1)" },
@@ -493,7 +492,7 @@ function CampaignEditor({ campaign }: { campaign: Campaign }) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <RichTextEditorDemo value={body} onChange={(value) => setBody(String(value))} className="max-h-[640px]" />
+            <Textarea value={body} onChange={(e) => setBody(e.target.value)} className="min-h-[300px] max-h-[640px]" />
           </CardContent>
         </Card>
 
