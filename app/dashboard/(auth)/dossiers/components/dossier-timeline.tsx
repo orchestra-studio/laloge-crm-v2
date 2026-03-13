@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/timeline";
 import { cn } from "@/lib/utils";
 
-import type { DossierTimelineEvent, DossierTimelineKind } from "./mock-dossiers";
+type DossierTimelineKind = "analyse" | "contact" | "revue" | "generation" | "envoi";
+type DossierTimelineEvent = { id: string; date: string; title: string; description: string; actor: string; kind: DossierTimelineKind };
 
 const timeFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "2-digit",

@@ -8,7 +8,7 @@ import {
 
 import { Card, CardContent } from "@/components/ui/card";
 
-import type { ClientDossierRecord } from "./mock-dossiers";
+type MinimalDossier = { status: string };
 
 function StatCard({
   title,
@@ -37,7 +37,7 @@ function StatCard({
   );
 }
 
-export function DossierStatsGrid({ dossiers }: { dossiers: ClientDossierRecord[] }) {
+export function DossierStatsGrid({ dossiers }: { dossiers: MinimalDossier[] }) {
   const total = dossiers.length;
   const inPreparation = dossiers.filter((dossier) => dossier.status === "en_preparation").length;
   const finalized = dossiers.filter((dossier) => dossier.status === "finalise").length;

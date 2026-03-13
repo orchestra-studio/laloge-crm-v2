@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-import type { DossierStatus } from "./mock-dossiers";
+import type { DossierStatus } from "@/lib/supabase/queries/dossiers";
 
 const dossierStatusMeta: Record<
   DossierStatus,

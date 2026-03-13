@@ -15,14 +15,27 @@ import {
 import { DossierStatsGrid } from "./dossier-stats-grid";
 import { DossiersGenerateDialog } from "./dossiers-generate-dialog";
 import { DossiersTable } from "./dossiers-table";
-import { clientDossiers, type DossierStatus } from "./mock-dossiers";
 
-export function DossiersPageClient() {
+type DossierStatus = "brouillon" | "en_preparation" | "finalise" | "envoye";
+
+type DossierRecord = {
+  id: string;
+  salon_id: string;
+  brand_id: string;
+  status: DossierStatus;
+  compatibility_score: number;
+  created_at: string;
+  salon_name: string;
+  salon_city: string;
+  brand_name: string;
+};
+
+export function DossiersPageClient({ initialDossiers }: { initialDossiers: DossierRecord[] }) {
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<"all" | DossierStatus>("all");
 
   const filteredDossiers = React.useMemo(() => {
-    return [...clientDossiers]
+    return [...initialDossiers]
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .filter((dossier) => {
         const matchesSearch =
@@ -56,12 +69,12 @@ export function DossiersPageClient() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <DossiersGenerateDialog dossiers={clientDossiers} />
+            <DossiersGenerateDialog dossiers={initialDossiers} />
           </div>
         </div>
       </div>
 
-      <DossierStatsGrid dossiers={clientDossiers} />
+      <DossierStatsGrid dossiers={initialDossiers} />
 
       <div className="rounded-3xl border border-[#C5A572]/12 bg-white p-4 shadow-sm">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">

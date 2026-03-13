@@ -1,6 +1,9 @@
 import { generateMeta } from "@/lib/utils";
+import { getDossiers } from "@/lib/supabase/queries/dossiers";
 
 import { DossiersPageClient } from "./components/dossiers-page-client";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   return generateMeta({
@@ -10,6 +13,8 @@ export async function generateMetadata() {
   });
 }
 
-export default function DossiersPage() {
-  return <DossiersPageClient />;
+export default async function DossiersPage() {
+  const { dossiers } = await getDossiers({ limit: 200 });
+
+  return <DossiersPageClient initialDossiers={dossiers} />;
 }

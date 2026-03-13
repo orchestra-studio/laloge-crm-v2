@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 
 import { generateMeta } from "@/lib/utils";
+import { getDossierById } from "@/lib/supabase/queries/dossiers";
 
 import { DossierDetailClient } from "../components/dossier-detail-client";
-import { getDossierById } from "../components/mock-dossiers";
+
+export const dynamic = "force-dynamic";
 
 type DossierDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -11,7 +13,7 @@ type DossierDetailPageProps = {
 
 export async function generateMetadata({ params }: DossierDetailPageProps) {
   const { id } = await params;
-  const dossier = getDossierById(id);
+  const dossier = await getDossierById(id);
 
   return generateMeta({
     title: dossier ? `${dossier.salon_name} — ${dossier.brand_name}` : "Dossier client — La Loge",
@@ -25,7 +27,7 @@ export async function generateMetadata({ params }: DossierDetailPageProps) {
 
 export default async function DossierDetailPage({ params }: DossierDetailPageProps) {
   const { id } = await params;
-  const dossier = getDossierById(id);
+  const dossier = await getDossierById(id);
 
   if (!dossier) {
     notFound();

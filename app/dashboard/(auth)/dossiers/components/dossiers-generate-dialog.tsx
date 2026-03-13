@@ -23,7 +23,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 
-import type { ClientDossierRecord } from "./mock-dossiers";
+type MinimalDossier = { salon_id: string; salon_name: string; brand_id: string; brand_name: string };
 
 const dossierSignals = [
   "Fiche salon enrichie",
@@ -32,7 +32,7 @@ const dossierSignals = [
   "Recommandations commerciales"
 ];
 
-export function DossiersGenerateDialog({ dossiers }: { dossiers: ClientDossierRecord[] }) {
+export function DossiersGenerateDialog({ dossiers }: { dossiers: MinimalDossier[] }) {
   const salons = React.useMemo(
     () =>
       Array.from(

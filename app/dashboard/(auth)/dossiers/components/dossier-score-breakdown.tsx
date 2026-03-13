@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/chart";
 import { Progress } from "@/components/ui/progress";
 
-import type { DossierScoreBreakdownItem } from "./mock-dossiers";
+type DossierScoreBreakdownItem = { id: string; label: string; score: number; description: string };
 
 const chartConfig = {
   score: {
