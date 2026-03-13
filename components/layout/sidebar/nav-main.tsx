@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Building2Icon,
+  ContactIcon,
+  FolderKanbanIcon,
   LayoutDashboardIcon,
+  MailIcon,
   ScissorsIcon,
   SettingsIcon,
   ZapIcon,
@@ -52,9 +55,24 @@ export const navItems: NavGroup[] = [
         badgeTone: "gold"
       },
       {
+        title: "Pipeline",
+        href: "/dashboard/pipeline",
+        icon: FolderKanbanIcon
+      },
+      {
+        title: "Contacts",
+        href: "/dashboard/contacts",
+        icon: ContactIcon
+      },
+      {
         title: "Marques",
         href: "/dashboard/brands",
         icon: Building2Icon
+      },
+      {
+        title: "Outreach",
+        href: "/dashboard/outreach",
+        icon: MailIcon
       },
       {
         title: "Actions agents",

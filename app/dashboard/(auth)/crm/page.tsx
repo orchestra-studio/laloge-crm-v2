@@ -1,1 +1,5 @@
-export { default, generateMetadata } from "@/app/dashboard/(auth)/dashboard/page";
+import { redirect } from "next/navigation";
+
+export default function CrmRedirect() {
+  redirect("/dashboard");
+}
