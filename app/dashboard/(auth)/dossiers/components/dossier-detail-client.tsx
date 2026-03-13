@@ -19,18 +19,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { DossierScoreBreakdown } from "./dossier-score-breakdown";
 import { DossierStatusBadge } from "./dossier-status-badge";
 import { DossierTimeline } from "./dossier-timeline";
-import type { DossierDetail as ClientDossierRecord } from "@/lib/supabase/queries/dossiers";
+import type { DossierDetail as ClientDossierRecord, DossierContent } from "@/lib/supabase/queries/dossiers";
 
 type DossierActionPriority = "haute" | "moyenne" | "faible";
-type DossierRecommendedAction = {
-  id: string;
-  title: string;
-  detail: string;
-  owner: string;
-  due_label: string;
-  priority: DossierActionPriority;
-};
-type DossierRecommendedTerm = { title: string; detail: string };
+type DossierRecommendedAction = DossierContent["recommended_actions"][number];
+type DossierRecommendedTerm = DossierContent["recommended_terms"][number];
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "2-digit",

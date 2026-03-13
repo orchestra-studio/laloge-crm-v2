@@ -14,11 +14,13 @@ import {
 } from "@/components/ui/table";
 
 import { DossierStatusBadge } from "./dossier-status-badge";
+import type { DossierStatus } from "@/lib/supabase/queries/dossiers";
+
 type ClientDossierRecord = {
   id: string;
   salon_id: string;
   brand_id: string;
-  status: string;
+  status: DossierStatus;
   compatibility_score: number;
   created_at: string;
   salon_name: string;

@@ -2,6 +2,43 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 export type DossierStatus = "brouillon" | "en_preparation" | "finalise" | "envoye";
 
+export type DossierScoreBreakdownItem = {
+  id: string;
+  label: string;
+  score: number;
+  description: string;
+};
+
+export type DossierTimelineKind = "analyse" | "contact" | "revue" | "generation" | "envoi";
+export type DossierTimelineEvent = {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  actor: string;
+  kind: DossierTimelineKind;
+};
+
+export type DossierContent = {
+  title?: string;
+  executive_summary?: string;
+  brand_rationale?: string;
+  strengths: string[];
+  watchpoints: string[];
+  score_breakdown: DossierScoreBreakdownItem[];
+  recommended_terms: { title: string; detail: string }[];
+  recommended_actions: {
+    id: string;
+    title: string;
+    detail: string;
+    owner: string;
+    due_label: string;
+    priority: "haute" | "moyenne" | "faible";
+  }[];
+  timeline: DossierTimelineEvent[];
+  [key: string]: unknown;
+};
+
 export type DossierListItem = {
   id: string;
   salon_id: string;
@@ -23,7 +60,7 @@ type DossierRow = {
   generated_at: string | null;
   created_at: string | null;
   compatibility_score: number | null;
-  content: Record<string, unknown> | null;
+  content: DossierContent | null;
 };
 
 type SalonRow = { id: string; name: string | null; city: string | null };
@@ -112,7 +149,7 @@ export async function getDossiers(options?: {
 }
 
 export type DossierDetail = DossierListItem & {
-  content: Record<string, unknown> | null;
+  content: DossierContent | null;
   salon_info: {
     address: string;
     postal_code: string;
@@ -180,7 +217,7 @@ export async function getDossierById(id: string): Promise<DossierDetail | null> 
     salon_city: typeof salon?.city === "string" ? salon.city : "—",
     brand_name: brand?.name ?? "Marque inconnue",
     compatibility_score: Math.round(Number(row.compatibility_score ?? 0)),
-    content: content ?? null,
+    content: (content as DossierContent | null) ?? null,
     salon_info: {
       address: typeof salon?.address === "string" ? salon.address : "Adresse non renseignée",
       postal_code: typeof salon?.postal_code === "string" ? salon.postal_code : "—",
