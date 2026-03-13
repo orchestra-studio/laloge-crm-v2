@@ -19,16 +19,14 @@ import { Bar, BarChart, CartesianGrid, Funnel, FunnelChart, XAxis, YAxis } from 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import {
-  campaigns,
-  emailTemplates,
-  outreachHistory,
-  outreachSequences,
-  outreachStats,
+  campaigns as mockCampaigns,
+  emailTemplates as mockEmailTemplates,
   type Campaign,
   type EmailTemplate,
   type OutreachRecord,
   type OutreachSequence
 } from "../data/mock-outreach";
+import type { OutreachData } from "@/lib/supabase/queries/outreach";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -474,7 +472,8 @@ function MobileOutreachLayout({
   setSearch,
   sequences,
   filteredCampaigns,
-  filteredTemplates
+  filteredTemplates,
+  outreachHistory
 }: {
   currentTab: OutreachTab;
   setCurrentTab: (value: OutreachTab) => void;
@@ -491,6 +490,7 @@ function MobileOutreachLayout({
   sequences: OutreachSequence[];
   filteredCampaigns: Campaign[];
   filteredTemplates: EmailTemplate[];
+  outreachHistory: OutreachRecord[];
 }) {
   return (
     <div className="space-y-4 rounded-2xl border bg-background p-4">
@@ -605,10 +605,15 @@ function CellLike() {
   return null;
 }
 
-export function OutreachWorkspace() {
+export function OutreachWorkspace({ initialData }: { initialData: OutreachData }) {
   const isMobile = useIsMobile();
   const [currentTab, setCurrentTab] = React.useState<OutreachTab>("sequences");
   const [search, setSearch] = React.useState("");
+  const outreachSequences = initialData.sequences;
+  const outreachHistory = initialData.history;
+  const outreachStats = initialData.stats;
+  const campaigns = mockCampaigns;
+  const emailTemplates = mockEmailTemplates;
   const [selectedSequenceId, setSelectedSequenceId] = React.useState(outreachSequences[0]?.id ?? "");
   const [selectedCampaignId, setSelectedCampaignId] = React.useState(campaigns[0]?.id ?? "");
   const [selectedTemplateId, setSelectedTemplateId] = React.useState(emailTemplates[0]?.id ?? "");
@@ -630,7 +635,7 @@ export function OutreachWorkspace() {
           .toLowerCase()
           .includes(search.toLowerCase());
       });
-  }, [activeStates, search]);
+  }, [activeStates, outreachSequences, search]);
 
   const filteredCampaigns = React.useMemo(() => {
     return campaigns.filter((campaign) => {
@@ -774,6 +779,7 @@ export function OutreachWorkspace() {
               sequences={sequences}
               filteredCampaigns={filteredCampaigns}
               filteredTemplates={filteredTemplates}
+              outreachHistory={outreachHistory}
             />
           ) : (
             <ResizablePanelGroup orientation="horizontal" className="h-[860px]">

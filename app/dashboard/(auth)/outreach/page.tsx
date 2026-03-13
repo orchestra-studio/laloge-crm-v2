@@ -1,4 +1,5 @@
 import { generateMeta } from "@/lib/utils";
+import { getOutreachData } from "@/lib/supabase/queries/outreach";
 
 import { OutreachWorkspace } from "./components/outreach-workspace";
 
@@ -10,6 +11,7 @@ export async function generateMetadata() {
   });
 }
 
-export default function OutreachPage() {
-  return <OutreachWorkspace />;
+export default async function OutreachPage() {
+  const data = await getOutreachData();
+  return <OutreachWorkspace initialData={data} />;
 }
